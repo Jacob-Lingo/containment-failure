@@ -87,4 +87,9 @@ public class GuardBrain : MonoBehaviour
         Debug.Log($"{name}: {state} -> {next}");
         state = next;
     }
+    
+    public void SetTarget(Transform target)
+    {
+        perception.SetTarget(target);
+    }
 }

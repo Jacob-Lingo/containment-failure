@@ -29,4 +29,9 @@ public class GuardPerception : MonoBehaviour
             TargetLost?.Invoke();
         }
     }
+    
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
+    }
 }
