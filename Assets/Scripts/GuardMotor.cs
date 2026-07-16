@@ -33,5 +33,24 @@ public class GuardMotor : MonoBehaviour
             : maxSpeed;
         
         rb.linearVelocity = toTarget.normalized * speed;
+        
+        UpdateFacing();
     }
+
+    [Header("Facing")] 
+    [SerializeField] private float turnSpeed = 540f;
+    [SerializeField] private float faceVelocityThreshold = 0.05f;
+
+    private void UpdateFacing()
+    {
+        Vector2 v = rb.linearVelocity;
+        if (v.sqrMagnitude < faceVelocityThreshold * faceVelocityThreshold)
+            return;
+
+        float targetAngle = Mathf.Atan2(v.y, v.x) *Mathf.Rad2Deg;
+        float newAngle = Mathf.MoveTowardsAngle(rb.rotation, targetAngle, turnSpeed * Time.fixedDeltaTime);
+        rb.MoveRotation(newAngle);
+    }
+    
 }
+
