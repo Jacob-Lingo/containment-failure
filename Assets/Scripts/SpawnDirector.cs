@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class SpawnDirector : MonoBehaviour
 {
@@ -179,6 +180,7 @@ public class SpawnDirector : MonoBehaviour
         isGameActive = false;
         if (playerWon)
         {
+            SceneManager.LoadScene("Dev_Win");
             Debug.Log("Time ran out! Containment Failure successful! A.D.A.M. escapes!");
         }
     }
