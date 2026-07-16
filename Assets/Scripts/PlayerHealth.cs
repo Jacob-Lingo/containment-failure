@@ -15,9 +15,52 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private HealthBar healthBar;
     private bool isDead;
+    private int startingMaxHealth;
+
+    /// Additive hook for the evolution system's "Vitality" passive — raises the
+    /// cap and heals by the same amount so picking it always feels like a gain.
+    public void IncreaseMaxHealth(int amount)
+    {
+        if (amount <= 0) return;
+
+        maxHealth += amount;
+        Health = Mathf.Min(maxHealth, Health + amount);
+
+        if (healthBar != null)
+        {
+            healthBar.SetMaxHealth(maxHealth);
+            healthBar.SetHealth(Health);
+        }
+    }
+
+    /// Additive hook for an in-place "Restart Run" (PauseMenu) — undoes any
+    /// Vitality stacking and re-enables everything Die() turned off, without
+    /// requiring a scene reload.
+    public void ResetToStartingHealth()
+    {
+        maxHealth = startingMaxHealth;
+        Health = maxHealth;
+        isDead = false;
+
+        if (TryGetComponent<PlayerController>(out var controller))
+            controller.enabled = true;
+
+        foreach (var col in GetComponentsInChildren<Collider2D>())
+            col.enabled = true;
+
+        foreach (var sprite in GetComponentsInChildren<SpriteRenderer>())
+            sprite.enabled = true;
+
+        if (healthBar != null)
+        {
+            healthBar.SetMaxHealth(maxHealth);
+            healthBar.SetHealth(Health);
+        }
+    }
 
     private void Start()
     {
+        startingMaxHealth = maxHealth;
         Health = maxHealth;
 
         healthBar = FindFirstObjectByType<HealthBar>();
