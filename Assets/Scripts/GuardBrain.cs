@@ -8,6 +8,7 @@ public class GuardBrain : MonoBehaviour
     [SerializeField] private float attackEnterRange = 1.2f;
     [SerializeField] private float attackExitRange = 1.8f;   // hysteresis
     [SerializeField] private float attackCooldown = 1.0f;
+    [SerializeField] private int attackDamage = 1;
 
     private State state = State.Idle;
     private GuardPerception perception;
@@ -31,6 +32,13 @@ public class GuardBrain : MonoBehaviour
     {
         perception.TargetSpotted -= HandleTargetSpotted;
         perception.TargetLost -= HandleTargetLost;
+    }
+
+    /// Called by SpawnDirector at instantiation; forwards to perception,
+    /// which drives all state transitions via TargetSpotted/TargetLost.
+    public void SetTarget(Transform target)
+    {
+        perception.SetTarget(target);
     }
 
     private void HandleTargetSpotted(Transform t)
@@ -58,6 +66,11 @@ public class GuardBrain : MonoBehaviour
 
     private void TickChase()
     {
+        // Guard against the target being destroyed mid-chase. Perception's
+        // null early-return never fires TargetLost in that case, so the
+        // brain must detect it here or throw on target.position next line.
+        if (target == null) { HandleTargetLost(); return; }
+
         motor.Seek(target.position);
 
         if (Vector2.Distance(transform.position, target.position) <= attackEnterRange)
@@ -66,6 +79,8 @@ public class GuardBrain : MonoBehaviour
 
     private void TickAttack()
     {
+        if (target == null) { HandleTargetLost(); return; }
+
         motor.Stop();
 
         if (Vector2.Distance(transform.position, target.position) >= attackExitRange)
@@ -77,19 +92,20 @@ public class GuardBrain : MonoBehaviour
         if (Time.time >= nextAttackTime)
         {
             nextAttackTime = Time.time + attackCooldown;
-            Debug.Log($"{name} attacks!");   // damage hook lands when player health exists
+
+            // No-op until a component implementing IDamageable exists on the
+            // player, so this commits safely ahead of Noah's health system.
+            if (target.TryGetComponent<IDamageable>(out var damageable))
+                damageable.TakeDamage(attackDamage);
         }
     }
 
     private void TransitionTo(State next)
     {
         if (state == next) return;
+#if UNITY_EDITOR
         Debug.Log($"{name}: {state} -> {next}");
+#endif
         state = next;
-    }
-    
-    public void SetTarget(Transform target)
-    {
-        perception.SetTarget(target);
     }
 }
