@@ -123,7 +123,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!114 &7909705391180306447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +139,10 @@ MonoBehaviour:
   target: {fileID: 0}
   detectRadius: 6
   loseRadius: 8
+  viewAngle: 70
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &6237570449721121217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +157,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuardMotor
   maxSpeed: 3
   arriveRadius: 1.5
+  turnSpeed: 540
+  faceVelocityThreshold: 0.05
 --- !u!114 &8056538982353741138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +174,7 @@ MonoBehaviour:
   attackEnterRange: 1.2
   attackExitRange: 1.8
   attackCooldown: 1
+  attackDamage: 1
 --- !u!58 &3956058371053498092
 CircleCollider2D:
   m_ObjectHideFlags: 0
