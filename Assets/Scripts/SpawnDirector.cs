@@ -8,6 +8,8 @@ public class SpawnDirector : MonoBehaviour
 {
     [Header("Spawn Settings")]
     [SerializeField] private GameObject guardPrefab; // Drag Guard prefab here in the inspector
+    [SerializeField] private GameObject rangedGuardPrefab; // Optional: drag GuardRanged prefab here to mix in ranged guards
+    [SerializeField, Range(0f, 1f)] private float rangedGuardChance = 0.3f;
     [SerializeField] private Transform playerTransform; // Drag the Player here so the Spawner knows the target
     [SerializeField] private float spawnInterval = 3.0f; // Seconds between spawns
     [SerializeField] private Transform[] spawnPoints; // Array of spawn locations around your arena
@@ -35,9 +37,17 @@ public class SpawnDirector : MonoBehaviour
     public float CurrentTime => gameTimer;
     public bool IsGameActive => isGameActive;
 
+    private float baseSpawnInterval;
+    private int baseMaxGuardCount;
+
     void Start()
     {
         gameTimer = gameDuration;
+
+        baseSpawnInterval = spawnInterval;
+        baseMaxGuardCount = maxGuardCount;
+        RescaleForFloor();
+
         spawnTimer = spawnInterval;
 
         if (playerTransform == null)
@@ -46,6 +56,31 @@ public class SpawnDirector : MonoBehaviour
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null) playerTransform = player.transform;
         }
+    }
+
+    /// Called by FloorExitDoor when the floor advances without a scene
+    /// reload — recomputes pacing from the original inspector values so
+    /// repeated calls don't compound.
+    public void RescaleForFloor()
+    {
+        spawnInterval = Mathf.Max(0.75f, baseSpawnInterval / FloorManager.DifficultyMultiplier);
+        maxGuardCount = Mathf.RoundToInt(baseMaxGuardCount * FloorManager.DifficultyMultiplier);
+    }
+
+    /// In-place "Restart Run" hook (PauseMenu) — clears every guard currently
+    /// alive and resets pacing back to floor 1, no scene reload required.
+    public void ResetForNewRun()
+    {
+        foreach (var guard in activeGuards)
+        {
+            if (guard != null) Destroy(guard);
+        }
+        activeGuards.Clear();
+
+        isGameActive = true;
+        gameTimer = gameDuration;
+        RescaleForFloor();
+        spawnTimer = spawnInterval;
     }
 
     void Update()
@@ -130,13 +165,27 @@ public class SpawnDirector : MonoBehaviour
         if (!foundValidSpot) return;
 
         // Instantiate
-        GameObject newGuard = Instantiate(guardPrefab, chosenSpawnPos, Quaternion.identity);
+        bool spawnRanged = rangedGuardPrefab != null && Random.value < rangedGuardChance;
+        GameObject prefabToSpawn = spawnRanged ? rangedGuardPrefab : guardPrefab;
+
+        GameObject newGuard = Instantiate(prefabToSpawn, chosenSpawnPos, Quaternion.identity);
         activeGuards.Add(newGuard);
+
+        if (newGuard.TryGetComponent<GuardHealth>(out var guardHealth))
+        {
+            guardHealth.ScaleForFloor(FloorManager.DifficultyMultiplier);
+        }
 
         GuardBrain guardBrain = newGuard.GetComponent<GuardBrain>();
         if (guardBrain != null)
         {
             guardBrain.SetTarget(playerTransform);
+        }
+
+        GuardRangedBrain rangedBrain = newGuard.GetComponent<GuardRangedBrain>();
+        if (rangedBrain != null)
+        {
+            rangedBrain.SetTarget(playerTransform);
         }
     }
 
