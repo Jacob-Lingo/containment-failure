@@ -1,0 +1,4 @@
+Sword sound effects ("sword.*.ogg" used for guard_baton_hit_* and player_melee_swing_*)
+Source: https://opengameart.org/content/20-sword-sound-effects-attacks-and-clashes
+Author: StarNinjas (OpenGameArt.org)
+License: CC0 (public domain) - attribution not required but appreciated.

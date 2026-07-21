@@ -45,6 +45,7 @@ public class PauseMenu : MonoBehaviour
     {
         FloorManager.ResetRun();
         RunStats.ResetRun();
+        BossState.Reset();
 
         var player = GameObject.FindWithTag("Player");
         if (player != null)

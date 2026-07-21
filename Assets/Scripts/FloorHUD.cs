@@ -7,7 +7,10 @@ public class FloorHUD : MonoBehaviour
 
     private void Update()
     {
-        if (floorText != null)
-            floorText.text = $"Floor {FloorManager.CurrentFloor} / {FloorManager.TotalFloors}";
+        if (floorText == null) return;
+
+        floorText.text = FloorManager.IsFinalFloor
+            ? $"Floor {FloorManager.CurrentFloor} / {FloorManager.TotalFloors}\nDefeat the Tank!"
+            : $"Floor {FloorManager.CurrentFloor} / {FloorManager.TotalFloors}\nKills {RunStats.FloorKills} / {FloorManager.KillQuota}";
     }
 }

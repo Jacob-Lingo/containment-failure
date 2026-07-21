@@ -22,6 +22,7 @@ public class FloorRunWatcher : MonoBehaviour
             resetQueued = true;
             FloorManager.ResetRun();
             RunStats.ResetRun();
+            BossState.Reset();
         }
     }
 }

@@ -13,6 +13,17 @@ public static class RunStats
 
     public static int TotalKills => MeleeKills + RangedKills + ScreamKills;
 
+    /// Kills on the current floor only — drives SpawnDirector's auto-advance
+    /// (FloorManager.KillQuota). Reset per-floor (ResetFloorKills) and per-run.
+    public static int FloorKills { get; private set; }
+
+    /// Experience from the yellow ExpPickup orbs scattered around the map —
+    /// added to TotalKills by EvolutionSystem's level-up counter, so orbs are
+    /// a genuine second XP source independent of kills.
+    public static int BonusExp { get; private set; }
+
+    public static void RegisterBonusExp(int amount) => BonusExp += amount;
+
     public static void RegisterAttackUsed(AttackType type)
     {
         switch (type)
@@ -31,7 +42,12 @@ public static class RunStats
             case AttackType.Ranged: RangedKills++; break;
             case AttackType.Scream: ScreamKills++; break;
         }
+        FloorKills++;
     }
+
+    /// Called by SpawnDirector once a floor's kill quota is met and it
+    /// auto-advances — distinct from ResetRun, which also fires this.
+    public static void ResetFloorKills() => FloorKills = 0;
 
     public static AttackType DominantKillType()
     {
@@ -44,5 +60,7 @@ public static class RunStats
     {
         MeleeKills = RangedKills = ScreamKills = 0;
         MeleeAttacksUsed = RangedAttacksUsed = ScreamAttacksUsed = 0;
+        FloorKills = 0;
+        BonusExp = 0;
     }
 }

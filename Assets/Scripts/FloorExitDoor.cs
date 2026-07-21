@@ -1,12 +1,14 @@
 using UnityEngine;
 
-/// The exit door: touching it advances FloorManager and re-scales the
-/// existing SpawnDirector in place (harder guards next time), or — on floor
-/// 10 — shows the in-scene win panel. Deliberately never changes scenes:
-/// floor progression and winning both stay on the same screen the player
-/// was already testing in.
+/// The exit door: on the final floor, loads the escape/win scene via
+/// SceneTransition — but only once the Tank boss is dead (BossState.Defeated),
+/// otherwise it's a locked no-op. Floors 1-9 no longer use the door at all —
+/// SpawnDirector auto-advances the floor once its kill quota is met
+/// (FloorManager.KillQuota), so touching the door before floor 10 does nothing.
 public class FloorExitDoor : MonoBehaviour
 {
+    [SerializeField] private string escapeSceneName = "Dev_FloorWin";
+
     private float nextUseTime;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -14,16 +16,7 @@ public class FloorExitDoor : MonoBehaviour
         if (!other.CompareTag("Player") || Time.time < nextUseTime) return;
         nextUseTime = Time.time + 1f;
 
-        if (FloorManager.IsFinalFloor)
-        {
-            var winPanel = FindFirstObjectByType<WinPanelUI>();
-            if (winPanel != null) winPanel.Show();
-            return;
-        }
-
-        FloorManager.AdvanceFloor();
-
-        var spawner = FindFirstObjectByType<SpawnDirector>();
-        if (spawner != null) spawner.RescaleForFloor();
+        if (FloorManager.IsFinalFloor && BossState.Defeated)
+            SceneTransition.LoadScene(escapeSceneName);
     }
 }

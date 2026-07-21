@@ -1264,13 +1264,15 @@ MonoBehaviour:
   rangedGuardPrefab: {fileID: 100100000, guid: 9fc337dd6b0247a48591bfe9b32e8fee, type: 3}
   rangedGuardChance: 0.35
   playerTransform: {fileID: 1053686543}
-  spawnInterval: 3
+  spawnInterval: 0.6
+  guardsPerSpawnTick: 3
+  initialBurstCount: 10
   spawnPoints:
   - {fileID: 1571265151}
   - {fileID: 479544492}
   - {fileID: 1188490432}
   - {fileID: 1613713851}
-  maxGuardCount: 15
+  maxGuardCount: 45
   minDistanceFromOtherGuards: 2.5
   maxDistanceFromOtherGuards: 15
   minDistanceFromPlayer: 4

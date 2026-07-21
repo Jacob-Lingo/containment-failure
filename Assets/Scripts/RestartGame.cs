@@ -7,6 +7,10 @@ public class RestartGame : MonoBehaviour
     {
         Time.timeScale = 1f;
 
+        FloorManager.ResetRun();
+        RunStats.ResetRun();
+        BossState.Reset();
+
         SceneManager.LoadScene(GameManager.LastLevelIndex);
     }
 }

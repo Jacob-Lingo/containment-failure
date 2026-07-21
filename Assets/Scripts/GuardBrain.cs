@@ -93,6 +93,9 @@ public class GuardBrain : MonoBehaviour
         {
             nextAttackTime = Time.time + attackCooldown;
 
+            Sfx.PlayRandom("guard_baton_hit", 3, target.position);
+            HitFlashFx.Spawn(target.position, new Color(1f, 1f, 1f, 0.85f), 0.35f);
+
             // No-op until a component implementing IDamageable exists on the
             // player, so this commits safely ahead of Noah's health system.
             if (target.TryGetComponent<IDamageable>(out var damageable))

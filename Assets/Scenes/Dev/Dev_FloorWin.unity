@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753229cdc499475c9873cf7a26455c7f, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::PlayAgainButton
-  targetSceneName: Dev_PlayerController
+  targetSceneName: Master
 --- !u!114 &200000053
 MonoBehaviour:
   m_ObjectHideFlags: 0
