@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class SpawnDirector : MonoBehaviour
 {
@@ -103,8 +104,29 @@ public class SpawnDirector : MonoBehaviour
     /// repeated calls don't compound.
     public void RescaleForFloor()
     {
+        // Fresh time budget for the new floor (GDD: reach the exit before
+        // the floor's containment systems activate).
+        gameTimer = gameDuration;
+
         spawnInterval = Mathf.Max(0.75f, baseSpawnInterval / FloorManager.DifficultyMultiplier);
         maxGuardCount = Mathf.RoundToInt(baseMaxGuardCount * FloorManager.DifficultyMultiplier);
+    }
+
+    /// GDD lose condition #2: the floor timer expired before the player
+    /// reached the exit ("The gas has filled the floor"). Mirrors the death
+    /// path in FloorRunWatcher: reset run-scoped statics, then load the
+    /// lose screen.
+    private void Lose()
+    {
+        isGameActive = false;
+
+        GameManager.LastLevelIndex = SceneManager.GetActiveScene().buildIndex;
+        FloorManager.ResetRun();
+        RunStats.ResetRun();
+        BossState.Reset();
+
+        SceneManager.LoadScene("LoseScreen");
+        Debug.Log("Time ran out! The gas has filled the floor. A.D.A.M. was re-contained.");
     }
 
     /// In-place "Restart Run" hook (PauseMenu) — clears every guard currently
@@ -143,10 +165,16 @@ public class SpawnDirector : MonoBehaviour
         // Clean up dead guards from the tracking list
         activeGuards.RemoveAll(guard => guard == null);
 
-        // Legacy 60s round timer is intentionally not gating anything anymore —
-        // winning is now driven by FloorManager.IsFinalFloor via FloorExitDoor.
+        // GDD lose condition #2: each floor has its own time budget (refilled
+        // by RescaleForFloor); if it expires before the player escapes the
+        // floor, the gas gets them. Ticks on the boss floor too.
         gameTimer -= Time.deltaTime;
-        if (gameTimer < 0) gameTimer = 0;
+        if (gameTimer <= 0)
+        {
+            gameTimer = 0;
+            Lose();
+            return;
+        }
 
         // The exp-orb pool tops itself up regardless of floor (including the
         // floor-10 boss room), independent of the kill-drop chance in GuardHealth.
@@ -163,15 +191,6 @@ public class SpawnDirector : MonoBehaviour
         {
             if (!BossState.Spawned && playerTransform != null) SpawnBoss();
             return;
-        }
-
-        // Hitting the floor's kill quota auto-advances — no exit door needed
-        // for floors 1-9 (FloorExitDoor is a no-op until floor 10).
-        if (RunStats.FloorKills >= FloorManager.KillQuota)
-        {
-            FloorManager.AdvanceFloor();
-            RunStats.ResetFloorKills();
-            RescaleForFloor();
         }
 
         // Handle Spawn Pacing
