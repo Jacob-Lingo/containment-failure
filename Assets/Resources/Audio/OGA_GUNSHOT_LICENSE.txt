@@ -1,0 +1,8 @@
+Guard pistol gunshot sound ("guard_gun_fire_0.wav", sourced as "cz.wav" - CZ-52 pistol)
+Source: https://opengameart.org/content/gunshot-sounds
+Author: Vincent Sevedge, 2009
+License: Creative Commons Attribution 3.0 Unported (CC-BY 3.0)
+  http://creativecommons.org/licenses/by/3.0/
+ATTRIBUTION REQUIRED (unlike the other CC0 clips in this folder) - credit
+"Vincent Sevedge" somewhere in the game's credits/README before shipping or
+submitting the project.

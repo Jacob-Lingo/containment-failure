@@ -411,7 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0c13f8931e4857a899424dff528d4e, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu
-  playSceneName: Dev_PlayerController
+  playSceneName: Master
   settingsPanel: {fileID: 100110}
   leaderboardPanel: {fileID: 100160}
 --- !u!1 &100030

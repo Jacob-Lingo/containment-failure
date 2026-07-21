@@ -10,6 +10,10 @@ public class PlayerMoveSpeedBoost : MonoBehaviour
 {
     public float SpeedMultiplier = 1f;
 
+    /// Separate from SpeedMultiplier (Swift's stacking boost) so the "Titan"
+    /// card's permanent slowdown combines with it rather than overwriting it.
+    public float TitanMultiplier = 1f;
+
     private Rigidbody2D rb;
 
     private void Awake()
@@ -19,7 +23,8 @@ public class PlayerMoveSpeedBoost : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (SpeedMultiplier == 1f) return;
-        rb.linearVelocity *= SpeedMultiplier;
+        float combined = SpeedMultiplier * TitanMultiplier;
+        if (combined == 1f) return;
+        rb.linearVelocity *= combined;
     }
 }

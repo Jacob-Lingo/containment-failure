@@ -1,0 +1,8 @@
+Sci-fi Sounds (1.0)
+Created/distributed by Kenney (www.kenney.nl)
+License: Creative Commons Zero (CC0) - http://creativecommons.org/publicdomain/zero/1.0/
+Free to use in personal, educational and commercial projects. Credit appreciated, not required.
+
+Used in this project for: explosion_0/1/2.ogg (explosionCrunch_000/001/002.ogg) - Explosive Rounds card.
+(The pack's laser sounds were used earlier for guard_gun_fire but have since been replaced with a real
+gunshot recording - see OGA_GUNSHOT_LICENSE.txt - this pack is now only used for the explosion clips.)

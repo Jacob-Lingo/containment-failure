@@ -6,17 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Dev/Dev_MainMenu.unity
+    guid: 62db3ffa4b4542828881aae4803d72ce
+  - enabled: 1
     path: Assets/Scenes/Master.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
-    path: Assets/Scenes/Dev/Dev_Win.unity
-    guid: 975d19bb14e0db845aa08a2519549a9e
   - enabled: 1
     path: Assets/Scenes/Dev/LoseScreen.unity
     guid: a051962a30ce80740993b415d0427be9
   - enabled: 1
-    path: Assets/Scenes/Dev/Dev_MainMenu.unity
-    guid: 62db3ffa4b4542828881aae4803d72ce
+    path: Assets/Scenes/Dev/Dev_FloorWin.unity
+    guid: 383756bc1b404c8ba6dfa280686c3729
+  - enabled: 1
+    path: Assets/Scenes/Dev/Dev_Win.unity
+    guid: 975d19bb14e0db845aa08a2519549a9e
   - enabled: 1
     path: Assets/Scenes/Dev/Dev_PlayerController.unity
     guid: 9fe36170154e8c448a80b1c47b633caf

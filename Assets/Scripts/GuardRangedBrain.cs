@@ -21,6 +21,24 @@ public class GuardRangedBrain : MonoBehaviour
     private GuardMotor motor;
     private Transform target;
     private float nextAttackTime;
+    private float bulletScale = 1f;
+    private bool bulletExplosive;
+
+    /// Called by SpawnDirector for military/boss tiers to override the
+    /// inspector defaults (faster/slower fire, more/less damage per shot).
+    public void SetAttackProfile(int damage, float cooldown)
+    {
+        attackDamage = damage;
+        attackCooldown = cooldown;
+    }
+
+    /// Called by SpawnDirector for military/boss tiers — bigger and/or
+    /// explosive bullets (reuses Bullet's existing Explosive Rounds path).
+    public void SetBulletProfile(float scale, bool explosive)
+    {
+        bulletScale = scale;
+        bulletExplosive = explosive;
+    }
 
     private void Awake()
     {
@@ -125,7 +143,10 @@ public class GuardRangedBrain : MonoBehaviour
         Vector2 dir = ((Vector2)target.position - (Vector2)transform.position).normalized;
         GameObject go = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         if (go.TryGetComponent<Bullet>(out var bullet))
-            bullet.Init(dir, attackDamage, false);
+            bullet.Init(dir, attackDamage, false, 0, bulletScale, bulletExplosive);
+
+        Sfx.PlayRandom("guard_gun_fire", 1, transform.position, 0.85f);
+        HitFlashFx.Spawn(transform.position + (Vector3)dir * 0.4f, new Color(1f, 0.85f, 0.3f, 0.9f), 0.3f);
     }
 
     private void TransitionTo(State next)

@@ -15,6 +15,10 @@ public static class FloorManager
     /// tougher than floor 1.
     public static float DifficultyMultiplier => 1f + 0.15f * (CurrentFloor - 1);
 
+    /// Kills required on the current floor before SpawnDirector auto-advances
+    /// to the next one (floor 10 is Tank-gated instead — see BossState).
+    public static int KillQuota => 30 + (CurrentFloor - 1) * 8;
+
     public static void AdvanceFloor()
     {
         if (!IsFinalFloor)
