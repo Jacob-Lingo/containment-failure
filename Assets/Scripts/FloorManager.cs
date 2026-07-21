@@ -4,7 +4,7 @@
 /// with no extra wiring.
 public static class FloorManager
 {
-    public const int TotalFloors = 10;
+    public const int TotalFloors = 3;
 
     public static int CurrentFloor { get; private set; } = 1;
 
@@ -16,7 +16,7 @@ public static class FloorManager
     public static float DifficultyMultiplier => 1f + 0.15f * (CurrentFloor - 1);
 
     /// Kills required on the current floor before SpawnDirector auto-advances
-    /// to the next one (floor 10 is Tank-gated instead — see BossState).
+    /// before the exit door unlocks (the final floor is Tank-gated instead — see BossState).
     public static int KillQuota => 30 + (CurrentFloor - 1) * 8;
 
     public static void AdvanceFloor()

@@ -9,8 +9,15 @@ public class FloorHUD : MonoBehaviour
     {
         if (floorText == null) return;
 
-        floorText.text = FloorManager.IsFinalFloor
-            ? $"Floor {FloorManager.CurrentFloor} / {FloorManager.TotalFloors}\nDefeat the Tank!"
-            : $"Floor {FloorManager.CurrentFloor} / {FloorManager.TotalFloors}\nKills {RunStats.FloorKills} / {FloorManager.KillQuota}";
+        string floorLine = $"Floor {FloorManager.CurrentFloor} / {FloorManager.TotalFloors}";
+
+        if (FloorManager.IsFinalFloor)
+            floorText.text = BossState.Defeated
+                ? floorLine + "\nEXIT OPEN — escape!"
+                : floorLine + "\nDefeat the Tank!";
+        else
+            floorText.text = RunStats.FloorKills >= FloorManager.KillQuota
+                ? floorLine + "\nEXIT OPEN — get to the door!"
+                : floorLine + $"\nKills {RunStats.FloorKills} / {FloorManager.KillQuota}";
     }
 }
