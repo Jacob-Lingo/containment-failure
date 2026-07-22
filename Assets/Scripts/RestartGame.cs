@@ -5,7 +5,7 @@ public class RestartGame : MonoBehaviour
 {
     public void Restart()
     {
-        Time.timeScale = 1f;
+        GameState.ForceUnfreeze();
 
         FloorManager.ResetRun();
         RunStats.ResetRun();

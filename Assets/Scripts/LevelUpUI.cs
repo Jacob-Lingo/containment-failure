@@ -44,6 +44,15 @@ public class LevelUpUI : MonoBehaviour
             panelRoot.SetActive(true);
     }
 
+    /// Dismiss without choosing (run reset while a card was pending) —
+    /// clears the callback so a stale click can't grant an old skill.
+    public void Hide()
+    {
+        onChosen = null;
+        if (panelRoot != null)
+            panelRoot.SetActive(false);
+    }
+
     private void Choose(int index)
     {
         if (panelRoot != null)

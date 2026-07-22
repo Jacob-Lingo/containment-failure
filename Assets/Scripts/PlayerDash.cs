@@ -59,6 +59,8 @@ public class PlayerDash : MonoBehaviour
 
     private void Update()
     {
+        if (GameState.IsFrozen) return; // no dash input while paused/choosing
+
         // Berserk suspends all manual control, including dashing.
         if (combat != null && combat.IsBerserking) return;
 
