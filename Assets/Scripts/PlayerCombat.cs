@@ -121,6 +121,11 @@ public class PlayerCombat : MonoBehaviour
 
     private void Update()
     {
+        // No attacks while the game is frozen (level-up card / pause menu):
+        // physics queries still work at timeScale 0, so without this a click
+        // on a UI card also swings the claw and pollutes RunStats.
+        if (GameState.IsFrozen) return;
+
         // Berserk suspends all manual attack input — BerserkRoutine drives
         // movement and attacks directly until the state ends.
         if (!IsBerserking)

@@ -12,6 +12,7 @@ public class PlayAgainButton : MonoBehaviour
         FloorManager.ResetRun();
         RunStats.ResetRun();
         BossState.Reset();
+        GameState.ForceUnfreeze();
         SceneTransition.LoadScene(targetSceneName);
     }
 }

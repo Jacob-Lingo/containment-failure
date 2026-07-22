@@ -228,7 +228,10 @@ public class EvolutionSystem : MonoBehaviour
 
     private void Update()
     {
-        if (!choicePending)
+        // Defer level-up offers while anything else holds the freeze (pause
+        // menu open) — the kill that earned it is still banked in RunStats,
+        // so the offer fires on the first unfrozen frame instead.
+        if (!choicePending && !GameState.IsFrozen)
         {
             // Yellow ExpPickup orbs (RunStats.BonusExp) count toward level-ups
             // alongside raw kills — a second, kill-independent XP source.
@@ -335,7 +338,7 @@ public class EvolutionSystem : MonoBehaviour
         if (levelUpUI != null)
         {
             choicePending = true;
-            Time.timeScale = 0f;
+            GameState.TryFreeze(GameState.FreezeReason.LevelUpChoice);
 
             var titles = new string[3];
             var descriptions = new string[3];
@@ -455,7 +458,7 @@ public class EvolutionSystem : MonoBehaviour
 
         if (choicePending)
         {
-            Time.timeScale = 1f;
+            GameState.Release(GameState.FreezeReason.LevelUpChoice);
             choicePending = false;
         }
     }
@@ -524,7 +527,8 @@ public class EvolutionSystem : MonoBehaviour
         armorStacks = 0;
         regenTimer = 0f;
         choicePending = false;
-        Time.timeScale = 1f;
+        GameState.Release(GameState.FreezeReason.LevelUpChoice);
+        if (levelUpUI != null) levelUpUI.Hide(); // stale card would grant a pre-reset skill
 
         if (moveSpeedBoost != null)
         {

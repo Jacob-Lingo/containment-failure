@@ -27,8 +27,11 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
+        // If the level-up card holds the freeze, Escape does nothing —
+        // the player must pick a card first. One holder at a time.
+        if (!GameState.TryFreeze(GameState.FreezeReason.PauseMenu)) return;
+
         isPaused = true;
-        Time.timeScale = 0f;
         if (panelRoot != null)
             panelRoot.SetActive(true);
     }
@@ -36,7 +39,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         isPaused = false;
-        Time.timeScale = 1f;
+        GameState.Release(GameState.FreezeReason.PauseMenu);
         if (panelRoot != null)
             panelRoot.SetActive(false);
     }
