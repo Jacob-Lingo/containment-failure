@@ -33,6 +33,7 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.useFullKinematicContacts = true; // kinematic bodies don't report contacts vs static colliders (walls) without this
 
         var sr = GetComponent<SpriteRenderer>();
         if (sr != null)
@@ -130,6 +131,7 @@ public class Bullet : MonoBehaviour
                 {
                     Destroy(gameObject);
                 }
+                return;
             }
         }
         else
@@ -141,8 +143,34 @@ public class Bullet : MonoBehaviour
                 player.TakeDamage(damage);
                 if (explosive) PlayExplosionFx(); // military/Tank bazooka rounds — impact juice only, no AoE (only one player to hit)
                 Destroy(gameObject);
+                return;
             }
         }
+
+        // Fell through the target checks. Everything the bullet should pass
+        // through (pickups, exp orbs, exit doors, other bullets) is a trigger,
+        // so any solid collider left is a wall/obstacle — pop against it
+        // instead of gliding through until lifeTime expires.
+        if (!other.isTrigger) PopOnWall();
+    }
+
+    private void PopOnWall()
+    {
+        if (explosive)
+        {
+            // Detonate against the wall. Player rounds still catch nearby guards
+            // in the blast; guard rounds get impact juice only (mirrors the
+            // no-AoE handling when they strike the player).
+            if (isPlayerBullet) Explode();
+            else PlayExplosionFx();
+        }
+        else
+        {
+            Color spark = isPlayerBullet ? new Color(0.6f, 0.85f, 1f, 0.9f) : new Color(1f, 0.6f, 0.3f, 0.9f);
+            HitFlashFx.Spawn(transform.position, spark, 0.35f);
+        }
+
+        Destroy(gameObject);
     }
 
     /// Redirects toward the nearest other guard within ricochetRadius. Returns
