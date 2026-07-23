@@ -1261,8 +1261,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnDirector
   guardPrefab: {fileID: 6242325129514317973, guid: 8de498631ccda9d4aaa9bcda88edcc34, type: 3}
-  rangedGuardPrefab: {fileID: 100100000, guid: 9fc337dd6b0247a48591bfe9b32e8fee, type: 3}
-  rangedGuardChance: 0.35
+  rangedGuardPrefab: {fileID: 6242325129514318000, guid: 9fc337dd6b0247a48591bfe9b32e8fee, type: 3}
+  rangedGuardChance: 0.241
   playerTransform: {fileID: 1053686543}
   spawnInterval: 0.6
   guardsPerSpawnTick: 3
