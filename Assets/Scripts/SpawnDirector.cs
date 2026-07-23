@@ -43,6 +43,16 @@ public class SpawnDirector : MonoBehaviour
     [SerializeField] private float militaryBazookaSpeed = 1.5f;
     private static readonly Color MilitaryBazookaTint = new Color(0.3f, 0.3f, 0.3f);
 
+    [Header("Heavy Melee Tier (re-tuned GuardBrain)")]
+    [SerializeField] private int heavyMeleeStartFloor = 3;
+    [SerializeField, Range(0f, 1f)] private float heavyMeleeChance = 0.25f; // chance a rolled melee spawn becomes Heavy instead of a plain guard
+    [SerializeField] private int heavyMeleeHealth = 6;
+    [SerializeField] private int heavyMeleeDamage = 2;
+    [SerializeField] private float heavyMeleeCooldown = 1.4f;
+    [SerializeField] private float heavyMeleeSpeed = 1.8f;
+    [SerializeField] private float heavyMeleeScale = 1.25f;
+    private static readonly Color HeavyMeleeTint = new Color(0.5f, 0.15f, 0.15f);
+
     [Header("Persistent Exp Orbs (yellow, scattered map-wide, not tied to kills)")]
     [SerializeField] private int expPickupPoolSize = 20;
     [SerializeField] private float expPickupRefillInterval = 30f;
@@ -242,6 +252,11 @@ public class SpawnDirector : MonoBehaviour
         bool spawnMilitary = spawnRanged && FloorManager.CurrentFloor >= militaryStartFloor && Random.value < militaryUpgradeChance;
         bool bazooka = spawnMilitary && Random.value < 0.5f;
 
+        // Heavy is the melee-side counterpart to the ranged military tier:
+        // tougher, harder-hitting, slower — same base GuardBrain, re-tuned
+        // via SetAttackProfile instead of a separate prefab.
+        bool spawnHeavyMelee = !spawnRanged && FloorManager.CurrentFloor >= heavyMeleeStartFloor && Random.value < heavyMeleeChance;
+
         GameObject prefabToSpawn = spawnRanged ? rangedGuardPrefab : guardPrefab;
         GameObject newGuard = Instantiate(prefabToSpawn, chosenSpawnPos, Quaternion.identity);
         activeGuards.Add(newGuard);
@@ -249,12 +264,21 @@ public class SpawnDirector : MonoBehaviour
         if (newGuard.TryGetComponent<GuardHealth>(out var guardHealth))
         {
             if (spawnMilitary) guardHealth.SetBaseMaxHealth(bazooka ? militaryBazookaHealth : militaryAkHealth);
+            else if (spawnHeavyMelee) guardHealth.SetBaseMaxHealth(heavyMeleeHealth);
             guardHealth.ScaleForFloor(FloorManager.DifficultyMultiplier);
         }
 
         if (newGuard.TryGetComponent<GuardBrain>(out var guardBrain))
         {
             guardBrain.SetTarget(playerTransform);
+
+            if (spawnHeavyMelee)
+            {
+                guardBrain.SetAttackProfile(heavyMeleeDamage, heavyMeleeCooldown);
+                if (newGuard.TryGetComponent<GuardMotor>(out var meleeMotor)) meleeMotor.SetMaxSpeed(heavyMeleeSpeed);
+                newGuard.transform.localScale = Vector3.one * heavyMeleeScale;
+                Tint(newGuard, HeavyMeleeTint);
+            }
         }
 
         if (newGuard.TryGetComponent<GuardRangedBrain>(out var rangedBrain))

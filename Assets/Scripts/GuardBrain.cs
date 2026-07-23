@@ -41,6 +41,14 @@ public class GuardBrain : MonoBehaviour
         perception.SetTarget(target);
     }
 
+    /// Called by SpawnDirector for the Heavy tier (harder-hitting, slower
+    /// melee guard) — same override shape as GuardRangedBrain's.
+    public void SetAttackProfile(int damage, float cooldown)
+    {
+        attackDamage = damage;
+        attackCooldown = cooldown;
+    }
+
     private void HandleTargetSpotted(Transform t)
     {
         target = t;
