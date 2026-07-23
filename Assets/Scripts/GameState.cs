@@ -16,6 +16,18 @@ public static class GameState
 
     public static bool IsFrozen => Holder != FreezeReason.None;
 
+    /// Reset on every play-mode entry. Static state survives editor Play
+    /// sessions when Domain Reload is disabled (Unity 6 default), so a test
+    /// stopped while a card/pause held the freeze would leave Holder stuck
+    /// non-None into the next session — freezing attacks and level-up cards
+    /// from frame one. Runs before the first scene loads.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetOnPlay()
+    {
+        Holder = FreezeReason.None;
+        Time.timeScale = 1f;
+    }
+
     /// Returns true if `reason` now holds (or already held) the freeze.
     public static bool TryFreeze(FreezeReason reason)
     {
