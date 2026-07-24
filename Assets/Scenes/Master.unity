@@ -1278,7 +1278,7 @@ MonoBehaviour:
   minDistanceFromPlayer: 4
   maxDistanceFromPlayer: 12
   gameDuration: 90
-  militaryStartFloor: 5
+  militaryStartFloor: 2
   militaryUpgradeChance: 0.35
   militaryAkHealth: 4
   militaryAkDamage: 2
@@ -1288,10 +1288,17 @@ MonoBehaviour:
   militaryBazookaCooldown: 2.5
   militaryBazookaBulletScale: 1.8
   militaryBazookaSpeed: 1.5
+  heavyMeleeStartFloor: 3
+  heavyMeleeChance: 0.25
+  heavyMeleeHealth: 6
+  heavyMeleeDamage: 2
+  heavyMeleeCooldown: 1.4
+  heavyMeleeSpeed: 1.8
+  heavyMeleeScale: 1.25
   expPickupPoolSize: 20
   expPickupRefillInterval: 30
   expPickupScatterRadius: 10
-  bossBaseHealth: 40
+  bossBaseHealth: 100
   bossMaxSpeed: 1.2
   bossScale: 1.4
   bossAttackDamage: 4
