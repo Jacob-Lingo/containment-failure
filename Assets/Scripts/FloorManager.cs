@@ -1,9 +1,19 @@
+using UnityEngine;
+
 /// Tracks progress through the facility's 10 floors across scene reloads.
 /// Plain static state (like GameManager) rather than a MonoBehaviour/
 /// DontDestroyOnLoad object, so it survives SceneManager.LoadScene calls
 /// with no extra wiring.
 public static class FloorManager
 {
+    /// Reset run-scoped static state on every play-mode entry / player launch.
+    /// Static state survives editor Play sessions when Domain Reload is
+    /// disabled (Unity 6 default), so a run left mid-progress (e.g. stopping
+    /// play on floor 3) would carry that floor/kills/boss state into the next
+    /// Play. Runs before the first scene loads, guaranteeing a clean run.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetOnPlay() => ResetRun();
+
     public const int TotalFloors = 3;
 
     public static int CurrentFloor { get; private set; } = 1;
