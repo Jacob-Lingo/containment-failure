@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9100000000000010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9100000000000011}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9100000000000011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9100000000000010}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3416603988241796138}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9187406437945655738
 GameObject:
   m_ObjectHideFlags: 0
@@ -19,6 +50,7 @@ GameObject:
   - component: {fileID: 9100000000000003}
   - component: {fileID: 9100000000000004}
   - component: {fileID: 9100000000000005}
+  - component: {fileID: 4100045609461279813}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -36,7 +68,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9100000000000011}
@@ -91,8 +123,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.031149892, g: 0.9433962, b: 0.1621243, a: 1}
+  m_Sprite: {fileID: -2273262987894464175, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -178,6 +210,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 6
+  spriteDown: {fileID: 0}
+  spriteUp: {fileID: 0}
+  spriteRight: {fileID: 0}
+  spriteLeft: {fileID: 0}
 --- !u!114 &-8703437941709791842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,9 +226,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3957f64ba980dee4ab2c1c6ceae2e268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  MaxHealth: 10
-  Health: 0
+  maxHealth: 10
   loseScene: LoseScreen
+  loseDelay: 1
+  thornsRadius: 2.5
+  guardLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &9100000000000001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,7 +243,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9386ea2b31ba4d41b442a4c5ea9b767c, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   meleeRange: 1.2
   meleeArc: 90
@@ -213,7 +253,6 @@ MonoBehaviour:
   firePoint: {fileID: 9100000000000011}
   rangedDamage: 1
   rangedCooldown: 0.5
-  maxAmmo: 3
   screamRange: 3
   screamArc: 100
   screamDamage: 1
@@ -221,6 +260,26 @@ MonoBehaviour:
   guardLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  beamLength: 8
+  beamWidth: 0.8
+  beamDamage: 6
+  beamCooldown: 4
+  cycloneRadius: 2
+  cycloneDamagePerTick: 1
+  cycloneDuration: 1
+  cycloneTickInterval: 0.25
+  cycloneCooldown: 6
+  berserkCooldown: 45
+  berserkDamageMultiplier: 3.5
+  berserkChaseSpeed: 7
+  berserkAttackRange: 1.5
+  berserkAttackCooldown: 0.4
+  berserkRetargetInterval: 0.3
+  berserkSearchRadius: 40
+  knockbackForce: 6
+  knockbackDuration: 0.2
+  screamSlowMultiplier: 0.5
+  screamSlowDuration: 2
 --- !u!114 &9100000000000002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +290,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd1128b84d3a4af4a197ff2aaf6a8f93, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EvolutionSystem
   killsPerLevel: 5
 --- !u!114 &9100000000000003
@@ -244,9 +303,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b513522372d4ffa8ce046373e765841, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMoveSpeedBoost
   SpeedMultiplier: 1
+  TitanMultiplier: 1
 --- !u!114 &9100000000000004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,11 +317,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca3718793a9445d697df081e352853e7, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDash
   dashSpeed: 16
   dashDuration: 0.15
   dashCooldown: 1
+  phaseDashAlpha: 0.45
+  lungeRadius: 1
+  lungeDamage: 1
+  lungeSelfDamagePerHit: 1
+  lungeKnockbackForce: 8
+  lungeKnockbackDuration: 0.25
+  guardLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &9100000000000005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,36 +341,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eabd33afe3ca438e80c1901a7d4da57e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FloorRunWatcher
---- !u!1 &9100000000000010
-GameObject:
+--- !u!114 &4100045609461279813
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9100000000000011}
-  m_Layer: 0
-  m_Name: FirePoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9100000000000011
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9100000000000010}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3416603988241796138}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 9187406437945655738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b97de7f21ac00264fa667bd4a3722561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  moveSpeed: 6
+  spriteDown: {fileID: -2273262987894464175, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
+  spriteUp: {fileID: 1223113874, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
+  spriteRight: {fileID: 671777176, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
+  spriteLeft: {fileID: -717816096, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
