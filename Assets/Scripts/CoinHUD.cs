@@ -12,7 +12,6 @@ using TMPro;
 /// Master.unity (integration-only).
 public class CoinHUD : MonoBehaviour
 {
-    private const string GameSceneName = "Master";
     private const float PunchDuration = 0.2f;
 
     private static readonly Color Gold = new Color(1f, 0.84f, 0.25f);
@@ -29,9 +28,12 @@ public class CoinHUD : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    /// Keys off "is there a player here" rather than a scene name, so the
+    /// counter shows up in any gameplay scene — Master, Dev_Levels, or
+    /// whatever else someone play-tests from the Project window.
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name != GameSceneName) return;
+        if (GameObject.FindGameObjectWithTag("Player") == null) return;
         if (FindFirstObjectByType<CoinHUD>() != null) return;
 
         new GameObject("CoinHUD").AddComponent<CoinHUD>();

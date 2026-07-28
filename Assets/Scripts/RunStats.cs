@@ -41,6 +41,13 @@ public static class RunStats
 
     public static void RegisterCoin(int amount) => CoinsThisRun += amount;
 
+    /// Experience from the green orbs — guard drops and the scattered pool
+    /// alike. Counts toward level-ups alongside kills, so exploring the floor
+    /// is a real second progression source rather than only fighting.
+    public static int BonusExp { get; private set; }
+
+    public static void RegisterExp(int amount) => BonusExp += amount;
+
     public static void RegisterAttackUsed(AttackType type)
     {
         switch (type)
@@ -79,6 +86,7 @@ public static class RunStats
         MeleeAttacksUsed = RangedAttacksUsed = ScreamAttacksUsed = 0;
         FloorKills = 0;
         CoinsThisRun = 0;
+        BonusExp = 0;
         runStartTime = Time.time;
     }
 }

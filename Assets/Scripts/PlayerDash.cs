@@ -76,11 +76,18 @@ public class PlayerDash : MonoBehaviour
         {
             IsDashing = true;
             dashDirection = lastMoveDirection;
+            lastVenomPosition = rb.position - dashDirection * VenomSpacing;
             dashEndTime = Time.time + dashDuration;
 
             float cooldownReduction = evolution != null ? evolution.DashCooldownReduction : 0f;
-            lastDashCooldownUsed = dashCooldown * (1f - Mathf.Clamp01(cooldownReduction));
+            // Wisp line dashes far more often; that speed IS its defence.
+            float formScale = evolution != null ? evolution.Form.DashCooldownScale : 1f;
+            lastDashCooldownUsed = dashCooldown * (1f - Mathf.Clamp01(cooldownReduction)) * formScale;
             nextDashTime = Time.time + lastDashCooldownUsed;
+
+            // Shade line gets i-frames from the form itself, not the card.
+            if (evolution != null && evolution.Form.DashInvuln > 0f)
+                formInvulnUntil = Time.time + evolution.Form.DashInvuln;
 
             if (evolution != null && evolution.DashPhase) StartPhase();
             if (evolution != null && evolution.DashLunge) PerformLunge();
@@ -91,13 +98,52 @@ public class PlayerDash : MonoBehaviour
             IsDashing = false;
             EndPhase();
         }
+
+        // Form i-frames outlast the dash itself, so they're released on their
+        // own clock rather than by EndPhase.
+        if (formInvulnUntil > 0f && Time.time >= formInvulnUntil)
+        {
+            formInvulnUntil = 0f;
+            if (playerHealth != null && (evolution == null || !evolution.DashPhase || !IsDashing))
+                playerHealth.Invulnerable = false;
+        }
+        else if (formInvulnUntil > 0f && playerHealth != null)
+        {
+            playerHealth.Invulnerable = true;
+        }
     }
 
     private void FixedUpdate()
     {
         if (!IsDashing) return;
         rb.linearVelocity = dashDirection * dashSpeed;
+
+        DropVenom();
     }
+
+    /// The venom line's whole identity: dashing paints the ground behind you.
+    /// Dropped on a distance interval rather than a time one, so the trail is
+    /// evenly spaced whatever the form's speed multiplier does to the dash.
+    private void DropVenom()
+    {
+        if (evolution == null) return;
+
+        var form = evolution.Form;
+        if (form.VenomDuration <= 0f) return;
+
+        if (Vector2.Distance(rb.position, lastVenomPosition) < VenomSpacing) return;
+        lastVenomPosition = rb.position;
+
+        HazardZone.Spawn(rb.position, VenomRadius, form.VenomDuration, 1,
+                         new Color(0.4f, 0.9f, 0.2f, 0.55f),
+                         form.VenomSlows ? 0.45f : 1f,
+                         form.VenomSpreads);
+    }
+
+    private const float VenomSpacing = 0.7f;
+    private const float VenomRadius = 1.1f;
+    private Vector2 lastVenomPosition;
+    private float formInvulnUntil;
 
     private void StartPhase()
     {

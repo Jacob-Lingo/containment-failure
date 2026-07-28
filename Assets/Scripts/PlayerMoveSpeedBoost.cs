@@ -14,6 +14,10 @@ public class PlayerMoveSpeedBoost : MonoBehaviour
     /// card's permanent slowdown combines with it rather than overwriting it.
     public float TitanMultiplier = 1f;
 
+    /// The current evolution form's own speed (MonsterForm.Stats). Separate
+    /// again so a form change doesn't wipe stacked Feral Speed.
+    public float FormMultiplier = 1f;
+
     private Rigidbody2D rb;
 
     private void Awake()
@@ -23,7 +27,7 @@ public class PlayerMoveSpeedBoost : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float combined = SpeedMultiplier * TitanMultiplier;
+        float combined = SpeedMultiplier * TitanMultiplier * FormMultiplier;
         if (combined == 1f) return;
         rb.linearVelocity *= combined;
     }

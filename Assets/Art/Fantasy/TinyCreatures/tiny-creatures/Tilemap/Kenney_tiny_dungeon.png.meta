@@ -1,0 +1,3692 @@
+fileFormatVersion: 2
+guid: 6808e6a9ddadcbf4cab7f3ddf167f3f2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8550295178642221368
+    second: Kenney_tiny_dungeon_0
+  - first:
+      213: 9112492678567440035
+    second: Kenney_tiny_dungeon_1
+  - first:
+      213: -5962838824049560907
+    second: Kenney_tiny_dungeon_2
+  - first:
+      213: 5391313522142543318
+    second: Kenney_tiny_dungeon_3
+  - first:
+      213: 2579508380585634329
+    second: Kenney_tiny_dungeon_4
+  - first:
+      213: 200665538105284325
+    second: Kenney_tiny_dungeon_5
+  - first:
+      213: 8462844256575119490
+    second: Kenney_tiny_dungeon_6
+  - first:
+      213: 7098291402797628168
+    second: Kenney_tiny_dungeon_7
+  - first:
+      213: -4401715969258968817
+    second: Kenney_tiny_dungeon_8
+  - first:
+      213: -7389363040221708695
+    second: Kenney_tiny_dungeon_9
+  - first:
+      213: -1256241646321599920
+    second: Kenney_tiny_dungeon_10
+  - first:
+      213: 2242828506441736573
+    second: Kenney_tiny_dungeon_11
+  - first:
+      213: 356382289127532588
+    second: Kenney_tiny_dungeon_12
+  - first:
+      213: -5822638121793836303
+    second: Kenney_tiny_dungeon_13
+  - first:
+      213: -6502790417384511628
+    second: Kenney_tiny_dungeon_14
+  - first:
+      213: 2047015202260747221
+    second: Kenney_tiny_dungeon_15
+  - first:
+      213: -2485327328816119076
+    second: Kenney_tiny_dungeon_16
+  - first:
+      213: 4159047903285416243
+    second: Kenney_tiny_dungeon_17
+  - first:
+      213: -8944442906485392150
+    second: Kenney_tiny_dungeon_18
+  - first:
+      213: -2494956566432263929
+    second: Kenney_tiny_dungeon_19
+  - first:
+      213: -5851648399998919215
+    second: Kenney_tiny_dungeon_20
+  - first:
+      213: 6628941960215298164
+    second: Kenney_tiny_dungeon_21
+  - first:
+      213: -7858903450598973849
+    second: Kenney_tiny_dungeon_22
+  - first:
+      213: 5910205684469955908
+    second: Kenney_tiny_dungeon_23
+  - first:
+      213: -9220882718505251255
+    second: Kenney_tiny_dungeon_24
+  - first:
+      213: -7828232468976490463
+    second: Kenney_tiny_dungeon_25
+  - first:
+      213: -906581790013356705
+    second: Kenney_tiny_dungeon_26
+  - first:
+      213: -7882303520061254886
+    second: Kenney_tiny_dungeon_27
+  - first:
+      213: -7962137629375704717
+    second: Kenney_tiny_dungeon_28
+  - first:
+      213: -7026981507516407765
+    second: Kenney_tiny_dungeon_29
+  - first:
+      213: 1399326796287014484
+    second: Kenney_tiny_dungeon_30
+  - first:
+      213: -1680899418531310845
+    second: Kenney_tiny_dungeon_31
+  - first:
+      213: -2413279670184979737
+    second: Kenney_tiny_dungeon_32
+  - first:
+      213: 5402140613650544336
+    second: Kenney_tiny_dungeon_33
+  - first:
+      213: 183612463588787305
+    second: Kenney_tiny_dungeon_34
+  - first:
+      213: 779291181669348458
+    second: Kenney_tiny_dungeon_35
+  - first:
+      213: -8161632677661522806
+    second: Kenney_tiny_dungeon_36
+  - first:
+      213: 6490554478863311781
+    second: Kenney_tiny_dungeon_37
+  - first:
+      213: -406560598781386327
+    second: Kenney_tiny_dungeon_38
+  - first:
+      213: 5917201817215940307
+    second: Kenney_tiny_dungeon_39
+  - first:
+      213: 7314137474310624808
+    second: Kenney_tiny_dungeon_40
+  - first:
+      213: -6903621783228449244
+    second: Kenney_tiny_dungeon_41
+  - first:
+      213: -6572375956346362258
+    second: Kenney_tiny_dungeon_42
+  - first:
+      213: -2181536206302791230
+    second: Kenney_tiny_dungeon_43
+  - first:
+      213: -2335345234347897335
+    second: Kenney_tiny_dungeon_44
+  - first:
+      213: -5330795739395599093
+    second: Kenney_tiny_dungeon_45
+  - first:
+      213: 7445683162004811340
+    second: Kenney_tiny_dungeon_46
+  - first:
+      213: 5485013310385705215
+    second: Kenney_tiny_dungeon_47
+  - first:
+      213: -5232133370646399172
+    second: Kenney_tiny_dungeon_48
+  - first:
+      213: -3391198163744302619
+    second: Kenney_tiny_dungeon_49
+  - first:
+      213: -8192318561959552252
+    second: Kenney_tiny_dungeon_50
+  - first:
+      213: -7033932194319274913
+    second: Kenney_tiny_dungeon_51
+  - first:
+      213: -8468790400063580291
+    second: Kenney_tiny_dungeon_52
+  - first:
+      213: -5457081274987275929
+    second: Kenney_tiny_dungeon_53
+  - first:
+      213: -8473171812457563332
+    second: Kenney_tiny_dungeon_54
+  - first:
+      213: 3078053883408144842
+    second: Kenney_tiny_dungeon_55
+  - first:
+      213: -1007599678049498976
+    second: Kenney_tiny_dungeon_56
+  - first:
+      213: -6294172385837447234
+    second: Kenney_tiny_dungeon_57
+  - first:
+      213: 6670930473259304358
+    second: Kenney_tiny_dungeon_58
+  - first:
+      213: 2951438434173824434
+    second: Kenney_tiny_dungeon_59
+  - first:
+      213: -7311608215514098468
+    second: Kenney_tiny_dungeon_60
+  - first:
+      213: -6786107816971140739
+    second: Kenney_tiny_dungeon_61
+  - first:
+      213: -3812840080734270630
+    second: Kenney_tiny_dungeon_62
+  - first:
+      213: 3039539959602760101
+    second: Kenney_tiny_dungeon_63
+  - first:
+      213: 1797069820432916831
+    second: Kenney_tiny_dungeon_64
+  - first:
+      213: -8532947047074943342
+    second: Kenney_tiny_dungeon_65
+  - first:
+      213: -8158121429096132632
+    second: Kenney_tiny_dungeon_66
+  - first:
+      213: 802863222271592852
+    second: Kenney_tiny_dungeon_67
+  - first:
+      213: 6379314716126325815
+    second: Kenney_tiny_dungeon_68
+  - first:
+      213: 1569347687742061669
+    second: Kenney_tiny_dungeon_69
+  - first:
+      213: -1894626021397276126
+    second: Kenney_tiny_dungeon_70
+  - first:
+      213: -4676608008113467105
+    second: Kenney_tiny_dungeon_71
+  - first:
+      213: -6739435823986762053
+    second: Kenney_tiny_dungeon_72
+  - first:
+      213: 8818667926918831243
+    second: Kenney_tiny_dungeon_73
+  - first:
+      213: -2593735583848449784
+    second: Kenney_tiny_dungeon_74
+  - first:
+      213: 2062052955106575060
+    second: Kenney_tiny_dungeon_75
+  - first:
+      213: -4628714207408185286
+    second: Kenney_tiny_dungeon_76
+  - first:
+      213: -8535885247662768739
+    second: Kenney_tiny_dungeon_77
+  - first:
+      213: 1212141091477873648
+    second: Kenney_tiny_dungeon_78
+  - first:
+      213: 5150333827310550628
+    second: Kenney_tiny_dungeon_79
+  - first:
+      213: 7906073925379547692
+    second: Kenney_tiny_dungeon_80
+  - first:
+      213: 7990945881059034202
+    second: Kenney_tiny_dungeon_81
+  - first:
+      213: 3549111884355151484
+    second: Kenney_tiny_dungeon_82
+  - first:
+      213: 7947443762747560604
+    second: Kenney_tiny_dungeon_83
+  - first:
+      213: -7610913278110117585
+    second: Kenney_tiny_dungeon_84
+  - first:
+      213: -2394739516798396210
+    second: Kenney_tiny_dungeon_85
+  - first:
+      213: 6641890738839457058
+    second: Kenney_tiny_dungeon_86
+  - first:
+      213: 6454201660624453997
+    second: Kenney_tiny_dungeon_87
+  - first:
+      213: -6663311374962298489
+    second: Kenney_tiny_dungeon_88
+  - first:
+      213: -2505713018590957852
+    second: Kenney_tiny_dungeon_89
+  - first:
+      213: -3141392322362186631
+    second: Kenney_tiny_dungeon_90
+  - first:
+      213: 2557709313186675775
+    second: Kenney_tiny_dungeon_91
+  - first:
+      213: 5108970381354287631
+    second: Kenney_tiny_dungeon_92
+  - first:
+      213: 8481914763453906544
+    second: Kenney_tiny_dungeon_93
+  - first:
+      213: -4306507166441665345
+    second: Kenney_tiny_dungeon_94
+  - first:
+      213: 2987580751509016513
+    second: Kenney_tiny_dungeon_95
+  - first:
+      213: -4816035385360813249
+    second: Kenney_tiny_dungeon_96
+  - first:
+      213: 5660543797880659588
+    second: Kenney_tiny_dungeon_97
+  - first:
+      213: -7076933977545601079
+    second: Kenney_tiny_dungeon_98
+  - first:
+      213: 7320335181706086
+    second: Kenney_tiny_dungeon_99
+  - first:
+      213: 124251350065401371
+    second: Kenney_tiny_dungeon_100
+  - first:
+      213: 1202648078552941878
+    second: Kenney_tiny_dungeon_101
+  - first:
+      213: 8482485240925895152
+    second: Kenney_tiny_dungeon_102
+  - first:
+      213: -5504014556524054481
+    second: Kenney_tiny_dungeon_103
+  - first:
+      213: 1241095311009022263
+    second: Kenney_tiny_dungeon_104
+  - first:
+      213: -6554239817211362914
+    second: Kenney_tiny_dungeon_105
+  - first:
+      213: -3898441568816408938
+    second: Kenney_tiny_dungeon_106
+  - first:
+      213: 5712669198788776711
+    second: Kenney_tiny_dungeon_107
+  - first:
+      213: -4589331501751294401
+    second: Kenney_tiny_dungeon_108
+  - first:
+      213: 8055650648776118405
+    second: Kenney_tiny_dungeon_109
+  - first:
+      213: -1000231822784106076
+    second: Kenney_tiny_dungeon_110
+  - first:
+      213: -5394231868658140547
+    second: Kenney_tiny_dungeon_111
+  - first:
+      213: 6221652688999390033
+    second: Kenney_tiny_dungeon_112
+  - first:
+      213: -5296522090977066755
+    second: Kenney_tiny_dungeon_113
+  - first:
+      213: -3054716083379666255
+    second: Kenney_tiny_dungeon_114
+  - first:
+      213: -5348496729142009020
+    second: Kenney_tiny_dungeon_115
+  - first:
+      213: -18278690774974096
+    second: Kenney_tiny_dungeon_116
+  - first:
+      213: -7653861566914701988
+    second: Kenney_tiny_dungeon_117
+  - first:
+      213: -6852085543471371056
+    second: Kenney_tiny_dungeon_118
+  - first:
+      213: 9044685205689934953
+    second: Kenney_tiny_dungeon_119
+  - first:
+      213: -1674995016691069774
+    second: Kenney_tiny_dungeon_120
+  - first:
+      213: 5775774138511692922
+    second: Kenney_tiny_dungeon_121
+  - first:
+      213: -9030689101955951089
+    second: Kenney_tiny_dungeon_122
+  - first:
+      213: 184386550932278728
+    second: Kenney_tiny_dungeon_123
+  - first:
+      213: 1315507008891860362
+    second: Kenney_tiny_dungeon_124
+  - first:
+      213: -9002471381696881110
+    second: Kenney_tiny_dungeon_125
+  - first:
+      213: 7777406178892308031
+    second: Kenney_tiny_dungeon_126
+  - first:
+      213: -1972972891815407364
+    second: Kenney_tiny_dungeon_127
+  - first:
+      213: 7278177527731206941
+    second: Kenney_tiny_dungeon_128
+  - first:
+      213: -8832678796055750062
+    second: Kenney_tiny_dungeon_129
+  - first:
+      213: -5743211345091948622
+    second: Kenney_tiny_dungeon_130
+  - first:
+      213: -213508643976545120
+    second: Kenney_tiny_dungeon_131
+  - first:
+      213: -940527777939835187
+    second: Kenney_tiny_dungeon_132
+  - first:
+      213: 826943675984556151
+    second: Kenney_tiny_dungeon_133
+  - first:
+      213: -3621059527842543386
+    second: Kenney_tiny_dungeon_134
+  - first:
+      213: 7369347338532850582
+    second: Kenney_tiny_dungeon_135
+  - first:
+      213: -63020351268615680
+    second: Kenney_tiny_dungeon_136
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 169
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83964bfd920c8a670800000000000000
+      internalID: 8550295178642221368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 152
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ae2c54afc3167e70800000000000000
+      internalID: 9112492678567440035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b23e979eadbf3da0800000000000000
+      internalID: -5962838824049560907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ddf010851bc1da40800000000000000
+      internalID: 5391313522142543318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_4
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91a23ff84314cc320800000000000000
+      internalID: 2579508380585634329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_5
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e69d656e38e8c200800000000000000
+      internalID: 200665538105284325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2806d966300127570800000000000000
+      internalID: 8462844256575119490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_7
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80b36f72c62328260800000000000000
+      internalID: 7098291402797628168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_8
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f09a722b5a6f9e2c0800000000000000
+      internalID: -4401715969258968817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_9
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96e3f272775b37990800000000000000
+      internalID: -7389363040221708695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_10
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05af2f6e0eee09ee0800000000000000
+      internalID: -1256241646321599920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_11
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d716492c4a0202f10800000000000000
+      internalID: 2242828506441736573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_12
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c28efa3cdcf12f400800000000000000
+      internalID: 356382289127532588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_13
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1faa4d65a75d13fa0800000000000000
+      internalID: -5822638121793836303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_14
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4776bf2919271c5a0800000000000000
+      internalID: -6502790417384511628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_15
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d3839c1b75786c10800000000000000
+      internalID: 2047015202260747221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_16
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd2485756f7528dd0800000000000000
+      internalID: -2485327328816119076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_17
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 331192f4808e7b930800000000000000
+      internalID: 4159047903285416243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_18
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aecfc25f094fed380800000000000000
+      internalID: -8944442906485392150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_19
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 701d6cfb832206dd0800000000000000
+      internalID: -2494956566432263929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_20
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 169
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ddd49798c4cacea0800000000000000
+      internalID: -5851648399998919215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_21
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 152
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4708057579bbefb50800000000000000
+      internalID: 6628941960215298164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_22
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 169
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76ed4fe23f09fe290800000000000000
+      internalID: -7858903450598973849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_23
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 152
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44d7354a1c4450250800000000000000
+      internalID: 5910205684469955908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 135
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94ec4f79508d80080800000000000000
+      internalID: -9220882718505251255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 118
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1282a739b088c5390800000000000000
+      internalID: -7828232468976490463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_26
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f558a6e4aac2b63f0800000000000000
+      internalID: -906581790013356705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_27
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1310f2f5be6c9290800000000000000
+      internalID: -7882303520061254886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_28
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3715a44e20ec08190800000000000000
+      internalID: -7962137629375704717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_29
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b20ee39ac852b7e90800000000000000
+      internalID: -7026981507516407765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_30
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4567f59ae486b6310800000000000000
+      internalID: 1399326796287014484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_31
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 303d74772ee3ca8e0800000000000000
+      internalID: -1680899418531310845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_32
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e2d3f21dee428ed0800000000000000
+      internalID: -2413279670184979737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_33
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d6f95f244248fa40800000000000000
+      internalID: 5402140613650544336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_34
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9644b8410925c8200800000000000000
+      internalID: 183612463588787305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_35
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a64fefb633990da00800000000000000
+      internalID: 779291181669348458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_36
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a84c3c4625e0cbe80800000000000000
+      internalID: -8161632677661522806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_37
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a3e7fbf8e4131a50800000000000000
+      internalID: 6490554478863311781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_38
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a127f91a4b9b5af0800000000000000
+      internalID: -406560598781386327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_39
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d6b37bb3bf1e1250800000000000000
+      internalID: 5917201817215940307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_40
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82658aae749018560800000000000000
+      internalID: 7314137474310624808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_41
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42ef40ba0986130a0800000000000000
+      internalID: -6903621783228449244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_42
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6628afb3ea3ac4a0800000000000000
+      internalID: -6572375956346362258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_43
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c93baee060a9b1e0800000000000000
+      internalID: -2181536206302791230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_44
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90ecacee1ef279fd0800000000000000
+      internalID: -2335345234347897335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_45
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 118
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b05d82fc4853506b0800000000000000
+      internalID: -5330795739395599093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_46
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 135
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4e676d0361645760800000000000000
+      internalID: 7445683162004811340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_47
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 118
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff054d18b8eae1c40800000000000000
+      internalID: 5485013310385705215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 101
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c377721ab6ab367b0800000000000000
+      internalID: -5232133370646399172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_49
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 101
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e95017cc3b00f0d0800000000000000
+      internalID: -3391198163744302619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_50
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 101
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40bdf833ca90f4e80800000000000000
+      internalID: -8192318561959552252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_51
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 101
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5c6a67cfe3726e90800000000000000
+      internalID: -7033932194319274913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_52
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 101
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d77d8fe2000d87a80800000000000000
+      internalID: -8468790400063580291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_53
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 101
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76992f54e7d8444b0800000000000000
+      internalID: -5457081274987275929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_54
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 103
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3b3d9d112f396a80800000000000000
+      internalID: -8473171812457563332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_55
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 101
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac9dd00e2b177ba20800000000000000
+      internalID: 3078053883408144842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_56
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 101
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a8cf0a6e694402f0800000000000000
+      internalID: -1007599678049498976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_57
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 101
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb70613209b96a8a0800000000000000
+      internalID: -6294172385837447234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_58
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 101
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a503fbdbe7e39c50800000000000000
+      internalID: 6670930473259304358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_59
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 101
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bdad555e9d95f820800000000000000
+      internalID: 2951438434173824434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_60
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 94
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd454790113f78a90800000000000000
+      internalID: -7311608215514098468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_61
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 85
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d710fe115e6e2d1a0800000000000000
+      internalID: -6786107816971140739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_62
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 94
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5b467ad522161bc0800000000000000
+      internalID: -3812840080734270630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_63
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 85
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a94ab43d7d9e2a20800000000000000
+      internalID: 3039539959602760101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_64
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 85
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f51aa7bfa7970f810800000000000000
+      internalID: 1797069820432916831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_65
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 86
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29e21e3ced1e49980800000000000000
+      internalID: -8532947047074943342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_66
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 91
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ef0938a8c788ce80800000000000000
+      internalID: -8158121429096132632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_67
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 84
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49949bec8d7542b00800000000000000
+      internalID: 802863222271592852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_68
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 85
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73ca12d6fe0e78850800000000000000
+      internalID: 6379314716126325815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_69
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 85
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56c32f0486177c510800000000000000
+      internalID: 1569347687742061669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_70
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 84
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22a5764fbafe4b5e0800000000000000
+      internalID: -1894626021397276126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_71
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 84
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1156aa5bc9591fb0800000000000000
+      internalID: -4676608008113467105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_72
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 85
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbe1abc33d6b872a0800000000000000
+      internalID: -6739435823986762053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_73
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 84
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8c902891c3326a70800000000000000
+      internalID: 8818667926918831243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_74
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 84
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8093c6b8a33310cd0800000000000000
+      internalID: -2593735583848449784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_75
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 84
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d20c29cc32ed9c10800000000000000
+      internalID: 2062052955106575060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_76
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 67
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a30a1acc3f083cfb0800000000000000
+      internalID: -4628714207408185286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_77
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 85
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9d3091a7917a8980800000000000000
+      internalID: -8535885247662768739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_78
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 67
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f3613786e362d010800000000000000
+      internalID: 1212141091477873648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_79
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 67
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46ef58b0459a97740800000000000000
+      internalID: 5150333827310550628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_80
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 67
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c22e932d85408bd60800000000000000
+      internalID: 7906073925379547692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_81
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 67
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5405e3e0fa85ee60800000000000000
+      internalID: 7990945881059034202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_82
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 67
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c762b1f647af04130800000000000000
+      internalID: 3549111884355151484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_83
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 67
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9256feaefdfa4e60800000000000000
+      internalID: 7947443762747560604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_84
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 69
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2151f9a2ba906690800000000000000
+      internalID: -7610913278110117585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_85
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 68
+        width: 18
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec814abe81d24ced0800000000000000
+      internalID: -2394739516798396210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_86
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 67
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22d8b7dcf6cbc2c50800000000000000
+      internalID: 6641890738839457058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_87
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 67
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d61c14ae63ee19950800000000000000
+      internalID: 6454201660624453997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_88
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 67
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7817d83bb992783a0800000000000000
+      internalID: -6663311374962298489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_89
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 50
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ee60d1194be93dd0800000000000000
+      internalID: -2505713018590957852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_90
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 50
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 974667d93588764d0800000000000000
+      internalID: -3141392322362186631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_91
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 50
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3c333ba11fce7320800000000000000
+      internalID: 2557709313186675775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_92
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 50
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f024d9c4e75b6e640800000000000000
+      internalID: 5108970381354287631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_93
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 50
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07ebfcac980d5b570800000000000000
+      internalID: 8481914763453906544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_94
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 50
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbc02998c863c34c0800000000000000
+      internalID: -4306507166441665345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_95
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 50
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cf4d775dd4067920800000000000000
+      internalID: 2987580751509016513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_96
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 50
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f337bdd55510a2db0800000000000000
+      internalID: -4816035385360813249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_97
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 50
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48e9734e79a4e8e40800000000000000
+      internalID: 5660543797880659588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_98
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 33
+        width: 10
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cf8089ea0ea9cd90800000000000000
+      internalID: -7076933977545601079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_99
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 51
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 663742a5ec10a1000800000000000000
+      internalID: 7320335181706086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_100
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 33
+        width: 10
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1ec28fc1fd69b100800000000000000
+      internalID: 124251350065401371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_101
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 50
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63544f73e0aa0b010800000000000000
+      internalID: 1202648078552941878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_102
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 33
+        width: 10
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f9b1ed6267d7b570800000000000000
+      internalID: 8482485240925895152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_103
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 51
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f28fdcf1cefcd93b0800000000000000
+      internalID: -5504014556524054481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_104
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 33
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73188191c91493110800000000000000
+      internalID: 1241095311009022263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_105
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 33
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e914562bc99aa05a0800000000000000
+      internalID: -6554239817211362914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_106
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 33
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 696d4194c04f5e9c0800000000000000
+      internalID: -3898441568816408938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_107
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 33
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 703de198e5a774f40800000000000000
+      internalID: 5712669198788776711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_108
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 33
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f36aa91805b6f40c0800000000000000
+      internalID: -4589331501751294401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_109
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 33
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58012fa959b6bcf60800000000000000
+      internalID: 8055650648776118405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_110
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 36
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a179e5e4767e12f0800000000000000
+      internalID: -1000231822784106076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_111
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 36
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7a3a8002b6d325b0800000000000000
+      internalID: -5394231868658140547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_112
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 34
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15b99ab2820c75650800000000000000
+      internalID: 6221652688999390033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_113
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 18
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df08d4e6839fe76b0800000000000000
+      internalID: -5296522090977066755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_114
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b28b7028e77b95d0800000000000000
+      internalID: -3054716083379666255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_115
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 16
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 443e629ff8256c5b0800000000000000
+      internalID: -5348496729142009020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_116
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 16
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0710669a0af0fbff0800000000000000
+      internalID: -18278690774974096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_117
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 16
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c55d800f47508c590800000000000000
+      internalID: -7653861566914701988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_118
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 17
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dcacca808088e0a0800000000000000
+      internalID: -6852085543471371056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_119
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 17
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9642166164d258d70800000000000000
+      internalID: 9044685205689934953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_120
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 17
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bc449528e831c8e0800000000000000
+      internalID: -1674995016691069774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_121
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 17
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7490e44afba72050800000000000000
+      internalID: 5775774138511692922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_122
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 16
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f069ce0cb1c8ca280800000000000000
+      internalID: -9030689101955951089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_123
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 16
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cd8da557921f8200800000000000000
+      internalID: 184386550932278728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_124
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 16
+        width: 13
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a85398c97ae914210800000000000000
+      internalID: 1315507008891860362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_125
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 17
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2e5659b9fbc01380800000000000000
+      internalID: -9002471381696881110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_126
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3eddc696b5eeeb60800000000000000
+      internalID: 7777406178892308031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_127
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 0
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf01edfab979e94e0800000000000000
+      internalID: -1972972891815407364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_128
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1b36a866e7410560800000000000000
+      internalID: 7278177527731206941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_129
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 0
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25ad8f9be650c6580800000000000000
+      internalID: -8832678796055750062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_130
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 0
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bf0dc1e5b30c40b0800000000000000
+      internalID: -5743211345091948622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_131
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 0
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ac7d4ff407790df0800000000000000
+      internalID: -213508643976545120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_132
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 0
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc6328618f292f2f0800000000000000
+      internalID: -940527777939835187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_133
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 0
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 770b05854e4e97b00800000000000000
+      internalID: 826943675984556151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_134
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 0
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e8c66c6b896fbdc0800000000000000
+      internalID: -3621059527842543386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_135
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 0
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69b88b32c5e254660800000000000000
+      internalID: 7369347338532850582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kenney_tiny_dungeon_136
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 0
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00a830d035b102ff0800000000000000
+      internalID: -63020351268615680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Kenney_tiny_dungeon_0: 8550295178642221368
+      Kenney_tiny_dungeon_1: 9112492678567440035
+      Kenney_tiny_dungeon_10: -1256241646321599920
+      Kenney_tiny_dungeon_100: 124251350065401371
+      Kenney_tiny_dungeon_101: 1202648078552941878
+      Kenney_tiny_dungeon_102: 8482485240925895152
+      Kenney_tiny_dungeon_103: -5504014556524054481
+      Kenney_tiny_dungeon_104: 1241095311009022263
+      Kenney_tiny_dungeon_105: -6554239817211362914
+      Kenney_tiny_dungeon_106: -3898441568816408938
+      Kenney_tiny_dungeon_107: 5712669198788776711
+      Kenney_tiny_dungeon_108: -4589331501751294401
+      Kenney_tiny_dungeon_109: 8055650648776118405
+      Kenney_tiny_dungeon_11: 2242828506441736573
+      Kenney_tiny_dungeon_110: -1000231822784106076
+      Kenney_tiny_dungeon_111: -5394231868658140547
+      Kenney_tiny_dungeon_112: 6221652688999390033
+      Kenney_tiny_dungeon_113: -5296522090977066755
+      Kenney_tiny_dungeon_114: -3054716083379666255
+      Kenney_tiny_dungeon_115: -5348496729142009020
+      Kenney_tiny_dungeon_116: -18278690774974096
+      Kenney_tiny_dungeon_117: -7653861566914701988
+      Kenney_tiny_dungeon_118: -6852085543471371056
+      Kenney_tiny_dungeon_119: 9044685205689934953
+      Kenney_tiny_dungeon_12: 356382289127532588
+      Kenney_tiny_dungeon_120: -1674995016691069774
+      Kenney_tiny_dungeon_121: 5775774138511692922
+      Kenney_tiny_dungeon_122: -9030689101955951089
+      Kenney_tiny_dungeon_123: 184386550932278728
+      Kenney_tiny_dungeon_124: 1315507008891860362
+      Kenney_tiny_dungeon_125: -9002471381696881110
+      Kenney_tiny_dungeon_126: 7777406178892308031
+      Kenney_tiny_dungeon_127: -1972972891815407364
+      Kenney_tiny_dungeon_128: 7278177527731206941
+      Kenney_tiny_dungeon_129: -8832678796055750062
+      Kenney_tiny_dungeon_13: -5822638121793836303
+      Kenney_tiny_dungeon_130: -5743211345091948622
+      Kenney_tiny_dungeon_131: -213508643976545120
+      Kenney_tiny_dungeon_132: -940527777939835187
+      Kenney_tiny_dungeon_133: 826943675984556151
+      Kenney_tiny_dungeon_134: -3621059527842543386
+      Kenney_tiny_dungeon_135: 7369347338532850582
+      Kenney_tiny_dungeon_136: -63020351268615680
+      Kenney_tiny_dungeon_14: -6502790417384511628
+      Kenney_tiny_dungeon_15: 2047015202260747221
+      Kenney_tiny_dungeon_16: -2485327328816119076
+      Kenney_tiny_dungeon_17: 4159047903285416243
+      Kenney_tiny_dungeon_18: -8944442906485392150
+      Kenney_tiny_dungeon_19: -2494956566432263929
+      Kenney_tiny_dungeon_2: -5962838824049560907
+      Kenney_tiny_dungeon_20: -5851648399998919215
+      Kenney_tiny_dungeon_21: 6628941960215298164
+      Kenney_tiny_dungeon_22: -7858903450598973849
+      Kenney_tiny_dungeon_23: 5910205684469955908
+      Kenney_tiny_dungeon_24: -9220882718505251255
+      Kenney_tiny_dungeon_25: -7828232468976490463
+      Kenney_tiny_dungeon_26: -906581790013356705
+      Kenney_tiny_dungeon_27: -7882303520061254886
+      Kenney_tiny_dungeon_28: -7962137629375704717
+      Kenney_tiny_dungeon_29: -7026981507516407765
+      Kenney_tiny_dungeon_3: 5391313522142543318
+      Kenney_tiny_dungeon_30: 1399326796287014484
+      Kenney_tiny_dungeon_31: -1680899418531310845
+      Kenney_tiny_dungeon_32: -2413279670184979737
+      Kenney_tiny_dungeon_33: 5402140613650544336
+      Kenney_tiny_dungeon_34: 183612463588787305
+      Kenney_tiny_dungeon_35: 779291181669348458
+      Kenney_tiny_dungeon_36: -8161632677661522806
+      Kenney_tiny_dungeon_37: 6490554478863311781
+      Kenney_tiny_dungeon_38: -406560598781386327
+      Kenney_tiny_dungeon_39: 5917201817215940307
+      Kenney_tiny_dungeon_4: 2579508380585634329
+      Kenney_tiny_dungeon_40: 7314137474310624808
+      Kenney_tiny_dungeon_41: -6903621783228449244
+      Kenney_tiny_dungeon_42: -6572375956346362258
+      Kenney_tiny_dungeon_43: -2181536206302791230
+      Kenney_tiny_dungeon_44: -2335345234347897335
+      Kenney_tiny_dungeon_45: -5330795739395599093
+      Kenney_tiny_dungeon_46: 7445683162004811340
+      Kenney_tiny_dungeon_47: 5485013310385705215
+      Kenney_tiny_dungeon_48: -5232133370646399172
+      Kenney_tiny_dungeon_49: -3391198163744302619
+      Kenney_tiny_dungeon_5: 200665538105284325
+      Kenney_tiny_dungeon_50: -8192318561959552252
+      Kenney_tiny_dungeon_51: -7033932194319274913
+      Kenney_tiny_dungeon_52: -8468790400063580291
+      Kenney_tiny_dungeon_53: -5457081274987275929
+      Kenney_tiny_dungeon_54: -8473171812457563332
+      Kenney_tiny_dungeon_55: 3078053883408144842
+      Kenney_tiny_dungeon_56: -1007599678049498976
+      Kenney_tiny_dungeon_57: -6294172385837447234
+      Kenney_tiny_dungeon_58: 6670930473259304358
+      Kenney_tiny_dungeon_59: 2951438434173824434
+      Kenney_tiny_dungeon_6: 8462844256575119490
+      Kenney_tiny_dungeon_60: -7311608215514098468
+      Kenney_tiny_dungeon_61: -6786107816971140739
+      Kenney_tiny_dungeon_62: -3812840080734270630
+      Kenney_tiny_dungeon_63: 3039539959602760101
+      Kenney_tiny_dungeon_64: 1797069820432916831
+      Kenney_tiny_dungeon_65: -8532947047074943342
+      Kenney_tiny_dungeon_66: -8158121429096132632
+      Kenney_tiny_dungeon_67: 802863222271592852
+      Kenney_tiny_dungeon_68: 6379314716126325815
+      Kenney_tiny_dungeon_69: 1569347687742061669
+      Kenney_tiny_dungeon_7: 7098291402797628168
+      Kenney_tiny_dungeon_70: -1894626021397276126
+      Kenney_tiny_dungeon_71: -4676608008113467105
+      Kenney_tiny_dungeon_72: -6739435823986762053
+      Kenney_tiny_dungeon_73: 8818667926918831243
+      Kenney_tiny_dungeon_74: -2593735583848449784
+      Kenney_tiny_dungeon_75: 2062052955106575060
+      Kenney_tiny_dungeon_76: -4628714207408185286
+      Kenney_tiny_dungeon_77: -8535885247662768739
+      Kenney_tiny_dungeon_78: 1212141091477873648
+      Kenney_tiny_dungeon_79: 5150333827310550628
+      Kenney_tiny_dungeon_8: -4401715969258968817
+      Kenney_tiny_dungeon_80: 7906073925379547692
+      Kenney_tiny_dungeon_81: 7990945881059034202
+      Kenney_tiny_dungeon_82: 3549111884355151484
+      Kenney_tiny_dungeon_83: 7947443762747560604
+      Kenney_tiny_dungeon_84: -7610913278110117585
+      Kenney_tiny_dungeon_85: -2394739516798396210
+      Kenney_tiny_dungeon_86: 6641890738839457058
+      Kenney_tiny_dungeon_87: 6454201660624453997
+      Kenney_tiny_dungeon_88: -6663311374962298489
+      Kenney_tiny_dungeon_89: -2505713018590957852
+      Kenney_tiny_dungeon_9: -7389363040221708695
+      Kenney_tiny_dungeon_90: -3141392322362186631
+      Kenney_tiny_dungeon_91: 2557709313186675775
+      Kenney_tiny_dungeon_92: 5108970381354287631
+      Kenney_tiny_dungeon_93: 8481914763453906544
+      Kenney_tiny_dungeon_94: -4306507166441665345
+      Kenney_tiny_dungeon_95: 2987580751509016513
+      Kenney_tiny_dungeon_96: -4816035385360813249
+      Kenney_tiny_dungeon_97: 5660543797880659588
+      Kenney_tiny_dungeon_98: -7076933977545601079
+      Kenney_tiny_dungeon_99: 7320335181706086
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

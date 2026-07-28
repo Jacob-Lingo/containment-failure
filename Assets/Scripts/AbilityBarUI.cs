@@ -91,30 +91,79 @@ public class AbilityBarUI : MonoBehaviour
 
         BuildSlot(row.transform, clawSprite, "M1", null, out m1Icon, out m1Fill, out _, out m1NameText);
 
-        slots.Add(MakeSlot(row.transform, "SPACE", new Color(0.6f, 0.2f, 1f),
-            () => evolution != null && evolution.UnlockedScream,
-            () => combat.ScreamCooldownFraction,
-            () => "Scream"));
-
+        // Dash keeps a dedicated key and its own pip; it isn't slottable.
         slots.Add(MakeSlot(row.transform, "SHIFT", new Color(0.2f, 0.8f, 1f),
             () => dash != null && evolution != null && evolution.UnlockedDash,
             () => dash != null ? dash.DashCooldownFraction : 0f,
             () => evolution != null && evolution.DashLunge ? "Lunge Dash" : evolution != null && evolution.DashPhase ? "Phase Dash" : "Dash"));
 
-        slots.Add(MakeSlot(row.transform, "R", new Color(1f, 0.75f, 0.2f),
-            () => evolution != null && evolution.UnlockedBeam,
-            () => combat.BeamCooldownFraction,
-            () => "Kamehameha Beam"));
+        // Four bindable slots, keys 1-4. Each reads whatever the player has
+        // bound rather than a fixed ability, so the bar follows the loadout.
+        for (int i = 0; i < AbilitySlots.Count; i++)
+        {
+            int index = i;
+            slots.Add(MakeSlot(row.transform, AbilitySlots.KeyLabel(index), SlotTint(index),
+                () => evolution != null && evolution.Slots.At(index).HasValue,
+                () => CooldownOf(evolution != null ? evolution.Slots.At(index) : null),
+                () => NameOf(index)));
+        }
+    }
 
-        slots.Add(MakeSlot(row.transform, "E", new Color(0.3f, 0.9f, 0.4f),
-            () => evolution != null && evolution.UnlockedCyclone,
-            () => combat.CycloneCooldownFraction,
-            () => "Cyclone"));
+    private static Color SlotTint(int index)
+    {
+        switch (index)
+        {
+            case 0: return new Color(0.6f, 0.2f, 1f);
+            case 1: return new Color(1f, 0.75f, 0.2f);
+            case 2: return new Color(0.3f, 0.9f, 0.4f);
+            default: return new Color(0.9f, 0.2f, 0.2f);
+        }
+    }
 
-        slots.Add(MakeSlot(row.transform, "F", new Color(0.9f, 0.2f, 0.2f),
-            () => evolution != null && evolution.UnlockedBerserk,
-            () => combat.BerserkCooldownFraction,
-            () => "Berserk"));
+    /// Slot label. Empower shows its banked charges, since its cooldown pip
+    /// says when it can be recast — not how many empowered swings are left,
+    /// which is the number the player actually needs mid-fight.
+    private string NameOf(int index)
+    {
+        if (evolution == null) return "";
+
+        string name = evolution.Slots.NameAt(index) ?? "";
+        if (combat != null && evolution.Slots.At(index) == SkillId.Empower && combat.EmpowerRemaining > 0)
+            name += " x" + combat.EmpowerRemaining;
+
+        return name;
+    }
+
+    private float CooldownOf(SkillId? id)
+    {
+        if (combat == null || !id.HasValue) return 0f;
+
+        switch (id.Value)
+        {
+            case SkillId.UnlockScream: return combat.ScreamCooldownFraction;
+            case SkillId.UnlockBeam: return combat.BeamCooldownFraction;
+            case SkillId.UnlockCyclone: return combat.CycloneCooldownFraction;
+            case SkillId.UnlockBerserk: return combat.BerserkCooldownFraction;
+            case SkillId.GroundSlam: return combat.SlamCooldownFraction;
+            case SkillId.Meteor: return combat.MeteorCooldownFraction;
+            case SkillId.WebTrap: return combat.WebCooldownFraction;
+            case SkillId.FrostNova: return combat.NovaCooldownFraction;
+            case SkillId.Blink: return combat.BlinkCooldownFraction;
+            case SkillId.LeapSmash: return combat.LeapCooldownFraction;
+            case SkillId.ChainLightning: return combat.ChainCooldownFraction;
+            case SkillId.VenomBurst: return combat.VenomBurstCooldownFraction;
+            case SkillId.Warp: return combat.WarpCooldownFraction;
+            case SkillId.Bulwark: return combat.BulwarkCooldownFraction;
+            case SkillId.Terrify: return combat.TerrifyCooldownFraction;
+            case SkillId.Maelstrom: return combat.MaelstromCooldownFraction;
+            case SkillId.FlameWheel: return combat.FlameWheelCooldownFraction;
+            case SkillId.Starfall: return combat.StarfallCooldownFraction;
+            case SkillId.BroodCall: return combat.BroodCooldownFraction;
+            case SkillId.Overcharge: return combat.OverchargeCooldownFraction;
+            case SkillId.Ward: return combat.WardCooldownFraction;
+            case SkillId.Empower: return combat.EmpowerCooldownFraction;
+            default: return 0f;
+        }
     }
 
     private Slot MakeSlot(Transform parent, string keybind, Color tint, Func<bool> isUnlocked, Func<float> cooldownFraction, Func<string> abilityName)

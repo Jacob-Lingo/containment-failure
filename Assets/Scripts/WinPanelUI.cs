@@ -22,7 +22,7 @@ public class WinPanelUI : MonoBehaviour
         // Nothing resets the run here (unlike death), so the live stats are
         // still the winning run's — capture and show them in one go.
         var evolution = FindFirstObjectByType<EvolutionSystem>();
-        RunSummary.Capture("ESCAPED", evolution != null ? evolution.GetSummary() : "Claw only");
+        RunSummary.Capture("ESCAPED THE DUNGEON", evolution != null ? evolution.GetSummary() : "Claws only");
         RunSummary.Show();
     }
 

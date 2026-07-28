@@ -14,7 +14,7 @@ public class LevelUpUI : MonoBehaviour
     [SerializeField] private TMP_Text[] cardTitles;
     [SerializeField] private TMP_Text[] cardDescriptions;
 
-    [Header("Rarity (all optional — everything falls back at runtime)")]
+    [Header("Rarity (display only — all optional, everything falls back at runtime)")]
     [Tooltip("Card background Image per slot. Leave empty to use each card Button's own Image.")]
     [SerializeField] private Image[] cardBackgrounds;
     [Tooltip("Rarity name shown above each card. Leave empty to prefix the title instead.")]
@@ -37,6 +37,7 @@ public class LevelUpUI : MonoBehaviour
     };
 
     private Action<int> onChosen;
+    private Image[] formPreviews;
 
     private void Awake()
     {
@@ -47,15 +48,37 @@ public class LevelUpUI : MonoBehaviour
         ResizeCards();
     }
 
+    /// The card PNGs live in Resources/Cards so the panel works without any
+    /// Inspector wiring. They're imported as Sprite Mode: Multiple (the art is
+    /// a slice of a larger sheet), so the sprite is a sub-asset — LoadAll, not
+    /// Load. Anything dragged in via the Inspector wins over this.
+    private void LoadMissingRarityArt()
+    {
+        if (rarityArt == null || rarityArt.Length < RarityCount)
+            System.Array.Resize(ref rarityArt, RarityCount);
+
+        for (int r = 0; r < RarityCount; r++)
+        {
+            if (rarityArt[r] != null) continue;
+
+            string path = "Cards/" + (Rarity)r + "Card";
+            var sprites = Resources.LoadAll<Sprite>(path);
+            if (sprites.Length > 0)
+                rarityArt[r] = sprites[0];
+            else
+                Debug.LogWarning($"LevelUpUI: no sprite found at Resources/{path}.");
+        }
+    }
+
     /// Grows the cards from code instead of in Master.unity (integration-only
-    /// scene). Height scales by cardScale and width is derived from the card
-    /// art's aspect, so the frame fills the rect without stretching. Spacing
-    /// scales with it so the cards don't grow into each other. Awake-only —
-    /// running this per Show() would compound.
+    /// scene). Spacing scales with the size so the cards don't grow into each
+    /// other. Awake-only — running this per Show() would compound.
     private void ResizeCards()
     {
         if (Mathf.Approximately(cardScale, 1f)) return;
 
+        // Width comes from the card art's aspect so the frame fills the rect
+        // instead of stretching.
         float aspect = rarityArt[0] != null
             ? rarityArt[0].rect.width / rarityArt[0].rect.height
             : 0f;
@@ -97,29 +120,7 @@ public class LevelUpUI : MonoBehaviour
         }
     }
 
-    /// The card PNGs live in Resources/Cards so the panel works without any
-    /// Inspector wiring. They're imported as Sprite Mode: Multiple (the art is
-    /// a slice of a larger sheet), so the sprite is a sub-asset — LoadAll, not
-    /// Load. Anything dragged in via the Inspector wins over this.
-    private void LoadMissingRarityArt()
-    {
-        if (rarityArt == null || rarityArt.Length < RarityCount)
-            System.Array.Resize(ref rarityArt, RarityCount);
-
-        for (int r = 0; r < RarityCount; r++)
-        {
-            if (rarityArt[r] != null) continue;
-
-            string path = "Cards/" + (Rarity)r + "Card";
-            var sprites = Resources.LoadAll<Sprite>(path);
-            if (sprites.Length > 0)
-                rarityArt[r] = sprites[0];
-            else
-                Debug.LogWarning($"LevelUpUI: no sprite found at Resources/{path}.");
-        }
-    }
-
-    public void Show(string[] titles, string[] descriptions, Rarity[] rarities, Action<int> chosen)
+    public void Show(string[] titles, string[] descriptions, Rarity[] rarities, Sprite[] previews, Action<int> chosen)
     {
         onChosen = chosen;
 
@@ -132,6 +133,7 @@ public class LevelUpUI : MonoBehaviour
             cardTitles[i].text = titles[i];
             cardDescriptions[i].text = descriptions[i];
             ApplyRarity(i, rarities[i]);
+            ShowFormPreview(i, previews != null && i < previews.Length ? previews[i] : null);
 
             int index = i;
             cardButtons[i].onClick.RemoveAllListeners();
@@ -142,9 +144,42 @@ public class LevelUpUI : MonoBehaviour
             panelRoot.SetActive(true);
     }
 
-    /// Cosmetic only. With nothing wired in the Inspector this repaints the
-    /// card Button's own Image (the plain default box) with the rarity frame
-    /// and prepends a coloured rarity line to the title.
+    /// Shows what you'd turn into above the card, when that card changes your
+    /// form. Built lazily per slot and reused; hidden for cards that don't
+    /// transform you, so the badge itself signals "this is a permanent shape
+    /// change" without needing extra text.
+    private void ShowFormPreview(int i, Sprite preview)
+    {
+        if (formPreviews == null || formPreviews.Length != cardButtons.Length)
+            formPreviews = new Image[cardButtons.Length];
+
+        if (formPreviews[i] == null)
+        {
+            if (preview == null) return; // nothing to show and nothing built yet
+
+            var go = new GameObject("FormPreview");
+            go.transform.SetParent(cardButtons[i].transform, false);
+
+            var image = go.AddComponent<Image>();
+            image.preserveAspect = true;
+            image.raycastTarget = false;
+
+            var rect = image.rectTransform;
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 1f);
+            rect.sizeDelta = new Vector2(96f, 96f);
+            rect.anchoredPosition = new Vector2(0f, 104f); // sits above the card, not on it
+
+            formPreviews[i] = image;
+        }
+
+        formPreviews[i].sprite = preview;
+        formPreviews[i].gameObject.SetActive(preview != null);
+    }
+
+    /// Labels how strong the card is. Display only — rarity has no effect on
+    /// which cards are offered (see the Rarity enum). With nothing wired in the
+    /// Inspector this repaints the card Button's own Image with the rarity
+    /// frame and prepends a coloured rarity line to the title.
     private void ApplyRarity(int i, Rarity rarity)
     {
         int r = (int)rarity;

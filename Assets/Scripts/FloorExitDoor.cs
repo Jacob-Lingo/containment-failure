@@ -19,7 +19,10 @@ public class FloorExitDoor : MonoBehaviour
 
         if (FloorManager.IsFinalFloor)
         {
-            if (BossState.Defeated)
+            // Beating the Warden isn't enough — the vault gate needs the Iron
+            // Key, bought in the shop with gold banked across runs. This is the
+            // deliberate "you must come back better equipped" gate.
+            if (BossState.Defeated && MetaProgression.HasIronKey)
                 SceneTransition.LoadScene(escapeSceneName);
             return;
         }
@@ -30,7 +33,7 @@ public class FloorExitDoor : MonoBehaviour
             // Advance behind the wipe: the rescale and the next floor's
             // spawns land while the screen is covered, so the change reads as
             // "descended a floor" rather than as enemies popping in.
-            SceneTransition.Interstitial($"FLOOR {FloorManager.CurrentFloor + 1}", () =>
+            SceneTransition.Interstitial($"DEPTH {FloorManager.CurrentFloor + 1}", () =>
             {
                 FloorManager.AdvanceFloor();
                 RunStats.ResetFloorKills();

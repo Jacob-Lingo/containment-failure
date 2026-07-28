@@ -13,8 +13,6 @@ using TMPro;
 /// how the text ends up matching the rest of the game's UI.
 public class ShopUI : MonoBehaviour
 {
-    private const string MenuSceneName = "Dev_MainMenu";
-
     private static readonly Color Gold = new Color(1f, 0.85f, 0.2f);
     private static readonly Color Panel = new Color(0.06f, 0.06f, 0.09f, 0.97f);
     private static readonly Color CardIdle = new Color(0.16f, 0.16f, 0.21f);
@@ -39,9 +37,16 @@ public class ShopUI : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    /// Appears on every between-run screen — main menu, lose screen and the
+    /// escape/win screen — since those are the moments you actually have gold
+    /// to spend and a reason to spend it. Keyed off components rather than
+    /// scene names so renamed or duplicated scenes still get the shop.
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name != MenuSceneName) return;
+        bool betweenRuns = FindFirstObjectByType<MainMenu>() != null
+                        || FindFirstObjectByType<RestartGame>() != null
+                        || FindFirstObjectByType<PlayAgainButton>() != null;
+        if (!betweenRuns) return;
         if (FindFirstObjectByType<ShopUI>() != null) return;
 
         new GameObject("ShopUI").AddComponent<ShopUI>();
@@ -82,14 +87,16 @@ public class ShopUI : MonoBehaviour
 
     private void BuildOpenButton()
     {
-        var canvas = NewCanvas("ShopButtonCanvas", 500);
+        if (MenuButtons.Clone(transform, "SHOP", 0, Open) != null) return;
 
-        var button = NewButton(canvas.transform, "SHOP", new Vector2(320f, 90f), CardIdle);
-        var rect = (RectTransform)button.transform;
+        // No scene button to copy (a bare test scene) — stand-alone fallback so
+        // the shop is still reachable.
+        var canvas = NewCanvas("ShopButtonCanvas", 500);
+        var fallback = NewButton(canvas.transform, "SHOP", new Vector2(320f, 90f), CardIdle);
+        var rect = (RectTransform)fallback.transform;
         rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0f);
         rect.anchoredPosition = new Vector2(0f, 120f);
-
-        button.onClick.AddListener(Open);
+        fallback.onClick.AddListener(Open);
     }
 
     private void BuildPanel()
@@ -165,7 +172,7 @@ public class ShopUI : MonoBehaviour
 
     private void Refresh()
     {
-        coinLabel.text = $"{MetaProgression.Coins} coins";
+        coinLabel.text = $"{MetaProgression.Coins} gold";
 
         for (int i = 0; i < rowIds.Count; i++)
         {

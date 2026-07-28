@@ -32,14 +32,15 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 direction;
 
+    private const float TrailInterval = 0.05f;
+    private Color trailColor = Color.white;
+    private float nextTrailTime;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.useFullKinematicContacts = true; // kinematic bodies don't report contacts vs static colliders (walls) without this
-
-        var sr = GetComponent<SpriteRenderer>();
-        if (sr != null)
-            sr.sprite = Resources.Load<Sprite>(isPlayerBullet ? "Combat/bullet_player" : "Combat/bullet_guard");
+        // Sprite is set in Init — isPlayerBullet isn't known yet here.
     }
 
     public void Init(Vector2 dir, int dmg, bool playerOwned, int pierceCount = 0, float scale = 1f, bool isExplosive = false, Action onKillCallback = null, bool canRicochet = false)
@@ -56,20 +57,13 @@ public class Bullet : MonoBehaviour
         var sr = GetComponent<SpriteRenderer>();
         if (sr != null)
         {
-            // Bigger Bullets swaps to a plain circle instead of just scaling the
-            // normal bullet sprite up — the source art reads oddly stretched
-            // when enlarged, a circle reads cleanly as "bigger" at any scale.
-            // Tinted per faction since the circle has no baked-in art color.
-            if (scaleMultiplier > 1.01f)
-            {
-                sr.sprite = GetCircleSprite();
-                sr.color = isPlayerBullet ? new Color(0.4f, 0.8f, 1f) : new Color(1f, 0.5f, 0.2f);
-            }
-            else
-            {
-                sr.sprite = Resources.Load<Sprite>(isPlayerBullet ? "Combat/bullet_player" : "Combat/bullet_guard");
-                sr.color = Color.white;
-            }
+            // One glowing orb sprite for every case: it scales cleanly for
+            // Bigger Bullets (the old capsule art read as stretched when
+            // enlarged) and the tint carries the identity instead of baked-in
+            // art — arcane violet for the monster's bolt, ember orange once
+            // Fireball makes it detonate, dull ember for guard shots.
+            sr.sprite = GetOrbSprite();
+            sr.color = trailColor = BoltColor(playerOwned, explosive);
         }
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -79,33 +73,54 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    private static Sprite circleSprite;
-    private static Sprite GetCircleSprite()
+    private static Color BoltColor(bool playerOwned, bool isExplosive)
     {
-        if (circleSprite != null) return circleSprite;
+        if (!playerOwned) return new Color(1f, 0.45f, 0.25f);
+        return isExplosive ? new Color(1f, 0.55f, 0.15f) : new Color(0.72f, 0.45f, 1f);
+    }
+
+    private static Sprite orbSprite;
+    private static Sprite GetOrbSprite()
+    {
+        if (orbSprite != null) return orbSprite;
 
         const int size = 32;
         var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
         float center = size / 2f;
-        float radius = size / 2f;
 
         for (int y = 0; y < size; y++)
         {
             for (int x = 0; x < size; x++)
             {
                 float dist = Vector2.Distance(new Vector2(x + 0.5f, y + 0.5f), new Vector2(center, center));
-                tex.SetPixel(x, y, new Color(1f, 1f, 1f, dist <= radius ? 1f : 0f));
+                float r = dist / center;
+                // Solid core out to 55% of the radius, then a soft halo — a
+                // hard-edged disc reads as a pellet, this reads as a mote of
+                // conjured light.
+                float alpha = r <= 0.55f ? 1f : Mathf.Clamp01(1f - (r - 0.55f) / 0.45f);
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha * alpha));
             }
         }
         tex.Apply();
 
-        circleSprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
-        return circleSprite;
+        // pixelsPerUnit 100 keeps the orb at roughly the old bullet art's
+        // world size, so nothing about aiming or perceived hitbox changes.
+        orbSprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f);
+        return orbSprite;
     }
 
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
+
+        // Sparks shed along the flight path — what actually sells "spell" over
+        // "bullet". Purely cosmetic; spawn rate is time-based so it doesn't
+        // scale with framerate.
+        if (Time.time >= nextTrailTime)
+        {
+            nextTrailTime = Time.time + TrailInterval;
+            HitFlashFx.Spawn(transform.position, new Color(trailColor.r, trailColor.g, trailColor.b, 0.5f), 0.18f * scaleMultiplier);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -175,8 +190,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            Color spark = isPlayerBullet ? new Color(0.6f, 0.85f, 1f, 0.9f) : new Color(1f, 0.6f, 0.3f, 0.9f);
-            HitFlashFx.Spawn(transform.position, spark, 0.35f);
+            HitFlashFx.Spawn(transform.position, new Color(trailColor.r, trailColor.g, trailColor.b, 0.9f), 0.35f);
         }
 
         Destroy(gameObject);
@@ -212,6 +226,7 @@ public class Bullet : MonoBehaviour
     private void PlayExplosionFx()
     {
         Sfx.PlayRandom("explosion", 3, transform.position, 0.8f);
+        SpellFx.Play(SpellFx.Fire, transform.position, explosionRadius * 2.2f, 1.8f);
 
         // Scales with the blast so the flash keeps reading as the real
         // footprint after explosionRadius was widened.
@@ -224,6 +239,9 @@ public class Bullet : MonoBehaviour
     private void Explode(GuardHealth directHit = null)
     {
         PlayExplosionFx();
+        // Expanding fire ring drawn at the true blast radius, so the player can
+        // read how far a Fireball actually reaches.
+        ScreamVfx.SpawnRing(transform.position, explosionRadius, new Color(1f, 0.6f, 0.2f, 0.75f));
         Juice.Boom();
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius, guardLayer);

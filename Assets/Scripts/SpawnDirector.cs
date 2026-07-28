@@ -15,12 +15,10 @@ public class SpawnDirector : MonoBehaviour
     [SerializeField] private int guardsPerSpawnTick = 3; // How many guards try to spawn each interval — this is what makes it read as a swarm rather than a trickle
     [SerializeField] private int initialBurstCount = 10; // Guards spawned immediately on Start so the player isn't waiting alone for the first wave
     [SerializeField] private Transform[] spawnPoints; // Array of spawn locations around your arena
-    private static readonly Color BaseRangedTint = new Color(0.35f, 0.55f, 0.85f); // distinguishes plain pistol guards from melee guards even before military tiers exist
 
     [Header("Prototype Constraints")]
     [SerializeField] private int maxGuardCount = 45; // Maximum number of guards allowed on screen at once
-    [SerializeField] private float minDistanceFromOtherGuards = 2.5f; // Prevent spawning right on top of each other
-    [SerializeField] private float maxDistanceFromOtherGuards = 15.0f; // Keep guards relatively grouped/clamped to each other
+    [SerializeField] private float minDistanceFromOtherGuards = 1.2f; // Prevent spawning right on top of each other; small so the ring can actually pack a swarm
 
     [Header("Player Distance Constraints")]
     [SerializeField] private float minDistanceFromPlayer = 4.0f; // Don't spawn right on top of the player
@@ -35,13 +33,40 @@ public class SpawnDirector : MonoBehaviour
     [SerializeField] private int militaryAkHealth = 4;
     [SerializeField] private int militaryAkDamage = 2;
     [SerializeField] private float militaryAkCooldown = 0.6f;
-    private static readonly Color MilitaryAkTint = new Color(0.25f, 0.35f, 0.15f);
     [SerializeField] private int militaryBazookaHealth = 6;
     [SerializeField] private int militaryBazookaDamage = 3;
     [SerializeField] private float militaryBazookaCooldown = 2.5f;
     [SerializeField] private float militaryBazookaBulletScale = 1.8f;
     [SerializeField] private float militaryBazookaSpeed = 1.5f;
-    private static readonly Color MilitaryBazookaTint = new Color(0.3f, 0.3f, 0.3f);
+
+    [Header("Beast Tiers (re-tuned Guard.prefab, no new prefabs)")]
+    [SerializeField, Range(0f, 1f)] private float wolfChance = 0.18f;   // fast, fragile
+    [SerializeField] private int wolfHealth = 2;
+    [SerializeField] private float wolfSpeed = 5.2f;
+    [SerializeField, Range(0f, 1f)] private float ratChance = 0.15f;    // trivial filler
+    [SerializeField] private int ratHealth = 1;
+    [SerializeField] private float ratSpeed = 4.2f;
+    [SerializeField, Range(0f, 1f)] private float entChance = 0.08f;    // slow wall of wood
+    [SerializeField] private int entHealth = 14;
+    [SerializeField] private float entSpeed = 0.9f;
+    [SerializeField] private int entDamage = 3;
+    [SerializeField] private float entScale = 1.5f;
+
+    [Header("Endless Depth")]
+    [Tooltip("Endless only: a Warden appears every this many floors, so the boss is reachable there at all.")]
+    [SerializeField] private int bossEveryNFloors = 5;
+    [Tooltip("Floor from which ordinary spawns can come up Elite.")]
+    [SerializeField] private int eliteStartFloor = 4;
+    [SerializeField, Range(0f, 0.2f)] private float eliteChancePerFloor = 0.04f;
+    [SerializeField, Range(0f, 1f)] private float eliteMaxChance = 0.45f;
+    [SerializeField] private float eliteHealthMultiplier = 2.2f;
+    [SerializeField] private float eliteDamageMultiplier = 1.6f;
+    [SerializeField] private float eliteScale = 1.3f;
+    private static readonly Color EliteTint = new Color(1f, 0.86f, 0.55f);
+    private int lastBossFloor = -1;
+
+    [Header("Cosmetic Variants")]
+    [SerializeField, Range(0f, 1f)] private float skeletonChance = 0.3f; // chance a plain melee spawn looks like a skeleton rather than a knight
 
     [Header("Heavy Melee Tier (re-tuned GuardBrain)")]
     [SerializeField] private int heavyMeleeStartFloor = 3;
@@ -51,11 +76,32 @@ public class SpawnDirector : MonoBehaviour
     [SerializeField] private float heavyMeleeCooldown = 1.4f;
     [SerializeField] private float heavyMeleeSpeed = 1.8f;
     [SerializeField] private float heavyMeleeScale = 1.25f;
-    private static readonly Color HeavyMeleeTint = new Color(0.5f, 0.15f, 0.15f);
+
+    [Header("Necromancer Tier (re-tuned GuardRanged, summons skeletons, never attacks)")]
+    [SerializeField] private int necromancerStartFloor = 2;
+    [SerializeField, Range(0f, 1f)] private float necromancerChance = 0.1f; // rolled before the melee/ranged split, so it's a share of all spawns
+    [SerializeField] private int necromancerHealth = 8;
+    [SerializeField] private float necromancerSpeed = 3.6f; // faster than a plain guard: it has to actually get away
+    [SerializeField] private float necromancerScale = 1.15f;
+
+    [Header("Leaping Brute Tier (re-tuned Guard + GuardLeap gap-closer)")]
+    [SerializeField] private int leaperStartFloor = 2;
+    [SerializeField, Range(0f, 1f)] private float leaperChance = 0.15f; // chance a rolled plain melee spawn becomes a Brute
+    [SerializeField] private int leaperHealth = 5;
+    [SerializeField] private int leaperSlamDamage = 3;
+    [SerializeField] private float leaperLeapCooldown = 4f;
+    [SerializeField] private float leaperSpeed = 2.4f; // slow on the ground; the leap is how it reaches you
+    [SerializeField] private float leaperScale = 1.15f;
 
     [Header("Coins (yellow, scattered map-wide, not tied to kills)")]
-    [SerializeField] private int coinPoolSize = 20;
-    [SerializeField] private float coinRefillInterval = 30f;
+    [SerializeField] private int coinPoolSize = 7;
+    [SerializeField] private float coinRefillInterval = 45f;
+
+    [Header("Exp Orbs (green, scattered map-wide — same orb guards drop)")]
+    [SerializeField] private int expOrbPoolSize = 14;
+    [SerializeField] private float expOrbRefillInterval = 20f;
+    private readonly List<GameObject> activeExpOrbs = new List<GameObject>();
+    private float expOrbTimer;
     [SerializeField] private float expPickupScatterRadius = 10f; // spread around each spawn point (or spawner position if none set)
     private readonly List<GameObject> activeCoins = new List<GameObject>();
     private float coinTimer;
@@ -67,7 +113,6 @@ public class SpawnDirector : MonoBehaviour
     [SerializeField] private int bossAttackDamage = 4;
     [SerializeField] private float bossAttackCooldown = 1.8f;
     [SerializeField] private float bossBulletScale = 2.2f;
-    private static readonly Color BossTint = new Color(0.5f, 0.1f, 0.1f);
 
     // Trackers
     private float spawnTimer;
@@ -93,6 +138,7 @@ public class SpawnDirector : MonoBehaviour
 
         spawnTimer = spawnInterval;
         coinTimer = coinRefillInterval;
+        expOrbTimer = expOrbRefillInterval;
 
         if (playerTransform == null)
         {
@@ -107,6 +153,7 @@ public class SpawnDirector : MonoBehaviour
         }
 
         RefillCoins();
+        RefillExpOrbs();
     }
 
     /// Called by FloorExitDoor when the floor advances without a scene
@@ -118,7 +165,11 @@ public class SpawnDirector : MonoBehaviour
         // the floor's containment systems activate).
         gameTimer = gameDuration;
 
-        spawnInterval = Mathf.Max(0.75f, baseSpawnInterval / FloorManager.DifficultyMultiplier);
+        // Floor of 0.15s, not 0.75s. The old clamp sat *above* the scene's
+        // 0.6s base interval, so floor 1 spawned slower than the Inspector
+        // said and no later floor could ever spawn faster than 0.75s — the
+        // difficulty multiplier had no effect on spawn rate at all.
+        spawnInterval = Mathf.Max(0.15f, baseSpawnInterval / FloorManager.DifficultyMultiplier);
         maxGuardCount = Mathf.RoundToInt(baseMaxGuardCount * FloorManager.DifficultyMultiplier);
     }
 
@@ -133,14 +184,14 @@ public class SpawnDirector : MonoBehaviour
         GameManager.LastLevelIndex = SceneManager.GetActiveScene().buildIndex;
 
         var evolution = FindFirstObjectByType<EvolutionSystem>();
-        RunSummary.Capture("OUT OF TIME", evolution != null ? evolution.GetSummary() : "Claw only");
+        RunSummary.Capture("THE DARK TOOK YOU", evolution != null ? evolution.GetSummary() : "Claws only");
 
         FloorManager.ResetRun();
         RunStats.ResetRun();
         BossState.Reset();
 
         SceneManager.LoadScene("LoseScreen");
-        Debug.Log("Time ran out! The gas has filled the floor. A.D.A.M. was re-contained.");
+        Debug.Log("The torches gutter out. The dungeon takes you back.");
     }
 
     /// In-place "Restart Run" hook (PauseMenu) — clears every guard currently
@@ -154,10 +205,12 @@ public class SpawnDirector : MonoBehaviour
         activeGuards.Clear();
 
         isGameActive = true;
+        lastBossFloor = -1;
         gameTimer = gameDuration;
         RescaleForFloor();
         spawnTimer = spawnInterval;
         coinTimer = coinRefillInterval;
+        expOrbTimer = expOrbRefillInterval;
 
         for (int i = 0; i < initialBurstCount && activeGuards.Count < maxGuardCount; i++)
         {
@@ -170,6 +223,13 @@ public class SpawnDirector : MonoBehaviour
         }
         activeCoins.Clear();
         RefillCoins();
+
+        foreach (var orb in activeExpOrbs)
+        {
+            if (orb != null) Destroy(orb);
+        }
+        activeExpOrbs.Clear();
+        RefillExpOrbs();
     }
 
     void Update()
@@ -199,12 +259,32 @@ public class SpawnDirector : MonoBehaviour
             RefillCoins();
         }
 
+        expOrbTimer -= Time.deltaTime;
+        if (expOrbTimer <= 0f)
+        {
+            expOrbTimer = expOrbRefillInterval;
+            RefillExpOrbs();
+        }
+
         // Floor 10 is a boss room: regular spawning stops (leftover guards
         // from floor 9 just play out) and exactly one Tank appears once.
         if (FloorManager.IsFinalFloor)
         {
             if (!BossState.Spawned && playerTransform != null) SpawnBoss();
             return;
+        }
+
+        // Endless has no final floor, so the story-mode boss branch never runs
+        // and the Warden would be unreachable there. Bring him back on a
+        // cadence instead — it gives depth a milestone to dread, and it's the
+        // only way the bestiary can be completed in Endless.
+        if (GameMode.IsEndless && bossEveryNFloors > 0
+            && FloorManager.CurrentFloor % bossEveryNFloors == 0
+            && lastBossFloor != FloorManager.CurrentFloor
+            && playerTransform != null)
+        {
+            lastBossFloor = FloorManager.CurrentFloor;
+            SpawnBoss();
         }
 
         // Handle Spawn Pacing
@@ -232,6 +312,19 @@ public class SpawnDirector : MonoBehaviour
         }
     }
 
+    /// Same idea as the coin pool but for the green exp orbs — deliberately
+    /// the identical orb guards drop on death, so "green = progress, gold =
+    /// currency" stays true whether you earned it from a kill or found it.
+    private void RefillExpOrbs()
+    {
+        activeExpOrbs.RemoveAll(orb => orb == null);
+
+        while (activeExpOrbs.Count < expOrbPoolSize)
+        {
+            activeExpOrbs.Add(ExpOrb.Spawn(RandomMapPosition(), persistent: true));
+        }
+    }
+
     private Vector3 RandomMapPosition()
     {
         Vector3 basePos = (spawnPoints != null && spawnPoints.Length > 0)
@@ -242,73 +335,213 @@ public class SpawnDirector : MonoBehaviour
         return basePos + (Vector3)offset;
     }
 
+    /// An enemy tier scheduled for a floor the player never reaches may as
+    /// well not exist. Story mode stops spawning on the final (boss) floor, so
+    /// the last floor that spawns anything is TotalFloors-1; Endless has no
+    /// cap and uses the configured floor as-is.
+    private static int TierFloor(int configured)
+    {
+        if (GameMode.IsEndless) return configured;
+        return Mathf.Min(configured, Mathf.Max(1, FloorManager.TotalFloors - 1));
+    }
+
     private void SpawnGuard()
     {
         if (guardPrefab == null || playerTransform == null) return;
 
         if (!TryFindSpawnSpot(out Vector3 chosenSpawnPos)) return;
 
-        // Ranged guards only start showing up from floor 2 onward, so floor 1
-        // is a pure melee introduction before guns enter the mix. From floor
-        // militaryStartFloor, a rolled ranged spawn has a further chance to
-        // upgrade into a tougher military variant (AK or Bazooka).
-        bool spawnRanged = rangedGuardPrefab != null && FloorManager.CurrentFloor >= 2 && Random.value < rangedGuardChance;
-        bool spawnMilitary = spawnRanged && FloorManager.CurrentFloor >= militaryStartFloor && Random.value < militaryUpgradeChance;
+        // Floor 1 is a pure melee introduction; every other tier unlocks at its
+        // configured floor, CLAMPED so it can't be scheduled past the last
+        // floor that actually spawns anything. The tiers were tuned for a
+        // 10-floor run and the game is now 3 floors with the last one being a
+        // boss room, so heavyMeleeStartFloor=3 meant Knight Captains literally
+        // never spawned, and the caster tier was one floor from never.
+        int floor = FloorManager.CurrentFloor;
+
+        // Rolled first and exclusive: a necromancer is a support unit, so it
+        // must not also be an archer or a military variant.
+        bool spawnNecromancer = rangedGuardPrefab != null
+            && floor >= TierFloor(necromancerStartFloor)
+            && Random.value < necromancerChance;
+
+        bool spawnRanged = !spawnNecromancer
+            && rangedGuardPrefab != null
+            && floor >= TierFloor(2)
+            && Random.value < rangedGuardChance;
+
+        bool spawnMilitary = spawnRanged
+            && floor >= TierFloor(militaryStartFloor)
+            && Random.value < militaryUpgradeChance;
+
         bool bazooka = spawnMilitary && Random.value < 0.5f;
 
         // Heavy is the melee-side counterpart to the ranged military tier:
         // tougher, harder-hitting, slower — same base GuardBrain, re-tuned
         // via SetAttackProfile instead of a separate prefab.
-        bool spawnHeavyMelee = !spawnRanged && FloorManager.CurrentFloor >= heavyMeleeStartFloor && Random.value < heavyMeleeChance;
+        bool spawnHeavyMelee = !spawnRanged && !spawnNecromancer
+            && floor >= TierFloor(heavyMeleeStartFloor)
+            && Random.value < heavyMeleeChance;
 
-        GameObject prefabToSpawn = spawnRanged ? rangedGuardPrefab : guardPrefab;
+        // Melee-side alternative to Heavy: same base Guard, but with a
+        // telegraphed leap bolted on (GuardLeap) instead of bigger numbers.
+        bool spawnLeaper = !spawnRanged && !spawnNecromancer && !spawnHeavyMelee
+            && floor >= TierFloor(leaperStartFloor)
+            && Random.value < leaperChance;
+
+        GameObject prefabToSpawn = (spawnRanged || spawnNecromancer) ? rangedGuardPrefab : guardPrefab;
         GameObject newGuard = Instantiate(prefabToSpawn, chosenSpawnPos, Quaternion.identity);
         activeGuards.Add(newGuard);
+
+        // Beasts are melee-only variants of the same GuardBrain, distinguished
+        // by stats rather than behaviour: the wolf is a fast glass cannon, the
+        // rat is filler that dies instantly, the ent is a slow wall. Rolled
+        // before the cosmetic skin so they keep their own recognisable faces.
+        bool spawnWolf = !spawnRanged && !spawnNecromancer && !spawnHeavyMelee && !spawnLeaper && Random.value < wolfChance;
+        bool spawnRat = !spawnRanged && !spawnNecromancer && !spawnHeavyMelee && !spawnLeaper && !spawnWolf && Random.value < ratChance;
+        bool spawnEnt = !spawnRanged && !spawnNecromancer && !spawnHeavyMelee && !spawnLeaper && !spawnWolf && !spawnRat
+                        && floor >= TierFloor(2) && Random.value < entChance;
+
+        // Base look for the tier. The stronger variants below overwrite this,
+        // so this is the "plain" bowman / footknight, plus a free reskin-only
+        // variant: some melee spawns come up as risen skeletons instead of
+        // living knights. Pure cosmetics — same stats, more visual variety.
+        if (spawnWolf) Bestiary.Apply(newGuard, Bestiary.Wolf);
+        else if (spawnRat) Bestiary.Apply(newGuard, Bestiary.Rat);
+        else if (spawnEnt) Bestiary.Apply(newGuard, Bestiary.Ent);
+        else Bestiary.Apply(newGuard, spawnRanged ? Bestiary.RandomRangedSkin() : Bestiary.RandomMeleeSkin());
 
         if (newGuard.TryGetComponent<GuardHealth>(out var guardHealth))
         {
             if (spawnMilitary) guardHealth.SetBaseMaxHealth(bazooka ? militaryBazookaHealth : militaryAkHealth);
             else if (spawnHeavyMelee) guardHealth.SetBaseMaxHealth(heavyMeleeHealth);
+            else if (spawnWolf) guardHealth.SetBaseMaxHealth(wolfHealth);
+            else if (spawnRat) guardHealth.SetBaseMaxHealth(ratHealth);
+            else if (spawnEnt) guardHealth.SetBaseMaxHealth(entHealth);
+            else if (spawnNecromancer) guardHealth.SetBaseMaxHealth(necromancerHealth);
+            else if (spawnLeaper) guardHealth.SetBaseMaxHealth(leaperHealth);
             guardHealth.ScaleForFloor(FloorManager.DifficultyMultiplier);
         }
+
+        if (spawnNecromancer) SetUpNecromancer(newGuard);
 
         if (newGuard.TryGetComponent<GuardBrain>(out var guardBrain))
         {
             guardBrain.SetTarget(playerTransform);
+            if (spawnWolf && newGuard.TryGetComponent<GuardMotor>(out var wolfMotor)) wolfMotor.SetMaxSpeed(wolfSpeed);
+            if (spawnRat && newGuard.TryGetComponent<GuardMotor>(out var ratMotor)) ratMotor.SetMaxSpeed(ratSpeed);
+            if (spawnEnt)
+            {
+                guardBrain.SetAttackProfile(entDamage, 2.2f);
+                if (newGuard.TryGetComponent<GuardMotor>(out var entMotor)) entMotor.SetMaxSpeed(entSpeed);
+                newGuard.transform.localScale = Vector3.one * entScale;
+            }
+
+            if (!spawnHeavyMelee) guardBrain.ScaleDamageForFloor(FloorManager.DifficultyMultiplier);
 
             if (spawnHeavyMelee)
             {
                 guardBrain.SetAttackProfile(heavyMeleeDamage, heavyMeleeCooldown);
+                guardBrain.ScaleDamageForFloor(FloorManager.DifficultyMultiplier);
                 if (newGuard.TryGetComponent<GuardMotor>(out var meleeMotor)) meleeMotor.SetMaxSpeed(heavyMeleeSpeed);
                 newGuard.transform.localScale = Vector3.one * heavyMeleeScale;
-                Tint(newGuard, HeavyMeleeTint);
+                Bestiary.Apply(newGuard, Bestiary.KnightCaptain);
+            }
+            else if (spawnLeaper)
+            {
+                // GuardBrain is left intact — the Brute still chases and still
+                // swings in melee; GuardLeap only adds the gap-closer.
+                var leap = newGuard.AddComponent<GuardLeap>();
+                leap.SetSlamProfile(leaperSlamDamage, leaperLeapCooldown);
+                leap.ScaleDamageForFloor(FloorManager.DifficultyMultiplier);
+                leap.Configure(playerTransform);
+
+                if (newGuard.TryGetComponent<GuardMotor>(out var leaperMotor)) leaperMotor.SetMaxSpeed(leaperSpeed);
+                newGuard.transform.localScale = Vector3.one * leaperScale;
+                Bestiary.Apply(newGuard, Bestiary.Brigand);
             }
         }
 
-        if (newGuard.TryGetComponent<GuardRangedBrain>(out var rangedBrain))
+        // Skipped entirely for necromancers: SetUpNecromancer has already
+        // Destroy()ed the GuardRangedBrain, but Unity defers that to end of
+        // frame so TryGetComponent would still hand it back and re-arm it.
+        if (!spawnNecromancer && newGuard.TryGetComponent<GuardRangedBrain>(out var rangedBrain))
         {
             rangedBrain.SetTarget(playerTransform);
 
             if (bazooka)
             {
                 rangedBrain.SetAttackProfile(militaryBazookaDamage, militaryBazookaCooldown);
+                rangedBrain.ScaleDamageForFloor(FloorManager.DifficultyMultiplier);
                 rangedBrain.SetBulletProfile(militaryBazookaBulletScale, true);
                 if (newGuard.TryGetComponent<GuardMotor>(out var motor)) motor.SetMaxSpeed(militaryBazookaSpeed);
-                Tint(newGuard, MilitaryBazookaTint);
+                Bestiary.Apply(newGuard, Bestiary.RandomCasterSkin());
             }
             else if (spawnMilitary)
             {
                 rangedBrain.SetAttackProfile(militaryAkDamage, militaryAkCooldown);
-                Tint(newGuard, MilitaryAkTint);
+                rangedBrain.ScaleDamageForFloor(FloorManager.DifficultyMultiplier);
+                Bestiary.Apply(newGuard, Bestiary.Archer);
             }
             else
             {
-                // Plain pistol guard (not military) — tinted so it reads as a
-                // distinct type from melee guards even on floors before
-                // military variants start appearing.
-                Tint(newGuard, BaseRangedTint);
+                rangedBrain.ScaleDamageForFloor(FloorManager.DifficultyMultiplier);
             }
         }
+
+        // Last, deliberately: Elite multiplies whatever health, damage and
+        // scale this spawn ended up with, so it stacks on top of its tier
+        // rather than being overwritten by it.
+        TryMakeElite(newGuard);
+    }
+
+    /// Turns a freshly spawned GuardRanged into a Necromancer: its shooting
+    /// brain is removed outright (this tier has no attack of its own) and
+    /// replaced with NecromancerBrain, which flees and raises skeletons.
+    private void SetUpNecromancer(GameObject necromancer)
+    {
+        if (necromancer.TryGetComponent<GuardRangedBrain>(out var shooter)) Destroy(shooter);
+
+        if (necromancer.TryGetComponent<GuardMotor>(out var motor)) motor.SetMaxSpeed(necromancerSpeed);
+        necromancer.transform.localScale = Vector3.one * necromancerScale;
+        Bestiary.Apply(necromancer, Bestiary.Cultist);
+
+        // No ScaleDamageForFloor: the necromancer never deals damage. Its
+        // minions are flat 1 damage by design (see NecromancerBrain).
+        necromancer.AddComponent<NecromancerBrain>().Configure(guardPrefab, playerTransform, this);
+    }
+
+    /// Lets a spawned creature enrol something it created (NecromancerBrain's
+    /// minions) in the same tracking list, so maxGuardCount sees them and
+    /// ResetForNewRun clears them instead of leaking them across a restart.
+    public void RegisterGuard(GameObject guard)
+    {
+        if (guard != null) activeGuards.Add(guard);
+    }
+
+    /// Past eliteStartFloor an ordinary spawn can come up Elite: markedly
+    /// tougher, hits harder, visibly bigger and gold-tinted so it's readable on
+    /// sight. This is what stops deep Endless being the same fight with bigger
+    /// numbers — the *composition* keeps shifting, not just the stats.
+    private void TryMakeElite(GameObject guard)
+    {
+        int floor = FloorManager.CurrentFloor;
+        if (floor < eliteStartFloor) return;
+
+        float chance = Mathf.Min(eliteMaxChance, eliteChancePerFloor * (floor - eliteStartFloor + 1));
+        if (Random.value >= chance) return;
+
+        if (guard.TryGetComponent<GuardHealth>(out var health))
+        {
+            health.SetBaseMaxHealth(Mathf.Max(1, Mathf.RoundToInt(health.Health * eliteHealthMultiplier)));
+            // Tint through GuardHealth so the hit flash reverts to gold, not white.
+            health.SetBaseColor(EliteTint);
+        }
+
+        if (guard.TryGetComponent<GuardBrain>(out var melee)) melee.ScaleDamageForFloor(eliteDamageMultiplier);
+        if (guard.TryGetComponent<GuardRangedBrain>(out var ranged)) ranged.ScaleDamageForFloor(eliteDamageMultiplier);
+
+        guard.transform.localScale *= eliteScale;
     }
 
     private void SpawnBoss()
@@ -337,106 +570,54 @@ public class SpawnDirector : MonoBehaviour
             brain.SetTarget(playerTransform);
         }
 
-        Tint(boss, BossTint);
+        Bestiary.Apply(boss, Bestiary.Warden);
         BossState.MarkSpawned();
     }
 
-    // Tints the body via GuardHealth.SetBaseColor (not a raw SpriteRenderer
-    // write) so its hit-flash reverts to the tint instead of snapping back
-    // to the original untinted color baked in at Awake.
-    private static void Tint(GameObject guard, Color color)
-    {
-        if (guard.TryGetComponent<GuardHealth>(out var health))
-            health.SetBaseColor(color);
-        else if (guard.TryGetComponent<SpriteRenderer>(out var bodySr))
-            bodySr.color = color;
-
-        var weaponIcon = guard.GetComponentInChildren<WeaponIcon>();
-        if (weaponIcon != null && weaponIcon.TryGetComponent<SpriteRenderer>(out var iconSr))
-            iconSr.color = color;
-    }
-
+    /// Picks a spot on a ring around the *player*, not around the fixed
+    /// spawnPoints. The old version offset up to 3 units from one of four
+    /// static points and then required the result to also be within
+    /// maxDistanceFromPlayer, which had two failure modes: walk away from the
+    /// spawn points and spawning stopped completely, and the four 3-unit
+    /// circles saturated at roughly twenty guards (minDistanceFromOtherGuards
+    /// spacing) so maxGuardCount was unreachable. A ring around the player
+    /// always has room and always follows them.
     private bool TryFindSpawnSpot(out Vector3 chosenSpawnPos)
     {
         chosenSpawnPos = Vector3.zero;
+        if (playerTransform == null) return false;
 
-        // Collect all potential base origins to evaluate (either spawn points or spawner position)
-        List<Vector3> basePositions = new List<Vector3>();
-        if (spawnPoints != null && spawnPoints.Length > 0)
+        for (int attempt = 0; attempt < 24; attempt++)
         {
-            foreach (Transform pt in spawnPoints)
+            float angle = Random.Range(0f, Mathf.PI * 2f);
+            float radius = Random.Range(minDistanceFromPlayer, maxDistanceFromPlayer);
+            Vector3 candidate = playerTransform.position
+                + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * radius;
+
+            if (IsValidSpawnSpot(candidate))
             {
-                if (pt != null) basePositions.Add(pt.position);
-            }
-        }
-        else
-        {
-            basePositions.Add(transform.position);
-        }
-
-        // Shuffle base positions to keep spawns randomized
-        for (int i = 0; i < basePositions.Count; i++)
-        {
-            Vector3 temp = basePositions[i];
-            int randomIndex = Random.Range(i, basePositions.Count);
-            basePositions[i] = basePositions[randomIndex];
-            basePositions[randomIndex] = temp;
-        }
-
-        // Try to find a valid spot around our base positions
-        foreach (Vector3 basePos in basePositions)
-        {
-            // Attempt to find a randomized offset position around the base spawn location
-            for (int attempts = 0; attempts < 10; attempts++)
-            {
-                // Generate a random position offset within a 3-unit radius of the spawn spot
-                Vector2 randomOffset = Random.insideUnitCircle * 3.0f;
-                Vector3 potentialPos = basePos + new Vector3(randomOffset.x, randomOffset.y, 0);
-
-                if (IsValidSpawnSpot(potentialPos))
-                {
-                    chosenSpawnPos = potentialPos;
-                    return true;
-                }
+                chosenSpawnPos = candidate;
+                return true;
             }
         }
 
-        // If all evaluated zones are invalid, the caller skips spawning this tick to preserve distance rules
         return false;
     }
 
+    /// Only rule left is "don't stack two guards on the same pixel". The old
+    /// "must be within maxDistanceFromOtherGuards of an existing guard" clamp
+    /// was removed: it forced every spawn to clump onto the existing pack, and
+    /// blocked spawning outright whenever the pack drifted away from the
+    /// player.
     private bool IsValidSpawnSpot(Vector3 position)
     {
-        // 1. Check distance parameters relative to the Player
-        float distanceToPlayer = Vector2.Distance(position, playerTransform.position);
-        if (distanceToPlayer < minDistanceFromPlayer || distanceToPlayer > maxDistanceFromPlayer)
-        {
-            return false;
-        }
-
-        // 2. Check distance parameters relative to other existing guards
-        bool withinRangeOfAtLeastOneGuard = activeGuards.Count == 0; // First guard spawns free of guard clamps
-
         foreach (GameObject guard in activeGuards)
         {
-            if (guard != null)
-            {
-                float distanceToGuard = Vector2.Distance(position, guard.transform.position);
-
-                // Rule: Must not be too close to any guard
-                if (distanceToGuard < minDistanceFromOtherGuards)
-                {
-                    return false;
-                }
-
-                // Rule: Track if we are within the maximum allowed distance to at least one guard
-                if (distanceToGuard <= maxDistanceFromOtherGuards)
-                {
-                    withinRangeOfAtLeastOneGuard = true;
-                }
-            }
+            if (guard == null) continue;
+            if (Vector2.Distance(position, guard.transform.position) < minDistanceFromOtherGuards)
+                return false;
         }
 
-        return withinRangeOfAtLeastOneGuard;
+        return true;
     }
 }

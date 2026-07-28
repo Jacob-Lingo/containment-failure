@@ -53,6 +53,15 @@ public class GuardBrain : MonoBehaviour
         perception.SetTarget(target);
     }
 
+    /// Applied after the tier profile, so it scales whatever damage this guard
+    /// ended up with. Health already scaled via GuardHealth.ScaleForFloor —
+    /// without this, deep floors got spongier but never actually more
+    /// dangerous, which is what made Endless flat.
+    public void ScaleDamageForFloor(float multiplier)
+    {
+        attackDamage = Mathf.Max(1, Mathf.RoundToInt(attackDamage * multiplier));
+    }
+
     /// Called by SpawnDirector for the Heavy tier (harder-hitting, slower
     /// melee guard) — same override shape as GuardRangedBrain's.
     public void SetAttackProfile(int damage, float cooldown)

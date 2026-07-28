@@ -35,19 +35,21 @@ public static class RunSummary
 
         Text =
             $"{outcome}\n" +
-            $"Floor {FloorManager.CurrentFloor}   ·   {RunStats.TotalKills} kills   ·   {minutes}:{seconds:00}\n" +
-            $"<color=#FFD933>+{RunStats.CoinsThisRun} coins</color>   <size=70%>({MetaProgression.Coins} banked)</size>\n" +
-            $"<size=70%>Melee {RunStats.MeleeKills}   Ranged {RunStats.RangedKills}   Scream {RunStats.ScreamKills}</size>\n\n" +
+            $"Depth {FloorManager.CurrentFloor}   ·   {RunStats.TotalKills} slain   ·   {minutes}:{seconds:00}\n" +
+            $"<color=#FFD933>+{RunStats.CoinsThisRun} gold</color>   <size=70%>({MetaProgression.Coins} hoarded)</size>\n" +
+            $"<size=70%>Claw {RunStats.MeleeKills}   Bolt {RunStats.RangedKills}   Scream {RunStats.ScreamKills}</size>\n\n" +
             $"<size=75%>{build}</size>";
     }
 
     /// The lose screen is its own scene, so there's nothing there to call
     /// Show() — hook the load instead and the recap appears by itself.
+    /// Detected by the RestartGame component rather than the scene name, so a
+    /// renamed or duplicated lose screen still gets the recap.
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         overlay = null; // destroyed along with the previous scene
 
-        if (scene.name == "LoseScreen") Show();
+        if (Object.FindFirstObjectByType<RestartGame>() != null) Show();
     }
 
     public static void Show()

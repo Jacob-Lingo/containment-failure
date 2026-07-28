@@ -26,6 +26,13 @@ public class GuardHealth : MonoBehaviour, IDamageable
     private SpriteRenderer sr;
     private Color baseColor;
     private Coroutine flashRoutine;
+    private bool dropsSuppressed;
+
+    /// Called by NecromancerBrain on its summoned minions. They still register
+    /// a kill, so RunStats/exp/Juice all behave normally — but six spawns
+    /// every two seconds rolling the coin and orb tables would flood the
+    /// economy far past what the drop rates were tuned for.
+    public void SuppressDrops() => dropsSuppressed = true;
 
     private void Awake()
     {
@@ -96,9 +103,17 @@ public class GuardHealth : MonoBehaviour, IDamageable
             RunStats.RegisterKill(source);
             Juice.Kill();
 
-            if (Random.value < 0.15f) ExpOrb.Spawn(transform.position);
-            if (Random.value < CoinDropChance + MetaProgression.BonusCoinDropChance)
-                Coin.Spawn(transform.position);
+            // The Lich line raises allies on the corpse, so the killer needs to
+            // know where the corpse was before this object is destroyed.
+            var evolution = Object.FindFirstObjectByType<EvolutionSystem>();
+            if (evolution != null) evolution.NoteKillPosition(transform.position);
+
+            if (!dropsSuppressed)
+            {
+                if (Random.value < 0.15f) ExpOrb.Spawn(transform.position);
+                if (Random.value < CoinDropChance + MetaProgression.BonusCoinDropChance)
+                    Coin.Spawn(transform.position);
+            }
             Destroy(gameObject);
         }
     }

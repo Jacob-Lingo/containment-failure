@@ -25,7 +25,7 @@ public class FloorRunWatcher : MonoBehaviour
 
             // Before the resets below wipe them — this is the only point where
             // the dead run's floor/kills/build are all still intact.
-            RunSummary.Capture("ELIMINATED", evolution != null ? evolution.GetSummary() : "Claw only");
+            RunSummary.Capture("SLAIN", evolution != null ? evolution.GetSummary() : "Claws only");
 
             FloorManager.ResetRun();
             RunStats.ResetRun();

@@ -8,7 +8,7 @@ public enum MetaUpgradeId
     Magnetism,
     HeadStart,
     Salvage,
-    Luck
+    IronKey
 }
 
 /// Between-run progression: coins banked from the yellow Coin pickups, and the
@@ -40,13 +40,13 @@ public static class MetaProgression
     /// engineer from a spreadsheet.
     public static readonly UpgradeInfo[] Upgrades =
     {
-        new UpgradeInfo { Id = MetaUpgradeId.Vitality,  Title = "Reinforced Hide", Description = "Start every run with +2 max health.",           MaxLevel = 5, BaseCost = 20 },
-        new UpgradeInfo { Id = MetaUpgradeId.Swiftness, Title = "Lab Legs",        Description = "Start every run 6% faster.",                    MaxLevel = 5, BaseCost = 25 },
-        new UpgradeInfo { Id = MetaUpgradeId.Greed,     Title = "Sticky Fingers",  Description = "Coins are worth +1 each.",                      MaxLevel = 4, BaseCost = 30 },
-        new UpgradeInfo { Id = MetaUpgradeId.Magnetism, Title = "Static Charge",   Description = "Pull coins and orbs in from 1.5 units further.", MaxLevel = 4, BaseCost = 20 },
-        new UpgradeInfo { Id = MetaUpgradeId.HeadStart, Title = "Head Start",      Description = "Begin each run one level-up closer.",            MaxLevel = 3, BaseCost = 40 },
-        new UpgradeInfo { Id = MetaUpgradeId.Salvage,   Title = "Salvage Rig",     Description = "Guards drop 10% more coins.",                    MaxLevel = 3, BaseCost = 35 },
-        new UpgradeInfo { Id = MetaUpgradeId.Luck,      Title = "Lucky Streak",    Description = "Rarer level-up cards show up more often.",       MaxLevel = 5, BaseCost = 45 },
+        new UpgradeInfo { Id = MetaUpgradeId.Vitality,  Title = "Scaled Hide", Description = "Begin every descent with +2 max health.",           MaxLevel = 5, BaseCost = 20 },
+        new UpgradeInfo { Id = MetaUpgradeId.Swiftness, Title = "Fleet Hooves",        Description = "Begin every descent 6% faster.",                    MaxLevel = 5, BaseCost = 25 },
+        new UpgradeInfo { Id = MetaUpgradeId.Greed,     Title = "Hoarder's Instinct",  Description = "Gold is worth +1 per piece.",                      MaxLevel = 4, BaseCost = 30 },
+        new UpgradeInfo { Id = MetaUpgradeId.Magnetism, Title = "Greedy Aura",   Description = "Draw gold and essence in from 1.5 units further.", MaxLevel = 4, BaseCost = 20 },
+        new UpgradeInfo { Id = MetaUpgradeId.HeadStart, Title = "Ancient Memory",      Description = "Begin each descent one evolution closer.",            MaxLevel = 3, BaseCost = 40 },
+        new UpgradeInfo { Id = MetaUpgradeId.IronKey,   Title = "Iron Key",        Description = "The gate out of the deepest vault is locked. Without this you cannot escape, however far you get.", MaxLevel = 1, BaseCost = 150 },
+        new UpgradeInfo { Id = MetaUpgradeId.Salvage,   Title = "Grave Robber",     Description = "The slain drop 10% more gold.",                    MaxLevel = 3, BaseCost = 35 },
     };
 
     public static int Coins
@@ -117,17 +117,12 @@ public static class MetaProgression
 
     public static int HeadStartLevels => LevelOf(MetaUpgradeId.HeadStart);
 
+    /// The run-gate: the final floor's exit stays sealed until this is bought,
+    /// so beating the game requires banking gold across several runs. Checked
+    /// by FloorExitDoor and surfaced by FloorHUD.
+    public static bool HasIronKey => LevelOf(MetaUpgradeId.IronKey) > 0;
+
     /// Extra chance for a guard to drop a coin on death, on top of the base
     /// drop rate in GuardHealth.
     public static float BonusCoinDropChance => 0.10f * LevelOf(MetaUpgradeId.Salvage);
-
-    /// Luck multiplier applied to a card's base draw weight in
-    /// EvolutionSystem.DrawWeighted. Scales with how rare the card is, so
-    /// Common (tier 0) is untouched and Legendary (tier 4) gains the most —
-    /// luck should shift the *shape* of the pool, not just inflate everything.
-    /// At max level a Legendary's weight is 3.4x its base.
-    public static float DrawWeightMultiplier(int rarityTier)
-    {
-        return 1f + 0.12f * rarityTier * LevelOf(MetaUpgradeId.Luck);
-    }
 }
