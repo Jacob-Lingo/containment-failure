@@ -12,8 +12,10 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float lifeTime = 2f;
 
     [Header("Explosive Rounds")]
-    [SerializeField] private float explosionRadius = 1.2f;
+    [SerializeField] private float explosionRadius = 2.8f;
     [SerializeField] private int explosionDamage = 1;
+    [Tooltip("Direct-hit damage multiplier for explosive rounds. Splash targets take explosionDamage instead.")]
+    [SerializeField] private float explosiveDirectMultiplier = 2f;
     [SerializeField] private LayerMask guardLayer = ~0;
 
     [Header("Ricochet")]
@@ -114,10 +116,17 @@ public class Bullet : MonoBehaviour
 
             if (other.TryGetComponent<GuardHealth>(out var guard))
             {
-                guard.TakeDamage(damage, AttackType.Ranged);
+                // Explosive rounds reward landing the shot: the guard you
+                // actually hit takes boosted impact damage, everyone else in
+                // the blast takes the (much smaller) splash.
+                int impact = explosive
+                    ? Mathf.Max(1, Mathf.RoundToInt(damage * explosiveDirectMultiplier))
+                    : damage;
+
+                guard.TakeDamage(impact, AttackType.Ranged);
                 if (guard.Health <= 0) onKill?.Invoke();
 
-                if (explosive) Explode();
+                if (explosive) Explode(guard);
 
                 if (pierceRemaining > 0)
                 {
@@ -203,17 +212,26 @@ public class Bullet : MonoBehaviour
     private void PlayExplosionFx()
     {
         Sfx.PlayRandom("explosion", 3, transform.position, 0.8f);
-        HitFlashFx.Spawn(transform.position, new Color(1f, 0.5f, 0.1f, 0.85f), 0.7f);
+
+        // Scales with the blast so the flash keeps reading as the real
+        // footprint after explosionRadius was widened.
+        HitFlashFx.Spawn(transform.position, new Color(1f, 0.5f, 0.1f, 0.85f), explosionRadius * 0.6f);
     }
 
-    private void Explode()
+    /// `directHit` is the guard the bullet physically struck, if any — it
+    /// already took the boosted impact damage above, so it's excluded here
+    /// rather than double-dipping on its own explosion.
+    private void Explode(GuardHealth directHit = null)
     {
         PlayExplosionFx();
+        Juice.Boom();
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius, guardLayer);
         foreach (var hit in hits)
         {
             if (!hit.TryGetComponent<GuardHealth>(out var guard)) continue;
+            if (guard == directHit) continue;
+
             guard.TakeDamage(explosionDamage, AttackType.Ranged);
             if (guard.Health <= 0) onKill?.Invoke();
         }

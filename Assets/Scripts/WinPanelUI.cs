@@ -18,11 +18,19 @@ public class WinPanelUI : MonoBehaviour
     {
         if (panelRoot != null)
             panelRoot.SetActive(true);
+
+        // Nothing resets the run here (unlike death), so the live stats are
+        // still the winning run's — capture and show them in one go.
+        var evolution = FindFirstObjectByType<EvolutionSystem>();
+        RunSummary.Capture("ESCAPED", evolution != null ? evolution.GetSummary() : "Claw only");
+        RunSummary.Show();
     }
 
     public void Continue()
     {
         if (panelRoot != null)
             panelRoot.SetActive(false);
+
+        RunSummary.Hide();
     }
 }

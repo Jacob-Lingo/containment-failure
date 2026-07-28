@@ -13,7 +13,15 @@ public class GuardHealth : MonoBehaviour, IDamageable
     private static readonly Color FlashColor = Color.white;
     private const float FlashDuration = 0.08f;
 
+    /// Base chance a kill drops a coin, before the Salvage Rig meta upgrade.
+    private const float CoinDropChance = 0.25f;
+
     public int Health { get; private set; }
+
+    /// GuardBrain's attack windup tints the sprite and needs to know what to
+    /// tint back to — which isn't the prefab colour once SpawnDirector has
+    /// applied a tier tint (see SetBaseColor).
+    public Color BaseColor => sr != null ? baseColor : Color.white;
 
     private SpriteRenderer sr;
     private Color baseColor;
@@ -86,7 +94,11 @@ public class GuardHealth : MonoBehaviour, IDamageable
         if (Health <= 0)
         {
             RunStats.RegisterKill(source);
+            Juice.Kill();
+
             if (Random.value < 0.15f) ExpOrb.Spawn(transform.position);
+            if (Random.value < CoinDropChance + MetaProgression.BonusCoinDropChance)
+                Coin.Spawn(transform.position);
             Destroy(gameObject);
         }
     }

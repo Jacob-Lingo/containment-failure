@@ -11,6 +11,9 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
+        // Also restarts the run clock (RunStats.Elapsed) — without this the
+        // end-of-run summary counts however long the menu was left open.
+        RunStats.ResetRun();
         SceneTransition.LoadScene(playSceneName);
     }
 

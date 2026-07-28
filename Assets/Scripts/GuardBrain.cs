@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(GuardPerception), typeof(GuardMotor))]
@@ -10,16 +11,27 @@ public class GuardBrain : MonoBehaviour
     [SerializeField] private float attackCooldown = 1.0f;
     [SerializeField] private int attackDamage = 1;
 
+    [Tooltip("Warning flash before the hit lands, so damage is dodgeable rather than instant.")]
+    [SerializeField] private float windup = 0.25f;
+
+    private static readonly Color WindupColor = new Color(1f, 0.45f, 0.3f);
+
     private State state = State.Idle;
     private GuardPerception perception;
     private GuardMotor motor;
     private Transform target;
     private float nextAttackTime;
 
+    private SpriteRenderer sr;
+    private GuardHealth health;
+    private Coroutine swing;
+
     private void Awake()
     {
         perception = GetComponent<GuardPerception>();
         motor = GetComponent<GuardMotor>();
+        sr = GetComponent<SpriteRenderer>();
+        health = GetComponent<GuardHealth>();
     }
 
     private void OnEnable()
@@ -97,18 +109,39 @@ public class GuardBrain : MonoBehaviour
             return;
         }
 
-        if (Time.time >= nextAttackTime)
+        if (Time.time >= nextAttackTime && swing == null)
         {
             nextAttackTime = Time.time + attackCooldown;
-
-            Sfx.PlayRandom("guard_baton_hit", 3, target.position);
-            HitFlashFx.Spawn(target.position, new Color(1f, 1f, 1f, 0.85f), 0.35f);
-
-            // No-op until a component implementing IDamageable exists on the
-            // player, so this commits safely ahead of Noah's health system.
-            if (target.TryGetComponent<IDamageable>(out var damageable))
-                damageable.TakeDamage(attackDamage);
+            swing = StartCoroutine(Swing());
         }
+    }
+
+    /// Telegraphed attack: tint, pause, then hit — and only if the player is
+    /// still in range when it lands, so backing off during the windup actually
+    /// dodges. The cooldown is already committed above, so a dodge costs the
+    /// guard a full swing rather than letting it re-fire instantly.
+    private IEnumerator Swing()
+    {
+        if (sr != null) sr.color = WindupColor;
+
+        yield return new WaitForSeconds(windup);
+
+        // GuardHealth's hit flash may have repainted us mid-windup; go back to
+        // its base colour rather than whatever is on the renderer right now.
+        if (sr != null) sr.color = health != null ? health.BaseColor : Color.white;
+
+        swing = null;
+
+        if (target == null || state != State.Attack) yield break;
+        if (Vector2.Distance(transform.position, target.position) > attackExitRange) yield break;
+
+        Sfx.PlayRandom("guard_baton_hit", 3, target.position);
+        HitFlashFx.Spawn(target.position, new Color(1f, 1f, 1f, 0.85f), 0.35f);
+
+        // No-op until a component implementing IDamageable exists on the
+        // player, so this commits safely ahead of Noah's health system.
+        if (target.TryGetComponent<IDamageable>(out var damageable))
+            damageable.TakeDamage(attackDamage);
     }
 
     private void TransitionTo(State next)

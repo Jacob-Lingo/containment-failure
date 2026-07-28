@@ -112,7 +112,7 @@ Unified end-to-end flow, all scene loads go through `SceneTransition.LoadScene()
 Dev_MainMenu (build index 0, boot scene)
   -> MainMenu.PlayGame() -> "Master"
 Master (real gameplay scene: CameraFollow, SpawnDirector, full HUD, FloorExitDoor)
-  -> floor 1..9 exit: FloorExitDoor -> FloorManager.AdvanceFloor() + SpawnDirector.RescaleForFloor() (no scene change)
+  -> floor 1..9 exit: FloorExitDoor -> SceneTransition.Interstitial("FLOOR n+1", ...) -> FloorManager.AdvanceFloor() + SpawnDirector.RescaleForFloor() at full cover (no scene change)
   -> floor 10 (final) exit: FloorExitDoor -> SceneTransition.LoadScene("Dev_FloorWin")
   -> player death: PlayerHealth.Die() -> SceneTransition.LoadScene("LoseScreen")
 Dev_FloorWin (escape/win screen) -> PlayAgainButton.PlayAgain() -> resets FloorManager/RunStats -> "Master"
@@ -122,13 +122,18 @@ LoseScreen -> RestartGame.Restart() -> resets FloorManager/RunStats -> reloads G
 `RestartGame` and `PlayAgainButton` both reset `FloorManager`/`RunStats` before reloading, so every
 new run starts clean at floor 1 regardless of which button was used.
 
-**Retired/dead paths (still present in the repo, not part of the live spine):**
-- `SpawnDirector`'s 60s round timer and `Dev_Win` scene — timer still ticks but no longer ends the
-  round; `EndGame()`/timer-win removed. `Dev_Win.RestartGame` button still works if that scene is
-  opened directly, but nothing routes there during normal play anymore.
-- `SceneSwapper` — legacy raw-load trigger, unused by any tracked prefab/scene.
-- `Dev_PlayerController` scene — an earlier dev/test gameplay scene, still in build settings, no
-  longer a load target from `MainMenu` or `PlayAgainButton` (both now point at `Master`).
+**Deleted 2026-07-28 (were dead, now gone — `git log` has them if ever needed):**
+- `SceneSwapper.cs` — legacy raw-load trigger, referenced only by `Dev_PlayerController`.
+- `Dev_Win.unity` — the old timer-win screen, superseded by `Dev_FloorWin`.
+- `Dev_PlayerController.unity` — earlier dev/test gameplay scene, superseded by `Master`.
+
+All three were also removed from `EditorBuildSettings.asset`. They were the last two entries, so
+build indices 0-3 (`Dev_MainMenu`, `Master`, `LoseScreen`, `Dev_FloorWin`) are unchanged and
+`GameManager.LastLevelIndex` / `RestartGame` still resolve correctly.
+
+**Still live, deliberately:** `SpawnDirector`'s floor timer (`gameDuration`, 90s) is the GDD's
+lose-condition #2 — it calls `Lose()` on expiry and is displayed by `TimerHUD`. This is *not* the
+retired 60s round timer; don't delete it as dead code.
 
 If asked to touch scene-load wiring again, check both the C# script's serialized-field *default*
 and the actual value baked into the scene/prefab YAML — they can (and did) diverge silently, e.g.
@@ -149,14 +154,31 @@ in `Dev_MainMenu.unity` until this pass fixed it.
 | Class | Holds | Reset by |
 |---|---|---|
 | `FloorManager` | `CurrentFloor`, `TotalFloors`=10, `DifficultyMultiplier` | `ResetRun()` — called by `FloorRunWatcher`, `PauseMenu.RestartRun`, `PlayAgainButton` |
-| `RunStats` | Kill counts + attack-usage counts per `AttackType` | `ResetRun()` — same callers as above |
+| `MetaProgression` | **The only state that survives a run** (added 2026-07-28): banked `Coins` + bought upgrade levels, PlayerPrefs-backed. `ResetAll()` wipes it; nothing in the run-reset path touches it |
+| `RunStats` | Kill counts + attack-usage counts per `AttackType`, `CoinsThisRun` (display only), and `Elapsed` (run clock, added 2026-07-28 — also restarted by `MainMenu.PlayGame` so menu idle time isn't counted) | `ResetRun()` — same callers as above |
 | `GameManager` | `LastLevelIndex` (build index of last scene) | never reset, only overwritten in `PlayerHealth.Die()` |
+| `Juice` | Screen shake offset + hitstop flag (added 2026-07-28) | `[RuntimeInitializeOnLoadMethod]`, self-clearing |
+| `RunSummary` | Snapshot of the finished run + its code-built overlay (added 2026-07-28) | `[RuntimeInitializeOnLoadMethod]`; overwritten by each `Capture()` |
 
 ## Script reference (Assets/Scripts/)
 
 ### Core interfaces/enums
 - **`IDamageable`** — `TakeDamage(int)`. Implemented by `GuardHealth`, `PlayerHealth`. Decouples attackers (`GuardBrain`, `Bullet`, `PlayerCombat`) from concrete health types.
 - **`AttackType`** — enum `Melee | Ranged | Scream`. Used for kill/usage attribution throughout (`RunStats`, `EvolutionSystem`).
+
+### Feel / juice (added 2026-07-28)
+- **`Juice`** — static screen shake + hitstop, no serialized wiring. `Kill()` (0.06s freeze + shake) from `GuardHealth`'s death branch, `PlayerHurt()` (shake only — freezing on damage taken makes the game feel unresponsive) from `PlayerHealth.TakeDamage`, `Boom()` from `Bullet.Explode`. Runs on unscaled time via a hidden `DontDestroyOnLoad` runner; `Hitstop` refuses to start while `GameState.IsFrozen` and won't restore `Time.timeScale` if something else took the freeze meanwhile, so it can't fight the pause menu or a level-up card. Shake is exposed as `Juice.CameraOffset` and **added by `CameraFollow` after its `SmoothDamp`** — `CameraFollow` now damps a separate `followPosition` so the shake offset never feeds back into the follow.
+- **`OrbMagnet`** — added at spawn by both `ExpOrb` (green heal) and `ExpPickup` (yellow bonus-XP); pulls the orb toward the `Player`-tagged transform within 3 units, accelerating as it closes. Moves via `transform` deliberately (these are rigidbody-less runtime trigger objects, so the repo's `Rigidbody2D` rule doesn't apply). Re-finds the player on a 0.25s throttle rather than caching, since `PauseMenu`'s in-place restart can replace it.
+### Meta-progression (added 2026-07-28)
+- **`MetaProgression`** — static, PlayerPrefs-backed. Banked `Coins` plus a level per `MetaUpgradeId` (Vitality / Swiftness / Greed / Magnetism / HeadStart / Salvage), each with `MaxLevel` + `BaseCost`; next-level cost is `BaseCost * (owned + 1)`, and `CostOf` returns **-1 when maxed** so callers can tell "maxed" from "can't afford". Exposes derived getters read by the systems each upgrade touches: `BonusStartingHealth`, `StartingSpeedMultiplier`, `CoinValue`, `BonusMagnetRadius`, `HeadStartLevels`, `BonusCoinDropChance`. PlayerPrefs is deliberate — six ints don't justify a save format; switch only if saves need to be portable or tamper-resistant.
+- **`Coin`** (was `ExpPickup`, renamed 2026-07-28) — the yellow pickup. **No longer grants XP**; banks `MetaProgression.CoinValue` immediately on pickup (so dying never costs collected coins) and tallies `RunStats.CoinsThisRun` for the summary. Spawned both by `SpawnDirector`'s map-wide pool and by `GuardHealth` on death (`CoinDropChance`=0.25 + `BonusCoinDropChance`).
+- **`CoinHUD`** — bottom-left banked-coin counter in `Master`, injected on scene load like `ShopUI`. Icon is Unity's built-in `UI/Skin/Knob.psd` sprite (`Resources.GetBuiltinResource`) tinted gold — stock, ships with the editor, nothing to import or license. Polls `MetaProgression.Coins` and scale-punches on change (unscaled, so it plays through a `Juice` hitstop). Canvas `sortingOrder` 400, under the shop (900) and the scene wipe (1000).
+- **`ShopUI`** — the between-run shop, built in code and injected into `Dev_MainMenu` via a `sceneLoaded` hook (no scene edit, survives anyone re-saving that scene). Adds a SHOP button at bottom-centre plus a full-screen panel with one clickable row per upgrade showing title, level, description and cost.
+- **Applied at run start by `EvolutionSystem.ApplyMetaUpgrades()`** (called from `Start` *and* `ResetProgress`, since `PauseMenu.RestartRun` calls `PlayerHealth.ResetToStartingHealth()` first). The `Swift` card now multiplies `MetaProgression.StartingSpeedMultiplier` instead of overwriting it, the same way `TitanMultiplier` stays separate.
+
+- **`UiFont`** — `Resolve()` returns `TMP_Settings.defaultFontAsset`, else the font off any `TMP_Text` in the loaded scene. Shared by the two runtime-built UIs (`SceneTransition`'s floor card, `RunSummary`'s recap) so they match the hand-authored HUD.
+- **`SceneTransition.Interstitial(label, atFullCover)`** (added 2026-07-28) — the existing block-wipe with no scene load: covers, runs `atFullCover`, holds a title card for 0.9s, uncovers. Takes the `GameState.FreezeReason.FloorTransition` freeze (new enum value) so guards can't attack from behind a black screen, and skips freezing if something else already holds it. `FloorExitDoor` does the floor advance + `RescaleForFloor` inside the callback, so the next floor's spawns land unseen.
+- **`RunSummary`** — end-of-run recap ("ELIMINATED / Floor 3 · 84 kills · 4:12" + `EvolutionSystem.GetSummary()`). `Capture()` must run **before** `RunStats.ResetRun()`; the three call sites are `FloorRunWatcher` (death), `SpawnDirector.Lose` (timer), and `WinPanelUI.Show` (escape). The overlay is a code-built Canvas + TMP label (borrowing `TMP_Settings.defaultFontAsset`, else any scene label's font) since the lose screen is a separate scene and `Master.unity` is integration-only; it auto-appears via a `SceneManager.sceneLoaded` hook when `LoseScreen` loads, and `WinPanelUI.Continue` calls `Hide()`.
 
 ### Player systems (all live on `Player.prefab`)
 - **`PlayerController`** — WASD movement via `Rigidbody2D.linearVelocity`. `moveSpeed`=6. Disabled by `PlayerHealth.Die()`.
@@ -185,7 +207,7 @@ in `Dev_MainMenu.unity` until this pass fixed it.
 - **`EnemyDamage`** — simple `OnCollisionEnter2D` contact-damage component. **Not present on either guard prefab** — looks like a leftover/alternate early enemy type, not currently wired into any prefab in the repo.
 
 ### Projectile
-- **`Bullet`** (`[RequireComponent(Rigidbody2D)]`, on `Bullet.prefab`) — shared by player and ranged guards; faction is a bool (`isPlayerBullet`), not tag/layer. `Init(dir, dmg, playerOwned, pierceCount = 0, scale = 1f, isExplosive = false, onKillCallback = null, canRicochet = false)` sets everything, applies `scale` as `transform.localScale` (also widens the 2D collider since it scales with the transform), and self-destroys after `lifeTime`=2. **When `scale > 1.01` (i.e. `BiggerBullets` is active), the sprite swaps to a procedural circle** (`GetCircleSprite()`, same cached-texture pattern as `HitFlashFx`/`ScreamVfx`, tinted per faction) instead of the normal `Combat/bullet_player`/`bullet_guard` art — added 2026-07-21 because the source bullet sprites read as oddly stretched when scaled up non-trivially; a circle reads cleanly as "bigger" at any scale. `OnTriggerEnter2D`: a player bullet hitting a guard invokes `onKill` if lethal, calls `Explode()` (AoE via `Physics2D.OverlapCircleAll(explosionRadius=1.2)`, `explosionDamage`=1, damages every `GuardHealth` in radius) if `explosive`; if pierce is exhausted and `ricochet` is set, `TryRicochet()` (added 2026-07-21 for the `Ricochet` card) redirects the bullet's `direction` toward the nearest other guard within `ricochetRadius`=4 (once per bullet, via `hasRicocheted`) instead of destroying it — only destroys itself if pierce is exhausted *and* ricochet is off/already used/no target found. A guard bullet hitting the player (military/Tank tiers) plays the same orange `HitFlashFx` + `Sfx.PlayRandom("explosion", 3, ...)` via a shared `PlayExplosionFx()` helper if `explosive`, but skips the AoE guard-damage loop. `GuardRangedBrain.Fire()`'s original 3-arg call pattern still works (new params are optional, default to no pierce/scale-1/non-explosive/no callback/no ricochet).
+- **`Bullet`** (`[RequireComponent(Rigidbody2D)]`, on `Bullet.prefab`) — shared by player and ranged guards; faction is a bool (`isPlayerBullet`), not tag/layer. `Init(dir, dmg, playerOwned, pierceCount = 0, scale = 1f, isExplosive = false, onKillCallback = null, canRicochet = false)` sets everything, applies `scale` as `transform.localScale` (also widens the 2D collider since it scales with the transform), and self-destroys after `lifeTime`=2. **When `scale > 1.01` (i.e. `BiggerBullets` is active), the sprite swaps to a procedural circle** (`GetCircleSprite()`, same cached-texture pattern as `HitFlashFx`/`ScreamVfx`, tinted per faction) instead of the normal `Combat/bullet_player`/`bullet_guard` art — added 2026-07-21 because the source bullet sprites read as oddly stretched when scaled up non-trivially; a circle reads cleanly as "bigger" at any scale. `OnTriggerEnter2D`: a player bullet hitting a guard invokes `onKill` if lethal, calls `Explode(directHit)` (AoE via `Physics2D.OverlapCircleAll(explosionRadius=2.8)`, `explosionDamage`=1, damages every `GuardHealth` in radius) if `explosive`. **Retuned 2026-07-28:** radius widened 1.2 -> 2.8 so the blast actually catches groups, the directly-struck guard takes `damage * explosiveDirectMultiplier` (2x) instead of the base amount, and that same guard is passed to `Explode` so it's skipped in the splash loop rather than double-dipping. The explosion `HitFlashFx` scale is derived from `explosionRadius` so the visual still reads as the real footprint. Then: if pierce is exhausted and `ricochet` is set, `TryRicochet()` (added 2026-07-21 for the `Ricochet` card) redirects the bullet's `direction` toward the nearest other guard within `ricochetRadius`=4 (once per bullet, via `hasRicocheted`) instead of destroying it — only destroys itself if pierce is exhausted *and* ricochet is off/already used/no target found. A guard bullet hitting the player (military/Tank tiers) plays the same orange `HitFlashFx` + `Sfx.PlayRandom("explosion", 3, ...)` via a shared `PlayExplosionFx()` helper if `explosive`, but skips the AoE guard-damage loop. `GuardRangedBrain.Fire()`'s original 3-arg call pattern still works (new params are optional, default to no pierce/scale-1/non-explosive/no callback/no ricochet).
 
 ### Level/spawn/floor management
 - **`FloorManager`** (static) — `CurrentFloor`/`TotalFloors`=10/`IsFinalFloor`/`DifficultyMultiplier` = `1 + 0.15*(CurrentFloor-1)`. `KillQuota` = `30 + (CurrentFloor-1)*8` (bumped from `20 + (CurrentFloor-1)*5` same day — the original numbers combined with spawn pacing that hadn't caught up yet, so floors advanced before the swarm ever got dense) — the number of floor-local kills (`RunStats.FloorKills`) `SpawnDirector` waits for before auto-advancing.
@@ -210,7 +232,7 @@ in `Dev_MainMenu.unity` until this pass fixed it.
 - **`ExpBar`** — slider driven by `EvolutionSystem`.
 - **`FloorHUD`** — `Update()`-polled text from `FloorManager`: `"Floor X / 10"` plus, on non-final floors, `"Kills Y / Quota"` (from `RunStats.FloorKills`/`FloorManager.KillQuota`), or `"Defeat the Tank!"` on floor 10 (added 2026-07-21, alongside the kill-quota system).
 - **`SkillTrackerUI`** — `Update()`-polled skill list text from `EvolutionSystem.GetSummary()`.
-- **`LevelUpUI`** — 3-card choice panel, pauses gameplay, `Show(titles, descriptions, Action<int> chosen)` / `Choose(index)`.
+- **`LevelUpUI`** — 3-card choice panel, pauses gameplay, `Show(titles, descriptions, rarities, Action<int> chosen)` / `Choose(index)`. Added 2026-07-28: each card swaps its background `Image` to the matching frame from `Assets/Resources/Cards/<Rarity>Card.png` and shows a coloured rarity name. Needs **no Inspector wiring** — the art is `Resources.LoadAll<Sprite>`-ed in `Awake` (the PNGs are Sprite Mode: Multiple, so the sprite is a sub-asset), the frame is applied to each card Button's own `Image`, and the rarity name is prepended to the title. Assigning `cardBackgrounds` / `cardRarityLabels` / `rarityArt` in the Inspector overrides each fallback. `cardScale` (default 2) resizes the cards and their spacing in `Awake` — done from code, not `Master.unity`, since that scene is integration-only; width is derived from the card art's aspect and `preserveAspect` is on, so the frame never stretches. Rarity also **weights the draw** (`EvolutionSystem.DrawWeighted` via `WeightOf`, `RarityWeights = {32, 27, 21, 13, 7}` — loosened 2026-07-28 from `{40, 30, 18, 9, 3}`, which was rare enough that most runs never saw a Legendary). A Legendary is ~4.6x rarer than a Common, further tilted by the `Lucky Streak` meta upgrade (`MetaProgression.DrawWeightMultiplier`, +12% per level scaled by rarity tier, so Common is untouched and a maxed Legendary weight is 3.4x base). Weights, not percentages: real odds depend on what's left in the pool, and every entry keeps a non-zero weight so an all-Legendary late-run pool still draws.
 - **`WinPanelUI`** — in-place win overlay, doesn't pause or change scene (`Show()`/`Continue()`).
 
 ## Prefab reference (Assets/Prefabs/)
@@ -274,12 +296,13 @@ now.** If more cards are wanted, the established pattern is: add a `SkillId` + `
 `IsAvailable` prereq/exclusion rule if needed, a stack field + `ChooseSkill` case + public getter, a
 `GetSummary` line, and a `ResetProgress` reset — then read the getter from whichever
 `PlayerCombat`/`PlayerDash`/`PlayerHealth` method the effect belongs to. Possible future directions
-raised but not committed to: turning `RunStats.BonusExp` into a real spendable currency (would need an
-actual shop/meta-progression system — currently `ExpPickup` orbs just feed the same level-up counter as
-kills, see its entry above), a fourth `AttackType` for Beam/Cyclone instead of reusing Ranged/Melee for
-`RunStats` attribution, and the
-larger "full game" gaps noted earlier in this doc (meta-progression between runs, risk/reward
-encounters, per-floor bosses).
+raised but not committed to: a fourth `AttackType` for Beam/Cyclone instead of reusing Ranged/Melee for
+`RunStats` attribution, risk/reward encounters, and per-floor bosses.
+
+**Done 2026-07-28:** the "turn the yellow orbs into a real spendable currency" direction shipped —
+`ExpPickup` became `Coin`, `MetaProgression` banks and spends it, `ShopUI` is the storefront. Coins
+no longer feed the level-up counter, so **levels come from kills alone** (`killsPerLevel`=5 against a
+30-kill floor quota, so roughly 6 level-ups per floor — the orb XP wasn't load-bearing).
 
 ---
 *Last updated: 2026-07-21, against commit `02c33b4`. If scripts/prefabs listed here no longer

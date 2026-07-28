@@ -27,11 +27,17 @@ public class FloorExitDoor : MonoBehaviour
         // Quota met -> this door is open; walking into it is the escape.
         if (RunStats.FloorKills >= FloorManager.KillQuota)
         {
-            FloorManager.AdvanceFloor();
-            RunStats.ResetFloorKills();
+            // Advance behind the wipe: the rescale and the next floor's
+            // spawns land while the screen is covered, so the change reads as
+            // "descended a floor" rather than as enemies popping in.
+            SceneTransition.Interstitial($"FLOOR {FloorManager.CurrentFloor + 1}", () =>
+            {
+                FloorManager.AdvanceFloor();
+                RunStats.ResetFloorKills();
 
-            var spawner = FindFirstObjectByType<SpawnDirector>();
-            if (spawner != null) spawner.RescaleForFloor();
+                var spawner = FindFirstObjectByType<SpawnDirector>();
+                if (spawner != null) spawner.RescaleForFloor();
+            });
         }
     }
 }

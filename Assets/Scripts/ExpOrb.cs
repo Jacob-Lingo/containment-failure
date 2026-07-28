@@ -25,6 +25,7 @@ public class ExpOrb : MonoBehaviour
         col.radius = 0.5f;
 
         go.AddComponent<ExpOrb>();
+        go.AddComponent<OrbMagnet>();
         Destroy(go, Lifetime);
     }
 

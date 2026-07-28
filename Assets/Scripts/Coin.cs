@@ -1,25 +1,27 @@
 using UnityEngine;
 
-/// Persistent yellow "exp orb" — distinct from ExpOrb (the green heal orb
-/// dropped by kills). SpawnDirector maintains a pool of these scattered
-/// throughout the map, independent of enemy deaths, topping the pool back
-/// up on a timer. Picking one up grants RunStats.BonusExp, which feeds
-/// EvolutionSystem's level-up counter alongside raw kills.
-public class ExpPickup : MonoBehaviour
+/// The yellow coin — distinct from ExpOrb (the green heal orb dropped by
+/// kills). SpawnDirector maintains a pool of these scattered throughout the
+/// map, topping it back up on a timer, and GuardHealth drops them on death.
+/// Picking one up banks MetaProgression.CoinValue coins immediately, spendable
+/// in the shop between runs.
+///
+/// Was ExpPickup (it fed the level-up counter) until 2026-07-28 — coins are
+/// now purely currency, so level-ups come from kills alone.
+public class Coin : MonoBehaviour
 {
     private const float PickupRadius = 0.5f;
-    private const int ExpPerOrb = 1;
 
-    private static Sprite orbSprite;
+    private static Sprite coinSprite;
 
     public static GameObject Spawn(Vector3 position)
     {
-        GameObject go = new GameObject("ExpPickup");
+        GameObject go = new GameObject("Coin");
         go.transform.position = position;
         go.transform.localScale = Vector3.one * 0.35f;
 
         var sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = GetOrbSprite();
+        sr.sprite = GetCoinSprite();
         sr.color = new Color(1f, 0.85f, 0.2f);
         sr.sortingOrder = 5;
 
@@ -27,7 +29,8 @@ public class ExpPickup : MonoBehaviour
         col.isTrigger = true;
         col.radius = PickupRadius;
 
-        go.AddComponent<ExpPickup>();
+        go.AddComponent<Coin>();
+        go.AddComponent<OrbMagnet>();
         return go;
     }
 
@@ -35,14 +38,16 @@ public class ExpPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        RunStats.RegisterBonusExp(ExpPerOrb);
+        MetaProgression.AddCoins(MetaProgression.CoinValue);
+        RunStats.RegisterCoin(MetaProgression.CoinValue);
+
         HitFlashFx.Spawn(transform.position, new Color(1f, 0.85f, 0.2f, 0.9f), 0.3f);
         Destroy(gameObject);
     }
 
-    private static Sprite GetOrbSprite()
+    private static Sprite GetCoinSprite()
     {
-        if (orbSprite != null) return orbSprite;
+        if (coinSprite != null) return coinSprite;
 
         const int size = 16;
         var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
@@ -59,7 +64,7 @@ public class ExpPickup : MonoBehaviour
         }
         tex.Apply();
 
-        orbSprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
-        return orbSprite;
+        coinSprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
+        return coinSprite;
     }
 }

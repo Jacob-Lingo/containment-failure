@@ -53,12 +53,12 @@ public class SpawnDirector : MonoBehaviour
     [SerializeField] private float heavyMeleeScale = 1.25f;
     private static readonly Color HeavyMeleeTint = new Color(0.5f, 0.15f, 0.15f);
 
-    [Header("Persistent Exp Orbs (yellow, scattered map-wide, not tied to kills)")]
-    [SerializeField] private int expPickupPoolSize = 20;
-    [SerializeField] private float expPickupRefillInterval = 30f;
+    [Header("Coins (yellow, scattered map-wide, not tied to kills)")]
+    [SerializeField] private int coinPoolSize = 20;
+    [SerializeField] private float coinRefillInterval = 30f;
     [SerializeField] private float expPickupScatterRadius = 10f; // spread around each spawn point (or spawner position if none set)
-    private readonly List<GameObject> activeExpPickups = new List<GameObject>();
-    private float expPickupTimer;
+    private readonly List<GameObject> activeCoins = new List<GameObject>();
+    private float coinTimer;
 
     [Header("Boss (floor 10, spawned once, re-tuned GuardRanged)")]
     [SerializeField] private int bossBaseHealth = 40;
@@ -92,7 +92,7 @@ public class SpawnDirector : MonoBehaviour
         RescaleForFloor();
 
         spawnTimer = spawnInterval;
-        expPickupTimer = expPickupRefillInterval;
+        coinTimer = coinRefillInterval;
 
         if (playerTransform == null)
         {
@@ -106,7 +106,7 @@ public class SpawnDirector : MonoBehaviour
             SpawnGuard();
         }
 
-        RefillExpPickups();
+        RefillCoins();
     }
 
     /// Called by FloorExitDoor when the floor advances without a scene
@@ -131,6 +131,10 @@ public class SpawnDirector : MonoBehaviour
         isGameActive = false;
 
         GameManager.LastLevelIndex = SceneManager.GetActiveScene().buildIndex;
+
+        var evolution = FindFirstObjectByType<EvolutionSystem>();
+        RunSummary.Capture("OUT OF TIME", evolution != null ? evolution.GetSummary() : "Claw only");
+
         FloorManager.ResetRun();
         RunStats.ResetRun();
         BossState.Reset();
@@ -153,19 +157,19 @@ public class SpawnDirector : MonoBehaviour
         gameTimer = gameDuration;
         RescaleForFloor();
         spawnTimer = spawnInterval;
-        expPickupTimer = expPickupRefillInterval;
+        coinTimer = coinRefillInterval;
 
         for (int i = 0; i < initialBurstCount && activeGuards.Count < maxGuardCount; i++)
         {
             SpawnGuard();
         }
 
-        foreach (var pickup in activeExpPickups)
+        foreach (var pickup in activeCoins)
         {
             if (pickup != null) Destroy(pickup);
         }
-        activeExpPickups.Clear();
-        RefillExpPickups();
+        activeCoins.Clear();
+        RefillCoins();
     }
 
     void Update()
@@ -188,11 +192,11 @@ public class SpawnDirector : MonoBehaviour
 
         // The exp-orb pool tops itself up regardless of floor (including the
         // floor-10 boss room), independent of the kill-drop chance in GuardHealth.
-        expPickupTimer -= Time.deltaTime;
-        if (expPickupTimer <= 0f)
+        coinTimer -= Time.deltaTime;
+        if (coinTimer <= 0f)
         {
-            expPickupTimer = expPickupRefillInterval;
-            RefillExpPickups();
+            coinTimer = coinRefillInterval;
+            RefillCoins();
         }
 
         // Floor 10 is a boss room: regular spawning stops (leftover guards
@@ -215,16 +219,16 @@ public class SpawnDirector : MonoBehaviour
         }
     }
 
-    /// Tops the yellow ExpPickup pool back up to expPickupPoolSize, placing
+    /// Tops the yellow coin pool back up to coinPoolSize, placing
     /// new ones at fresh random positions — "20 scattered around the map,
     /// regenerating every 30s," not tied to enemy deaths or player position.
-    private void RefillExpPickups()
+    private void RefillCoins()
     {
-        activeExpPickups.RemoveAll(pickup => pickup == null);
+        activeCoins.RemoveAll(pickup => pickup == null);
 
-        while (activeExpPickups.Count < expPickupPoolSize)
+        while (activeCoins.Count < coinPoolSize)
         {
-            activeExpPickups.Add(ExpPickup.Spawn(RandomMapPosition()));
+            activeCoins.Add(Coin.Spawn(RandomMapPosition()));
         }
     }
 

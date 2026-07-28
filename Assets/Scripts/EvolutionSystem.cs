@@ -42,6 +42,19 @@ public enum SkillId
     Titan
 }
 
+/// Card rarity — picks the card art + label in LevelUpUI, and weights how
+/// often the skill is drawn (see RarityWeights). Assigned by how run-defining
+/// the skill is: Common = small stacking stat, Legendary = rewrites how you
+/// play.
+public enum Rarity
+{
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary
+}
+
 /// Drives the "evolution track" from the GDD: kills feed a level counter,
 /// and each level-up offers 3 skill cards (LevelUpUI), pausing the game
 /// until the player picks one. The run starts with melee claw only. The
@@ -130,46 +143,47 @@ public class EvolutionSystem : MonoBehaviour
         public string Title;
         public string Description;
         public int MaxStacks;
+        public Rarity Rarity;
     }
 
     private static readonly Skill[] AllSkills =
     {
-        new Skill { Id = SkillId.UnlockRanged, Title = "Ranged Attack", Description = "Replaces your claw with a ranged energy shot on left-click. Permanent — retires melee for this run.", MaxStacks = 1 },
-        new Skill { Id = SkillId.UnlockScream, Title = "Scream", Description = "Unlocks a shockwave attack (space).", MaxStacks = 1 },
-        new Skill { Id = SkillId.UnlockDash, Title = "Dash", Description = "Unlocks a quick burst of speed (left shift).", MaxStacks = 1 },
-        new Skill { Id = SkillId.BiggerClaw, Title = "Bigger Claw", Description = "Claw triples in range, damage doubles. Permanent — retires the ranged path for this run.", MaxStacks = 1 },
-        new Skill { Id = SkillId.DoubleShot, Title = "Double Shot", Description = "Ranged attack fires 2 bullets in a narrow spread.", MaxStacks = 1 },
-        new Skill { Id = SkillId.TripleShot, Title = "Triple Shot", Description = "Ranged attack fires 3 bullets: one straight, two angled.", MaxStacks = 1 },
-        new Skill { Id = SkillId.RadiusScream, Title = "Radius Scream", Description = "Scream hits all around you, not just in front.", MaxStacks = 1 },
-        new Skill { Id = SkillId.Vitality, Title = "Vitality", Description = "+2 max health.", MaxStacks = 5 },
-        new Skill { Id = SkillId.Swift, Title = "Swift", Description = "+15% move speed.", MaxStacks = 5 },
-        new Skill { Id = SkillId.DashPhase, Title = "Phase Dash", Description = "Dash grants brief invulnerability and a see-through sprite. Permanent — retires Lunge Dash for this run.", MaxStacks = 1 },
-        new Skill { Id = SkillId.DashLunge, Title = "Lunge Dash", Description = "Dash knocks back and damages enemies in your path. You take a small amount of damage too (capped at 50% of current HP). Permanent — retires Phase Dash for this run.", MaxStacks = 1 },
-        new Skill { Id = SkillId.MeleeDamageUp, Title = "Claw Sharpness", Description = "+1 claw damage.", MaxStacks = 3 },
-        new Skill { Id = SkillId.RangedDamageUp, Title = "Overcharged Rounds", Description = "+1 ranged shot damage.", MaxStacks = 3 },
-        new Skill { Id = SkillId.ScreamDamageUp, Title = "Piercing Scream", Description = "+1 scream damage.", MaxStacks = 3 },
-        new Skill { Id = SkillId.RangedPierce, Title = "Ranged Pierce", Description = "Ranged shots pass through the first enemy hit instead of stopping.", MaxStacks = 1 },
-        new Skill { Id = SkillId.ScreamCooldownDown, Title = "Screaming Fury", Description = "Scream cooldown -15%.", MaxStacks = 3 },
-        new Skill { Id = SkillId.Adrenaline, Title = "Adrenaline", Description = "All attack cooldowns -10%.", MaxStacks = 3 },
-        new Skill { Id = SkillId.Regeneration, Title = "Regeneration", Description = "Slowly regenerate 1 health every few seconds.", MaxStacks = 3 },
-        new Skill { Id = SkillId.DashCooldownDown, Title = "Restless", Description = "Dash cooldown -15%.", MaxStacks = 3 },
-        new Skill { Id = SkillId.CritChance, Title = "Precision", Description = "+10% chance for any attack to deal double damage.", MaxStacks = 3 },
-        new Skill { Id = SkillId.BiggerBullets, Title = "Bigger Bullets", Description = "Bullets are 25% bigger, and hit a wider area.", MaxStacks = 3 },
-        new Skill { Id = SkillId.ExplosiveRounds, Title = "Explosive Rounds", Description = "Ranged shots explode on impact, damaging nearby enemies too.", MaxStacks = 1 },
-        new Skill { Id = SkillId.LifeSteal, Title = "Life Steal", Description = "Heal 1 HP on every kill.", MaxStacks = 3 },
-        new Skill { Id = SkillId.Thorns, Title = "Thorns", Description = "Getting hit sends out a retaliation shockwave, damaging nearby enemies.", MaxStacks = 3 },
-        new Skill { Id = SkillId.UnlockBeam, Title = "Kamehameha Beam", Description = "Unlocks a devastating charged beam attack (R).", MaxStacks = 1 },
-        new Skill { Id = SkillId.BeamDamageUp, Title = "Overcharged Beam", Description = "+2 beam damage.", MaxStacks = 3 },
-        new Skill { Id = SkillId.UnlockCyclone, Title = "Cyclone", Description = "Unlocks a spinning claw whirlwind (E). Requires Bigger Claw.", MaxStacks = 1 },
-        new Skill { Id = SkillId.CycloneDamageUp, Title = "Razor Cyclone", Description = "+1 cyclone damage per tick.", MaxStacks = 3 },
-        new Skill { Id = SkillId.UnlockBerserk, Title = "Berserk", Description = "Unlocks a reckless rage state (F): you lose manual control for 25s while auto-attacking the nearest enemy (and auto-casting Scream/Beam/Cyclone if unlocked) with hugely boosted damage.", MaxStacks = 1 },
-        new Skill { Id = SkillId.BerserkDurationUp, Title = "Sustained Rage", Description = "+1s Berserk duration.", MaxStacks = 3 },
-        new Skill { Id = SkillId.Ricochet, Title = "Ricochet", Description = "Ranged shots that would stop instead bounce to a nearby enemy.", MaxStacks = 1 },
-        new Skill { Id = SkillId.Armor, Title = "Armor", Description = "-1 flat damage taken from every hit (never below 1).", MaxStacks = 3 },
-        new Skill { Id = SkillId.SecondWind, Title = "Second Wind", Description = "The first hit that would kill you instead leaves you at 1 HP. Once per run.", MaxStacks = 1 },
-        new Skill { Id = SkillId.KnockbackOnHit, Title = "Bludgeon", Description = "Melee and Scream hits knock enemies back.", MaxStacks = 1 },
-        new Skill { Id = SkillId.ScreamSlow, Title = "Chilling Scream", Description = "Scream slows every enemy it hits.", MaxStacks = 1 },
-        new Skill { Id = SkillId.Titan, Title = "Titan", Description = "Grow massive: +100% damage and +50% reach on claw, scream, and cyclone. Move speed -40%. Permanent — requires Bigger Claw.", MaxStacks = 1 },
+        new Skill { Id = SkillId.UnlockRanged, Title = "Ranged Attack", Description = "Replaces your claw with a ranged energy shot on left-click. Permanent — retires melee for this run.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.UnlockScream, Title = "Scream", Description = "Unlocks a shockwave attack (space).", MaxStacks = 1, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.UnlockDash, Title = "Dash", Description = "Unlocks a quick burst of speed (left shift).", MaxStacks = 1, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.BiggerClaw, Title = "Bigger Claw", Description = "Claw triples in range, damage doubles. Permanent — retires the ranged path for this run.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.DoubleShot, Title = "Double Shot", Description = "Ranged attack fires 2 bullets in a narrow spread.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.TripleShot, Title = "Triple Shot", Description = "Ranged attack fires 3 bullets: one straight, two angled.", MaxStacks = 1, Rarity = Rarity.Epic },
+        new Skill { Id = SkillId.RadiusScream, Title = "Radius Scream", Description = "Scream hits all around you, not just in front.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.Vitality, Title = "Vitality", Description = "+2 max health.", MaxStacks = 5, Rarity = Rarity.Common },
+        new Skill { Id = SkillId.Swift, Title = "Swift", Description = "+15% move speed.", MaxStacks = 5, Rarity = Rarity.Common },
+        new Skill { Id = SkillId.DashPhase, Title = "Phase Dash", Description = "Dash grants brief invulnerability and a see-through sprite. Permanent — retires Lunge Dash for this run.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.DashLunge, Title = "Lunge Dash", Description = "Dash knocks back and damages enemies in your path. You take a small amount of damage too (capped at 50% of current HP). Permanent — retires Phase Dash for this run.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.MeleeDamageUp, Title = "Claw Sharpness", Description = "+1 claw damage.", MaxStacks = 3, Rarity = Rarity.Common },
+        new Skill { Id = SkillId.RangedDamageUp, Title = "Overcharged Rounds", Description = "+1 ranged shot damage.", MaxStacks = 3, Rarity = Rarity.Common },
+        new Skill { Id = SkillId.ScreamDamageUp, Title = "Piercing Scream", Description = "+1 scream damage.", MaxStacks = 3, Rarity = Rarity.Common },
+        new Skill { Id = SkillId.RangedPierce, Title = "Ranged Pierce", Description = "Ranged shots pass through the first enemy hit instead of stopping.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.ScreamCooldownDown, Title = "Screaming Fury", Description = "Scream cooldown -15%.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.Adrenaline, Title = "Adrenaline", Description = "All attack cooldowns -10%.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.Regeneration, Title = "Regeneration", Description = "Slowly regenerate 1 health every few seconds.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.DashCooldownDown, Title = "Restless", Description = "Dash cooldown -15%.", MaxStacks = 3, Rarity = Rarity.Common },
+        new Skill { Id = SkillId.CritChance, Title = "Precision", Description = "+10% chance for any attack to deal double damage.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.BiggerBullets, Title = "Bigger Bullets", Description = "Bullets are 25% bigger, and hit a wider area.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.ExplosiveRounds, Title = "Explosive Rounds", Description = "Ranged shots deal double damage on a direct hit and explode in a wide blast, damaging everything nearby.", MaxStacks = 1, Rarity = Rarity.Epic },
+        new Skill { Id = SkillId.LifeSteal, Title = "Life Steal", Description = "Heal 1 HP on every kill.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.Thorns, Title = "Thorns", Description = "Getting hit sends out a retaliation shockwave, damaging nearby enemies.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.UnlockBeam, Title = "Kamehameha Beam", Description = "Unlocks a devastating charged beam attack (R).", MaxStacks = 1, Rarity = Rarity.Epic },
+        new Skill { Id = SkillId.BeamDamageUp, Title = "Overcharged Beam", Description = "+2 beam damage.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.UnlockCyclone, Title = "Cyclone", Description = "Unlocks a spinning claw whirlwind (E). Requires Bigger Claw.", MaxStacks = 1, Rarity = Rarity.Epic },
+        new Skill { Id = SkillId.CycloneDamageUp, Title = "Razor Cyclone", Description = "+1 cyclone damage per tick.", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.UnlockBerserk, Title = "Berserk", Description = "Unlocks a reckless rage state (F): you lose manual control for 25s while auto-attacking the nearest enemy (and auto-casting Scream/Beam/Cyclone if unlocked) with hugely boosted damage.", MaxStacks = 1, Rarity = Rarity.Legendary },
+        new Skill { Id = SkillId.BerserkDurationUp, Title = "Sustained Rage", Description = "+1s Berserk duration.", MaxStacks = 3, Rarity = Rarity.Common },
+        new Skill { Id = SkillId.Ricochet, Title = "Ricochet", Description = "Ranged shots that would stop instead bounce to a nearby enemy.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.Armor, Title = "Armor", Description = "-1 flat damage taken from every hit (never below 1).", MaxStacks = 3, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.SecondWind, Title = "Second Wind", Description = "The first hit that would kill you instead leaves you at 1 HP. Once per run.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.KnockbackOnHit, Title = "Bludgeon", Description = "Melee and Scream hits knock enemies back.", MaxStacks = 1, Rarity = Rarity.Uncommon },
+        new Skill { Id = SkillId.ScreamSlow, Title = "Chilling Scream", Description = "Scream slows every enemy it hits.", MaxStacks = 1, Rarity = Rarity.Rare },
+        new Skill { Id = SkillId.Titan, Title = "Titan", Description = "Grow massive: +100% damage and +50% reach on claw, scream, and cyclone. Move speed -40%. Permanent — requires Bigger Claw.", MaxStacks = 1, Rarity = Rarity.Legendary },
     };
 
     private static Skill FindSkill(SkillId id)
@@ -209,10 +223,15 @@ public class EvolutionSystem : MonoBehaviour
     private PlayerHealth playerHealth;
     private PlayerMoveSpeedBoost moveSpeedBoost;
 
+    /// Titan and ResetProgress both rewrite localScale, so the prefab's own
+    /// starting scale has to be remembered rather than assumed to be 1.
+    private Vector3 baseScale;
+
     private void Awake()
     {
         playerHealth = GetComponent<PlayerHealth>();
         moveSpeedBoost = GetComponent<PlayerMoveSpeedBoost>();
+        baseScale = transform.localScale;
     }
 
     private void Start()
@@ -224,6 +243,22 @@ public class EvolutionSystem : MonoBehaviour
             expBar.SetMaxExp(killsPerLevel);
         else
             Debug.LogWarning("No ExpBar was found in the scene.");
+
+        ApplyMetaUpgrades();
+    }
+
+    /// Permanent between-run upgrades bought in the shop (MetaProgression).
+    /// Applied here rather than in PlayerHealth/PlayerMoveSpeedBoost so all
+    /// run-start stat setup lives in one place, and so the in-place restart
+    /// (ResetProgress) can re-apply them the same way.
+    private void ApplyMetaUpgrades()
+    {
+        int bonusHealth = MetaProgression.BonusStartingHealth;
+        if (bonusHealth > 0 && playerHealth != null)
+            playerHealth.IncreaseMaxHealth(bonusHealth);
+
+        if (moveSpeedBoost != null)
+            moveSpeedBoost.SpeedMultiplier = MetaProgression.StartingSpeedMultiplier;
     }
 
     private void Update()
@@ -233,10 +268,10 @@ public class EvolutionSystem : MonoBehaviour
         // so the offer fires on the first unfrozen frame instead.
         if (!choicePending && !GameState.IsFrozen)
         {
-            // Yellow ExpPickup orbs (RunStats.BonusExp) count toward level-ups
-            // alongside raw kills — a second, kill-independent XP source.
-            int totalExp = RunStats.TotalKills + RunStats.BonusExp;
-            int targetLevel = totalExp / killsPerLevel;
+            // Coins are currency now (MetaProgression), not XP — levels come
+            // from kills alone, plus whatever the Head Start meta upgrade
+            // grants at the top of the run.
+            int targetLevel = RunStats.TotalKills / killsPerLevel + MetaProgression.HeadStartLevels;
             if (level < targetLevel)
             {
                 level++;
@@ -245,7 +280,7 @@ public class EvolutionSystem : MonoBehaviour
         }
 
         if (expBar != null)
-            expBar.SetExp((RunStats.TotalKills + RunStats.BonusExp) % killsPerLevel);
+            expBar.SetExp(RunStats.TotalKills % killsPerLevel);
 
         if (regenStacks > 0 && playerHealth != null)
         {
@@ -299,6 +334,40 @@ public class EvolutionSystem : MonoBehaviour
         return true;
     }
 
+    /// Relative draw odds per rarity, indexed by the Rarity enum. These are
+    /// weights, not percentages — the real odds depend on what's left in the
+    /// pool. Loosened 2026-07-28 from {40, 30, 18, 9, 3}: the top end was rare
+    /// enough that most runs never saw a Legendary at all, which made the card
+    /// art pointless. A Legendary is now ~4.6x rarer than a Common rather than
+    /// ~13x, before the Lucky Streak meta upgrade tilts it further.
+    private static readonly int[] RarityWeights = { 32, 27, 21, 13, 7 };
+
+    /// Base weight scaled by the player's Lucky Streak level. Floors at 1 so
+    /// nothing can ever become undrawable through rounding.
+    private static int WeightOf(Rarity rarity)
+    {
+        int tier = (int)rarity;
+        return Mathf.Max(1, Mathf.RoundToInt(RarityWeights[tier] * MetaProgression.DrawWeightMultiplier(tier)));
+    }
+
+    /// Weighted index into pool. Every entry keeps a non-zero weight, so a
+    /// pool of nothing but Legendaries still returns one (rather than
+    /// stalling progression), which is what the final levels of a run become.
+    private static int DrawWeighted(List<Skill> pool)
+    {
+        int total = 0;
+        foreach (var skill in pool) total += WeightOf(skill.Rarity);
+
+        int roll = Random.Range(0, total);
+        for (int i = 0; i < pool.Count; i++)
+        {
+            roll -= WeightOf(pool[i].Rarity);
+            if (roll < 0) return i;
+        }
+
+        return pool.Count - 1;
+    }
+
     private void OfferChoice()
     {
         List<Skill> choices;
@@ -329,7 +398,7 @@ public class EvolutionSystem : MonoBehaviour
             choices = new List<Skill>();
             while (choices.Count < 3 && pool.Count > 0)
             {
-                int i = Random.Range(0, pool.Count);
+                int i = DrawWeighted(pool);
                 choices.Add(pool[i]);
                 pool.RemoveAt(i);
             }
@@ -342,13 +411,15 @@ public class EvolutionSystem : MonoBehaviour
 
             var titles = new string[3];
             var descriptions = new string[3];
+            var rarities = new Rarity[3];
             for (int i = 0; i < choices.Count; i++)
             {
                 titles[i] = choices[i].Title;
                 descriptions[i] = choices[i].Description;
+                rarities[i] = choices[i].Rarity;
             }
 
-            levelUpUI.Show(titles, descriptions, index => ChooseSkill(choices[index].Id));
+            levelUpUI.Show(titles, descriptions, rarities, index => ChooseSkill(choices[index].Id));
         }
         else
         {
@@ -375,7 +446,10 @@ public class EvolutionSystem : MonoBehaviour
                 break;
             case SkillId.Swift:
                 swiftStacks++;
-                if (moveSpeedBoost != null) moveSpeedBoost.SpeedMultiplier = 1f + 0.15f * swiftStacks;
+                // Multiplies the shop's Lab Legs baseline rather than
+                // overwriting it, same way TitanMultiplier stays separate.
+                if (moveSpeedBoost != null)
+                    moveSpeedBoost.SpeedMultiplier = MetaProgression.StartingSpeedMultiplier * (1f + 0.15f * swiftStacks);
                 break;
             case SkillId.DashPhase: DashPhase = true; break;
             case SkillId.DashLunge: DashLunge = true; break;
@@ -451,7 +525,7 @@ public class EvolutionSystem : MonoBehaviour
                 Titan = true;
                 TitanDamageMultiplier = TitanDamageMultiplierValue;
                 TitanSizeMultiplier = TitanSizeMultiplierValue;
-                transform.localScale = Vector3.one * TitanScale;
+                transform.localScale = baseScale * TitanScale;
                 if (moveSpeedBoost != null) moveSpeedBoost.TitanMultiplier = TitanSpeedMultiplier;
                 break;
         }
@@ -502,7 +576,7 @@ public class EvolutionSystem : MonoBehaviour
         Titan = false;
         TitanDamageMultiplier = 1f;
         TitanSizeMultiplier = 1f;
-        transform.localScale = Vector3.one;
+        transform.localScale = baseScale;
         secondWindUnlocked = false;
         secondWindUsed = false;
 
@@ -530,12 +604,13 @@ public class EvolutionSystem : MonoBehaviour
         GameState.Release(GameState.FreezeReason.LevelUpChoice);
         if (levelUpUI != null) levelUpUI.Hide(); // stale card would grant a pre-reset skill
 
-        if (moveSpeedBoost != null)
-        {
-            moveSpeedBoost.SpeedMultiplier = 1f;
-            moveSpeedBoost.TitanMultiplier = 1f;
-        }
+        if (moveSpeedBoost != null) moveSpeedBoost.TitanMultiplier = 1f;
         if (expBar != null) expBar.SetMaxExp(killsPerLevel);
+
+        // PauseMenu calls PlayerHealth.ResetToStartingHealth() before this, so
+        // re-applying here restores the shop's flat bonuses on top of a clean
+        // slate rather than stacking onto the old run's totals.
+        ApplyMetaUpgrades();
     }
 
     /// Human-readable list of acquired skills, for the HUD's skill tracker.

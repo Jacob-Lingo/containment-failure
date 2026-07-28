@@ -123,6 +123,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         Sfx.PlayRandom("player_hurt", 2, transform.position);
         HitFlashFx.Spawn(transform.position, new Color(1f, 0.2f, 0.2f, 0.85f), 0.4f);
+        Juice.PlayerHurt();
 
         if (sr != null)
         {
