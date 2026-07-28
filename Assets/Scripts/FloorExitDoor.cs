@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
 /// The exit door — the player's escape route on every floor, per the GDD's
 /// fight-to-grow vs. escape-in-time loop. On floors 1..N-1 it unlocks once
@@ -9,12 +11,59 @@ using UnityEngine;
 public class FloorExitDoor : MonoBehaviour
 {
     [SerializeField] private string escapeSceneName = "Dev_FloorWin";
+    [SerializeField] private AudioClip openSound;
 
     private float nextUseTime;
+    private Tilemap _wallTilemap;
+    private List<Vector3Int> _gatePositions;
+    private bool _isGateOpen;
+    private AudioSource _audioSource;
+
+    private void Awake()
+    {
+        _audioSource = gameObject.AddComponent<AudioSource>();
+    }
+
+    public void Initialize(Tilemap wallTilemap, List<Vector3Int> gatePositions)
+    {
+        _wallTilemap = wallTilemap;
+        _gatePositions = gatePositions;
+    }
+
+    private void Update()
+    {
+        if (_isGateOpen) return;
+
+        bool shouldOpen = FloorManager.IsFinalFloor ? BossState.Defeated : RunStats.FloorKills >= FloorManager.KillQuota;
+
+        if (shouldOpen)
+        {
+            OpenGate();
+        }
+    }
+
+    private void OpenGate()
+    {
+        _isGateOpen = true;
+        if (_wallTilemap != null && _gatePositions != null)
+        {
+            foreach (var pos in _gatePositions)
+            {
+                _wallTilemap.SetTile(pos, null);
+            }
+        }
+
+        if (openSound != null && _audioSource != null)
+        {
+            _audioSource.PlayOneShot(openSound);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player") || Time.time < nextUseTime) return;
+        if (!_isGateOpen) return;
+
         nextUseTime = Time.time + 1f;
 
         if (FloorManager.IsFinalFloor)

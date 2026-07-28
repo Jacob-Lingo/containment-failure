@@ -18,6 +18,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
     [Header("Tile Assets")]
     [SerializeField] private TileBase floorTile;
+    [SerializeField] private TileBase exitTile;
 
     [Header("Directional Wall Tiles")]
     [SerializeField] private TileBase wallTopTile;
@@ -31,11 +32,19 @@ public class ProceduralLevelGenerator : MonoBehaviour
     [SerializeField] private TileBase wallFillTile;
     [SerializeField] private TileBase outerWallTile; // Keep for outer boundary
 
+    [Header("Exit Gate Tiles")]
+    [SerializeField] private TileBase exitGateLeftTile;
+    [SerializeField] private TileBase exitGateMiddleTile;
+    [SerializeField] private TileBase exitGateRightTile;
+
     [Header("Prefabs")]
     [SerializeField] private GameObject hazardPrefab;
+    [SerializeField] private GameObject[] decoPrefabs;
+    [SerializeField] private GameObject floorDoorPrefab;
 
     [Header("Spawning & Hazards")]
     [SerializeField, Range(0f, 1f)] private float hazardDensity = 0.05f;
+    [SerializeField, Range(0f, 0.2f)] private float decoDensity = 0.05f;
     [SerializeField] private float playerStartSafeRadius = 5f;
 
     private int[,] _map;
@@ -185,18 +194,21 @@ public class ProceduralLevelGenerator : MonoBehaviour
             int pillarCount = Random.Range(1, 4);
             for (int i = 0; i < pillarCount; i++)
             {
-                int pillarX = Random.Range(room.Bounds.x + 2, room.Bounds.xMax - 2);
-                int pillarY = Random.Range(room.Bounds.y + 2, room.Bounds.yMax - 2);
+                if (room.Bounds.width < 5 || room.Bounds.height < 5) continue;
 
-                if (_map[pillarX, pillarY] == 0)
+                int pillarX = Random.Range(room.Bounds.x + 2, room.Bounds.xMax - 3);
+                int pillarY = Random.Range(room.Bounds.y + 2, room.Bounds.yMax - 3);
+
+                if (pillarX + 1 < width && pillarY + 1 < height &&
+                    _map[pillarX, pillarY] == 0 &&
+                    _map[pillarX + 1, pillarY] == 0 &&
+                    _map[pillarX, pillarY + 1] == 0 &&
+                    _map[pillarX + 1, pillarY + 1] == 0)
                 {
                     _map[pillarX, pillarY] = 1;
-                    if (Random.value > 0.5f && pillarX + 1 < width - 1 && pillarY + 1 < height - 1)
-                    {
-                        _map[pillarX + 1, pillarY] = 1;
-                        _map[pillarX, pillarY + 1] = 1;
-                        _map[pillarX + 1, pillarY + 1] = 1;
-                    }
+                    _map[pillarX + 1, pillarY] = 1;
+                    _map[pillarX, pillarY + 1] = 1;
+                    _map[pillarX + 1, pillarY + 1] = 1;
                 }
             }
         }
@@ -286,52 +298,115 @@ public class ProceduralLevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                Vector3Int tilePos = new Vector3Int(x, y, 0);
-                
-                if (_map[x, y] == 0)
+                floorTilemap.SetTile(new Vector3Int(x, y, 0), floorTile);
+            }
+        }
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (_map[x, y] == 1)
                 {
-                    floorTilemap.SetTile(tilePos, floorTile);
-                }
-                else
-                {
-                    bool isOuterWall = x == 0 || x == width - 1 || y == 0 || y == height - 1;
-                    wallTilemap.SetTile(tilePos, isOuterWall ? outerWallTile : GetWallTileForPosition(x, y));
+                    wallTilemap.SetTile(new Vector3Int(x, y, 0), GetWallTileForPosition(x, y));
                 }
             }
         }
 
-        // Instantiate Hazards
+        // Instantiate Hazards and Decor
         foreach (var pos in _spawnPoints)
         {
             if (Vector3.Distance(pos, PlayerStartPosition) <= playerStartSafeRadius) continue;
+
+            // Instantiate Hazards
             if (Random.value < hazardDensity)
             {
                 if (hazardPrefab != null)
                     Instantiate(hazardPrefab, pos, Quaternion.identity, transform);
+            }
+
+            // Instantiate Decor
+            int x = Mathf.FloorToInt(pos.x);
+            int y = Mathf.FloorToInt(pos.y);
+
+            bool isAdjacentToWall = (x > 0 && _map[x - 1, y] == 1) ||
+                                    (x < width - 1 && _map[x + 1, y] == 1) ||
+                                    (y > 0 && _map[x, y - 1] == 1) ||
+                                    (y < height - 1 && _map[x, y + 1] == 1);
+
+            if (isAdjacentToWall && Random.value < decoDensity)
+            {
+                if (decoPrefabs != null && decoPrefabs.Length > 0)
+                {
+                    GameObject prefab = decoPrefabs[Random.Range(0, decoPrefabs.Length)];
+                    Instantiate(prefab, pos, Quaternion.identity, transform);
+                }
+            }
+        }
+
+        // Generate Exit
+        if (_rooms.Count > 0)
+        {
+            Vector2Int exitCoord = _rooms.Last().Center;
+            Vector3Int exitPos = new Vector3Int(exitCoord.x, exitCoord.y, 0);
+
+            // Paint the 5-tile wide exit gate
+            wallTilemap.SetTile(exitPos + Vector3Int.left * 2, exitGateLeftTile);
+            wallTilemap.SetTile(exitPos + Vector3Int.left, exitGateMiddleTile);
+            wallTilemap.SetTile(exitPos, exitGateMiddleTile);
+            wallTilemap.SetTile(exitPos + Vector3Int.right, exitGateMiddleTile);
+            wallTilemap.SetTile(exitPos + Vector3Int.right * 2, exitGateRightTile);
+
+            if (floorDoorPrefab != null)
+            {
+                GameObject door = Instantiate(floorDoorPrefab, exitPos, Quaternion.identity, transform);
+                var doorScript = door.GetComponent<FloorExitDoor>();
+                if (doorScript != null)
+                {
+                    var gatePositions = new List<Vector3Int>
+                    {
+                        exitPos + Vector3Int.left,
+                        exitPos,
+                        exitPos + Vector3Int.right
+                    };
+                    doorScript.Initialize(wallTilemap, gatePositions);
+                }
+
+                var collider = door.GetComponent<BoxCollider2D>();
+                if (collider != null)
+                {
+                    collider.size = new Vector2(3, 1);
+                }
             }
         }
     }
 
     private TileBase GetWallTileForPosition(int x, int y)
     {
-        bool hasFloorNorth = (y + 1 < height && _map[x, y + 1] == 0);
-        bool hasFloorSouth = (y - 1 >= 0 && _map[x, y - 1] == 0);
-        bool hasFloorEast = (x + 1 < width && _map[x + 1, y] == 0);
-        bool hasFloorWest = (x - 1 >= 0 && _map[x - 1, y] == 0);
+        bool N = (y + 1 < height && _map[x, y + 1] == 0);
+        bool S = (y - 1 >= 0 && _map[x, y - 1] == 0);
+        bool E = (x + 1 < width && _map[x + 1, y] == 0);
+        bool W = (x - 1 >= 0 && _map[x - 1, y] == 0);
 
-        // Corners
-        if (hasFloorSouth && hasFloorEast) return wallCornerTLTile;
-        if (hasFloorSouth && hasFloorWest) return wallCornerTRTile;
-        if (hasFloorNorth && hasFloorEast) return wallCornerBLTile;
-        if (hasFloorNorth && hasFloorWest) return wallCornerBRTile;
+        int adjacentFloors = (N ? 1 : 0) + (S ? 1 : 0) + (E ? 1 : 0) + (W ? 1 : 0);
 
-        // Edges
-        if (hasFloorSouth) return wallTopTile;
-        if (hasFloorNorth) return wallBottomTile;
-        if (hasFloorEast) return wallLeftTile;
-        if (hasFloorWest) return wallRightTile;
+        if ((N && S) || (E && W) || adjacentFloors >= 3)
+        {
+            return wallFillTile;
+        }
 
-        // If no adjacent floor, it's a solid wall
+        // Inward Corners
+        if (S && E) return wallCornerTLTile;
+        if (S && W) return wallCornerTRTile;
+        if (N && E) return wallCornerBLTile;
+        if (N && W) return wallCornerBRTile;
+
+        // Straight Walls
+        if (S) return wallTopTile;
+        if (N) return wallBottomTile;
+        if (E) return wallLeftTile;
+        if (W) return wallRightTile;
+
         return wallFillTile;
     }
 }
