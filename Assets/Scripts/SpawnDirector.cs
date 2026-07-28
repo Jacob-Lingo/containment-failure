@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class SpawnDirector : MonoBehaviour
 {
+    [Header("Dependencies")]
+    [SerializeField] private ProceduralLevelGenerator proceduralLevelGenerator;
+
     [Header("Spawn Settings")]
     [SerializeField] private GameObject guardPrefab; // Drag Guard prefab here in the inspector
     [SerializeField] private GameObject rangedGuardPrefab; // Optional: drag GuardRanged prefab here to mix in ranged guards
@@ -14,7 +17,6 @@ public class SpawnDirector : MonoBehaviour
     [SerializeField] private float spawnInterval = 0.6f; // Seconds between spawns
     [SerializeField] private int guardsPerSpawnTick = 3; // How many guards try to spawn each interval — this is what makes it read as a swarm rather than a trickle
     [SerializeField] private int initialBurstCount = 10; // Guards spawned immediately on Start so the player isn't waiting alone for the first wave
-    [SerializeField] private Transform[] spawnPoints; // Array of spawn locations around your arena
     private static readonly Color BaseRangedTint = new Color(0.35f, 0.55f, 0.85f); // distinguishes plain pistol guards from melee guards even before military tiers exist
 
     [Header("Prototype Constraints")]
@@ -85,14 +87,9 @@ public class SpawnDirector : MonoBehaviour
 
     void Start()
     {
-        gameTimer = gameDuration;
-
         baseSpawnInterval = spawnInterval;
         baseMaxGuardCount = maxGuardCount;
-        RescaleForFloor();
-
-        spawnTimer = spawnInterval;
-        expPickupTimer = expPickupRefillInterval;
+        gameTimer = gameDuration;
 
         if (playerTransform == null)
         {
@@ -100,13 +97,6 @@ public class SpawnDirector : MonoBehaviour
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null) playerTransform = player.transform;
         }
-
-        for (int i = 0; i < initialBurstCount && activeGuards.Count < maxGuardCount; i++)
-        {
-            SpawnGuard();
-        }
-
-        RefillExpPickups();
     }
 
     /// Called by FloorExitDoor when the floor advances without a scene
@@ -217,7 +207,7 @@ public class SpawnDirector : MonoBehaviour
 
     /// Tops the yellow ExpPickup pool back up to expPickupPoolSize, placing
     /// new ones at fresh random positions — "20 scattered around the map,
-    /// regenerating every 30s," not tied to enemy deaths or player position.
+    // regenerating every 30s," not tied to enemy deaths or player position.
     private void RefillExpPickups()
     {
         activeExpPickups.RemoveAll(pickup => pickup == null);
@@ -230,8 +220,9 @@ public class SpawnDirector : MonoBehaviour
 
     private Vector3 RandomMapPosition()
     {
-        Vector3 basePos = (spawnPoints != null && spawnPoints.Length > 0)
-            ? spawnPoints[Random.Range(0, spawnPoints.Length)].position
+        var spawnPoints = proceduralLevelGenerator.SpawnPoints;
+        Vector3 basePos = (spawnPoints != null && spawnPoints.Count > 0)
+            ? spawnPoints[Random.Range(0, spawnPoints.Count)]
             : transform.position;
 
         Vector2 offset = Random.insideUnitCircle * expPickupScatterRadius;
@@ -356,21 +347,20 @@ public class SpawnDirector : MonoBehaviour
     {
         chosenSpawnPos = Vector3.zero;
 
-        // Collect all potential base origins to evaluate (either spawn points or spawner position)
-        List<Vector3> basePositions = new List<Vector3>();
-        if (spawnPoints != null && spawnPoints.Length > 0)
+        var spawnPoints = proceduralLevelGenerator.SpawnPoints;
+        if (spawnPoints == null || spawnPoints.Count == 0)
         {
-            foreach (Transform pt in spawnPoints)
+            // Fallback to spawner's own position if no points are available
+            if (IsValidSpawnSpot(transform.position))
             {
-                if (pt != null) basePositions.Add(pt.position);
+                chosenSpawnPos = transform.position;
+                return true;
             }
-        }
-        else
-        {
-            basePositions.Add(transform.position);
+            return false;
         }
 
-        // Shuffle base positions to keep spawns randomized
+        // Shuffle spawn points to keep spawns randomized
+        List<Vector3> basePositions = new List<Vector3>(spawnPoints);
         for (int i = 0; i < basePositions.Count; i++)
         {
             Vector3 temp = basePositions[i];
@@ -404,6 +394,7 @@ public class SpawnDirector : MonoBehaviour
     private bool IsValidSpawnSpot(Vector3 position)
     {
         // 1. Check distance parameters relative to the Player
+        if (playerTransform == null) return false;
         float distanceToPlayer = Vector2.Distance(position, playerTransform.position);
         if (distanceToPlayer < minDistanceFromPlayer || distanceToPlayer > maxDistanceFromPlayer)
         {

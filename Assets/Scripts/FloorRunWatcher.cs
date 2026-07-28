@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// Resets run-scoped static state (FloorManager, RunStats) once death is
-/// observed. Polls PlayerHealth.Health rather than an event since
-/// PlayerHealth (owned by Noah) doesn't expose a death event to hook.
+/// observed. Polls PlayerHealth.IsDead rather than just health, since health
+/// may be 0 for a frame before PlayerHealth has initialized.
 public class FloorRunWatcher : MonoBehaviour
 {
     private PlayerHealth playerHealth;
@@ -17,7 +17,7 @@ public class FloorRunWatcher : MonoBehaviour
     {
         if (resetQueued || playerHealth == null) return;
 
-        if (playerHealth.Health <= 0)
+        if (playerHealth.IsDead)
         {
             resetQueued = true;
             FloorManager.ResetRun();

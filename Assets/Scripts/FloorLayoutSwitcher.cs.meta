@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: 12d1c1e6494f4cb408ec383cefe2990f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - proceduralLevelGenerator: {instanceID: 0}
+  - spawnDirector: {instanceID: 0}
+  - playerTransform: {fileID: 3416603988241796138, guid: 761da6855078365459783b0b8af0974b, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

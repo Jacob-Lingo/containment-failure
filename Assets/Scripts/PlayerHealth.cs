@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [Header("Health")]
-    [SerializeField] private int maxHealth = 10;
+    [SerializeField] private int maxHealth = 100;
 
     [Header("Death")]
     [SerializeField] private string loseScene = "LoseScreen";
     [SerializeField] private float loseDelay = 1f;
 
     public int Health { get; private set; }
+    public bool IsDead => isDead;
 
     /// Set by PlayerDash during a Phase Dash's i-frame window.
     public bool Invulnerable { get; set; }
@@ -27,6 +28,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private SpriteRenderer sr;
     private Color baseColor;
     private Coroutine flashRoutine;
+
+    private void Awake()
+    {
+        Health = maxHealth;
+        startingMaxHealth = maxHealth;
+    }
 
     /// Passive regen tick (evolution's "Regeneration" card) — heals without
     /// touching the cap, unlike IncreaseMaxHealth below.
@@ -83,9 +90,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        startingMaxHealth = maxHealth;
-        Health = maxHealth;
-
         sr = GetComponent<SpriteRenderer>();
         if (sr != null) baseColor = sr.color;
 
@@ -95,6 +99,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (healthBar != null)
         {
             healthBar.SetMaxHealth(maxHealth);
+            healthBar.SetHealth(Health);
         }
         else
         {
@@ -143,6 +148,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             }
             else
             {
+                Debug.LogWarning($"[DEATH TRACE] Player died! Caused by: {gameObject.name}", this);
+                Debug.Break(); // Immediately pauses the Unity Editor game view!
                 isDead = true;
                 StartCoroutine(Die());
             }
