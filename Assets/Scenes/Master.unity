@@ -5526,6 +5526,7 @@ GameObject:
   - component: {fileID: 16300000000000022}
   - component: {fileID: 16300000000000023}
   - component: {fileID: 16300000000000024}
+  - component: {fileID: 16300000000000025}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -5627,9 +5628,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 16300000000000090}
-        m_TargetAssemblyTypeName: WinPanelUI, Assembly-CSharp
-        m_MethodName: Continue
+      - m_Target: {fileID: 16300000000000025}
+        m_TargetAssemblyTypeName: PlayAgainButton, Assembly-CSharp
+        m_MethodName: PlayAgain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5647,6 +5648,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16300000000000020}
   m_CullTransparentMesh: 1
+--- !u!114 &16300000000000025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16300000000000020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 753229cdc499475c9873cf7a26455c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayAgainButton
+  targetSceneName: Master
 --- !u!1 &16300000000000030
 GameObject:
   m_ObjectHideFlags: 0

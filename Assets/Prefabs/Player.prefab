@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 5719704102231875156}
   - component: {fileID: 6903216333683852769}
   - component: {fileID: 904882187629589749}
-  - component: {fileID: 2014199381469599928}
   - component: {fileID: -8703437941709791842}
   - component: {fileID: 9100000000000001}
   - component: {fileID: 9100000000000002}
@@ -197,23 +196,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &2014199381469599928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9187406437945655738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b97de7f21ac00264fa667bd4a3722561, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveSpeed: 6
-  spriteDown: {fileID: 0}
-  spriteUp: {fileID: 0}
-  spriteRight: {fileID: 0}
-  spriteLeft: {fileID: 0}
 --- !u!114 &-8703437941709791842
 MonoBehaviour:
   m_ObjectHideFlags: 0
