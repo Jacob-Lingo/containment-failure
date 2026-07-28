@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,9 +12,26 @@ public class ProceduralLevelGenerator : MonoBehaviour
     [SerializeField] private int maxRooms = 5;
     [SerializeField] private int corridorWidth = 2;
 
+    [Header("Tilemaps")]
+    [SerializeField] private Tilemap floorTilemap;
+    [SerializeField] private Tilemap wallTilemap;
+
+    [Header("Tile Assets")]
+    [SerializeField] private TileBase floorTile;
+
+    [Header("Directional Wall Tiles")]
+    [SerializeField] private TileBase wallTopTile;
+    [SerializeField] private TileBase wallBottomTile;
+    [SerializeField] private TileBase wallLeftTile;
+    [SerializeField] private TileBase wallRightTile;
+    [SerializeField] private TileBase wallCornerTLTile;
+    [SerializeField] private TileBase wallCornerTRTile;
+    [SerializeField] private TileBase wallCornerBLTile;
+    [SerializeField] private TileBase wallCornerBRTile;
+    [SerializeField] private TileBase wallFillTile;
+    [SerializeField] private TileBase outerWallTile; // Keep for outer boundary
+
     [Header("Prefabs")]
-    [SerializeField] private GameObject outerWallPrefab;
-    [SerializeField] private GameObject innerWallPrefab;
     [SerializeField] private GameObject hazardPrefab;
 
     [Header("Spawning & Hazards")]
@@ -27,9 +45,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public List<Vector3> SpawnPoints => _spawnPoints;
     public Vector3 PlayerStartPosition { get; private set; }
 
-    /// <summary>
-    /// Represents a rectangular room in the level.
-    /// </summary>
     private class Room
     {
         public readonly RectInt Bounds;
@@ -45,7 +60,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
     {
         ClearLevel();
 
-        // Pre-move player to origin to avoid any frame-1 collisions from a previous level layout.
         var player = GameObject.FindWithTag("Player");
         if (player != null)
         {
@@ -57,7 +71,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                _map[x, y] = 1; // Initialize entire map with inner walls
+                _map[x, y] = 1;
             }
         }
 
@@ -65,7 +79,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
         CreateCorridors();
         CreateCoverPillars();
 
-        // Set player start position and move the player there *before* instantiating walls.
         if (_rooms.Count > 0)
         {
             var startCenter = _rooms[0].Center;
@@ -73,7 +86,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
         }
         else
         {
-            // Fallback if no rooms were generated
             PlayerStartPosition = new Vector3(width / 2f, height / 2f, 0);
             Debug.LogWarning("No rooms generated. Placing player at map center.");
         }
@@ -91,7 +103,10 @@ public class ProceduralLevelGenerator : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            Destroy(child.gameObject);
+            if (child.GetComponent<Tilemap>() == null)
+            {
+                Destroy(child.gameObject);
+            }
         }
         _spawnPoints.Clear();
         _rooms.Clear();
@@ -137,7 +152,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
             }
         }
 
-        // Process any remaining partitions into rooms
         foreach (var partition in partitions)
         {
             CreateRoomInPartition(partition);
@@ -174,12 +188,10 @@ public class ProceduralLevelGenerator : MonoBehaviour
                 int pillarX = Random.Range(room.Bounds.x + 2, room.Bounds.xMax - 2);
                 int pillarY = Random.Range(room.Bounds.y + 2, room.Bounds.yMax - 2);
 
-                // Ensure pillar is not blocking a path (simple check)
                 if (_map[pillarX, pillarY] == 0)
                 {
                     _map[pillarX, pillarY] = 1;
-                    // Optional: 2x2 pillars
-                    if (Random.value > 0.5f && pillarX + 1 < width -1 && pillarY + 1 < height -1)
+                    if (Random.value > 0.5f && pillarX + 1 < width - 1 && pillarY + 1 < height - 1)
                     {
                         _map[pillarX + 1, pillarY] = 1;
                         _map[pillarX, pillarY + 1] = 1;
@@ -196,7 +208,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
         {
             for (int y = room.Bounds.y; y < room.Bounds.yMax; y++)
             {
-                _map[x, y] = 0; // 0 represents a floor tile
+                _map[x, y] = 0;
             }
         }
     }
@@ -206,18 +218,17 @@ public class ProceduralLevelGenerator : MonoBehaviour
         Vector2Int centerA = roomA.Center;
         Vector2Int centerB = roomB.Center;
 
-        // L-shaped corridor
         int startX = Mathf.Min(centerA.x, centerB.x);
         int endX = Mathf.Max(centerA.x, centerB.x);
         int startY = Mathf.Min(centerA.y, centerB.y);
         int endY = Mathf.Max(centerA.y, centerB.y);
 
-        if (Random.value > 0.5f) // Horizontal then Vertical
+        if (Random.value > 0.5f)
         {
             CarveHorizontalCorridor(startX, endX, centerA.y);
             CarveVerticalCorridor(startY, endY, centerB.x);
         }
-        else // Vertical then Horizontal
+        else
         {
             CarveVerticalCorridor(startY, endY, centerA.x);
             CarveHorizontalCorridor(startX, endX, centerB.y);
@@ -262,21 +273,29 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
     private void InstantiateLevel()
     {
-        // Instantiate Walls
+        if (floorTilemap == null || wallTilemap == null)
+        {
+            Debug.LogError("Tilemaps are not assigned in the inspector!");
+            return;
+        }
+
+        floorTilemap.ClearAllTiles();
+        wallTilemap.ClearAllTiles();
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                bool isOuterWall = x == 0 || x == width - 1 || y == 0 || y == height - 1;
-                if (isOuterWall)
+                Vector3Int tilePos = new Vector3Int(x, y, 0);
+                
+                if (_map[x, y] == 0)
                 {
-                    if(outerWallPrefab != null)
-                        Instantiate(outerWallPrefab, new Vector3(x, y, 0), Quaternion.identity, transform);
+                    floorTilemap.SetTile(tilePos, floorTile);
                 }
-                else if (_map[x, y] == 1)
+                else
                 {
-                    if(innerWallPrefab != null)
-                        Instantiate(innerWallPrefab, new Vector3(x, y, 0), Quaternion.identity, transform);
+                    bool isOuterWall = x == 0 || x == width - 1 || y == 0 || y == height - 1;
+                    wallTilemap.SetTile(tilePos, isOuterWall ? outerWallTile : GetWallTileForPosition(x, y));
                 }
             }
         }
@@ -287,9 +306,32 @@ public class ProceduralLevelGenerator : MonoBehaviour
             if (Vector3.Distance(pos, PlayerStartPosition) <= playerStartSafeRadius) continue;
             if (Random.value < hazardDensity)
             {
-                if(hazardPrefab != null)
+                if (hazardPrefab != null)
                     Instantiate(hazardPrefab, pos, Quaternion.identity, transform);
             }
         }
+    }
+
+    private TileBase GetWallTileForPosition(int x, int y)
+    {
+        bool hasFloorNorth = (y + 1 < height && _map[x, y + 1] == 0);
+        bool hasFloorSouth = (y - 1 >= 0 && _map[x, y - 1] == 0);
+        bool hasFloorEast = (x + 1 < width && _map[x + 1, y] == 0);
+        bool hasFloorWest = (x - 1 >= 0 && _map[x - 1, y] == 0);
+
+        // Corners
+        if (hasFloorSouth && hasFloorEast) return wallCornerTLTile;
+        if (hasFloorSouth && hasFloorWest) return wallCornerTRTile;
+        if (hasFloorNorth && hasFloorEast) return wallCornerBLTile;
+        if (hasFloorNorth && hasFloorWest) return wallCornerBRTile;
+
+        // Edges
+        if (hasFloorSouth) return wallTopTile;
+        if (hasFloorNorth) return wallBottomTile;
+        if (hasFloorEast) return wallLeftTile;
+        if (hasFloorWest) return wallRightTile;
+
+        // If no adjacent floor, it's a solid wall
+        return wallFillTile;
     }
 }
