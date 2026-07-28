@@ -4287,7 +4287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FloorLayoutSwitcher
   proceduralLevelGenerator: {fileID: 2056800324}
   spawnDirector: {fileID: 7282193}
-  playerTransform: {fileID: 3416603988241796138, guid: 761da6855078365459783b0b8af0974b, type: 3}
+  playerTransform: {fileID: 547022499}
 --- !u!1 &1643189391
 GameObject:
   m_ObjectHideFlags: 0
