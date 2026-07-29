@@ -27,7 +27,8 @@ public static class FloorManager
 
     /// Kills required on the current floor before SpawnDirector auto-advances
     /// before the exit door unlocks (the final floor is Tank-gated instead — see BossState).
-    public static int KillQuota => 30 + (CurrentFloor - 1) * 8;
+   // public static int KillQuota => 30 + (CurrentFloor - 1) * 8;
+    public static int KillQuota => 10 + (CurrentFloor - 1) * 5;
 
     public static void AdvanceFloor()
     {
