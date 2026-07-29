@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 /// Full-screen black block-wipe between scenes (menu -> floor -> next floor
 /// -> win/lose), so floor changes don't hard-cut. Builds its UI at runtime
@@ -17,13 +19,78 @@ public class SceneTransition : MonoBehaviour
     private const int Rows = 7;
     private const float StepDuration = 0.45f;
 
+    private const float CardHoldSeconds = 0.9f;
+
     private GameObject canvasGO;
     private Image[] cells;
+    private TMP_Text card;
 
     public static void LoadScene(string sceneName)
     {
         EnsureInstance();
         instance.StartCoroutine(instance.DoTransition(sceneName));
+    }
+
+    /// Same wipe, no scene change: covers the screen, runs `atFullCover`
+    /// (where the world is rearranged unseen), holds a title card, uncovers.
+    /// Used for in-scene floor advances, which previously hard-cut — the new
+    /// floor's rescale/respawn popped in with the player watching.
+    public static void Interstitial(string label, Action atFullCover)
+    {
+        EnsureInstance();
+        instance.StartCoroutine(instance.DoInterstitial(label, atFullCover));
+    }
+
+    private IEnumerator DoInterstitial(string label, Action atFullCover)
+    {
+        // Nothing should be shooting the player from behind a black screen.
+        // If something else already holds the freeze (pause menu), skip
+        // freezing rather than fighting it — the wipe runs unscaled anyway.
+        bool frozen = GameState.TryFreeze(GameState.FreezeReason.FloorTransition);
+
+        canvasGO.SetActive(true);
+        yield return Wipe(cover: true);
+
+        atFullCover?.Invoke();
+
+        ShowCard(label);
+        yield return new WaitForSecondsRealtime(CardHoldSeconds);
+        ShowCard(null);
+
+        yield return Wipe(cover: false);
+        canvasGO.SetActive(false);
+
+        if (frozen) GameState.Release(GameState.FreezeReason.FloorTransition);
+    }
+
+    private void ShowCard(string label)
+    {
+        if (card == null)
+        {
+            if (string.IsNullOrEmpty(label)) return;
+
+            var font = UiFont.Resolve();
+            if (font == null) return;
+
+            var cardGO = new GameObject("FloorCard");
+            cardGO.transform.SetParent(canvasGO.transform, false);
+
+            card = cardGO.AddComponent<TextMeshProUGUI>();
+            card.font = font;
+            card.fontSize = 90f;
+            card.alignment = TextAlignmentOptions.Center;
+            card.raycastTarget = false;
+
+            var rect = card.rectTransform;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
+        card.text = label ?? string.Empty;
+        // Sits above the wipe cells, which are drawn first in the same canvas.
+        card.transform.SetAsLastSibling();
     }
 
     private static void EnsureInstance()

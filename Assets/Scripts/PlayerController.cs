@@ -57,9 +57,26 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = moveInput * moveSpeed;
     }
 
+    /// Set false by MonsterForm once the run's evolution form takes over the
+    /// body sprite. The four directional sprites are drawn for the default
+    /// player; a monster form is a single front-facing sprite, so leaving this
+    /// on meant the two systems fought over the same SpriteRenderer — the form
+    /// applied on level-up, then the first movement frame overwrote it, which
+    /// read as the sprite flickering or reverting at random.
+    public bool UseDirectionalSprites { get; set; } = true;
+
     private void UpdateDirectionalSprite()
     {
         if (moveInput == Vector2.zero) return;
+
+        if (!UseDirectionalSprites)
+        {
+            // Still mirror left/right — that reads correctly on a single
+            // front-facing sprite and costs nothing.
+            if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
+                spriteRenderer.flipX = moveInput.x < 0;
+            return;
+        }
 
         if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
         {

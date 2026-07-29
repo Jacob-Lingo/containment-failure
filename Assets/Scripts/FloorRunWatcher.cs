@@ -6,11 +6,13 @@ using UnityEngine;
 public class FloorRunWatcher : MonoBehaviour
 {
     private PlayerHealth playerHealth;
+    private EvolutionSystem evolution;
     private bool resetQueued;
 
     private void Awake()
     {
         playerHealth = GetComponent<PlayerHealth>();
+        evolution = GetComponent<EvolutionSystem>();
     }
 
     private void Update()
@@ -20,6 +22,11 @@ public class FloorRunWatcher : MonoBehaviour
         if (playerHealth.IsDead)
         {
             resetQueued = true;
+
+            // Before the resets below wipe them — this is the only point where
+            // the dead run's floor/kills/build are all still intact.
+            RunSummary.Capture("SLAIN", evolution != null ? evolution.GetSummary() : "Claws only");
+
             FloorManager.ResetRun();
             RunStats.ResetRun();
             BossState.Reset();

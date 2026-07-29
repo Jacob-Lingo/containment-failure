@@ -71,9 +71,18 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         maxHealth = startingMaxHealth;
         Health = maxHealth;
         isDead = false;
+        lastHitTime = float.NegativeInfinity;
 
         if (TryGetComponent<PlayerController>(out var controller))
             controller.enabled = true;
+
+        // Mirrors what Die() switched off — miss these and an in-place restart
+        // leaves you alive but unable to attack or dash.
+        if (TryGetComponent<PlayerCombat>(out var combat))
+            combat.enabled = true;
+
+        if (TryGetComponent<PlayerDash>(out var dash))
+            dash.enabled = true;
 
         foreach (var col in GetComponentsInChildren<Collider2D>())
             col.enabled = true;
@@ -107,10 +116,26 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
+    /// "Mana Shell" card. Tracked here rather than on EvolutionSystem because
+    /// this is the only place that knows when the player was last hurt — the
+    /// shell is simply "long enough since the last blow", with no separate
+    /// charge state to keep in sync across the reset paths.
+    private const float ManaShellRecharge = 6f;
+    private float lastHitTime = float.NegativeInfinity;
+
     public void TakeDamage(int amount)
     {
         if (isDead || amount <= 0 || Invulnerable)
             return;
+
+        if (evolution != null && evolution.ManaShell && Time.time - lastHitTime >= ManaShellRecharge)
+        {
+            lastHitTime = Time.time;
+            SpellFx.Play(SpellFx.MagicBubbles, transform.position, 3f, 1.3f);
+            return;
+        }
+
+        lastHitTime = Time.time;
 
         // "Armor" card — flat reduction, never brings a hit below 1 damage.
         if (evolution != null && evolution.ArmorFlat > 0)
@@ -128,6 +153,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         Sfx.PlayRandom("player_hurt", 2, transform.position);
         HitFlashFx.Spawn(transform.position, new Color(1f, 0.2f, 0.2f, 0.85f), 0.4f);
+        Juice.PlayerHurt();
 
         if (sr != null)
         {
@@ -194,6 +220,22 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (controller != null)
         {
             controller.enabled = false;
+        }
+
+        // Movement was already stopped, but combat wasn't — a corpse could
+        // still cast from slots 1-4 and dash for the whole loseDelay. Stop the
+        // coroutines first: Blood Frenzy and Whirlwind keep dealing damage on
+        // their own timers, and disabling a component doesn't cancel those.
+        if (TryGetComponent<PlayerCombat>(out var combat))
+        {
+            combat.StopAllCoroutines();
+            combat.enabled = false;
+        }
+
+        if (TryGetComponent<PlayerDash>(out var dash))
+        {
+            dash.StopAllCoroutines();
+            dash.enabled = false;
         }
 
         foreach (Collider2D playerCollider in GetComponentsInChildren<Collider2D>())

@@ -10,7 +10,7 @@ using UnityEngine;
 /// frozen doesn't also swing attacks or pollute RunStats metrics.
 public static class GameState
 {
-    public enum FreezeReason { None, LevelUpChoice, PauseMenu }
+    public enum FreezeReason { None, LevelUpChoice, PauseMenu, FloorTransition }
 
     public static FreezeReason Holder { get; private set; } = FreezeReason.None;
 

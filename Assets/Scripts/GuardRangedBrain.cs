@@ -24,6 +24,15 @@ public class GuardRangedBrain : MonoBehaviour
     private float bulletScale = 1f;
     private bool bulletExplosive;
 
+    /// Applied after the tier profile, so it scales whatever damage this guard
+    /// ended up with. Health already scaled via GuardHealth.ScaleForFloor —
+    /// without this, deep floors got spongier but never actually more
+    /// dangerous, which is what made Endless flat.
+    public void ScaleDamageForFloor(float multiplier)
+    {
+        attackDamage = Mathf.Max(1, Mathf.RoundToInt(attackDamage * multiplier));
+    }
+
     /// Called by SpawnDirector for military/boss tiers to override the
     /// inspector defaults (faster/slower fire, more/less damage per shot).
     public void SetAttackProfile(int damage, float cooldown)

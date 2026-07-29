@@ -18,7 +18,9 @@ public static class FloorManager
 
     public static int CurrentFloor { get; private set; } = 1;
 
-    public static bool IsFinalFloor => CurrentFloor >= TotalFloors;
+    /// Endless has no final floor, so the boss gate and the Iron Key exit
+    /// never trigger — you descend until you die.
+    public static bool IsFinalFloor => !GameMode.IsEndless && CurrentFloor >= TotalFloors;
 
     /// Multiplier applied to guard stats for the current floor — a flat 15%
     /// bump per floor past the first, so floor 10 guards are noticeably
@@ -31,8 +33,10 @@ public static class FloorManager
 
     public static void AdvanceFloor()
     {
-        if (!IsFinalFloor)
-            CurrentFloor++;
+        if (IsFinalFloor) return;
+
+        CurrentFloor++;
+        GameMode.RecordDepth(CurrentFloor);
     }
 
     public static void ResetRun()

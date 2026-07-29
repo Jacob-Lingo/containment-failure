@@ -1,15 +1,20 @@
 using UnityEngine;
 
-/// Small collectible dropped by some guard kills (see GuardHealth's death
-/// branch) — a "life orb" the player walks over to heal 1 HP, giving kills
-/// something tangible to pick up rather than just vanishing. Built entirely
-/// at runtime (no art asset), same cached-sprite pattern as HitFlashFx.
+/// The green orb: heals 1 HP and grants 1 exp toward the next level-up.
+/// Two sources, deliberately the same pickup so the colour always means the
+/// same thing — guard death drops (GuardHealth) and a scattered map-wide pool
+/// (SpawnDirector), which is what makes exploring worthwhile rather than only
+/// fighting. Built entirely at runtime (no art asset), same cached-sprite
+/// pattern as HitFlashFx.
 public class ExpOrb : MonoBehaviour
 {
-    private const float Lifetime = 8f;
+    private const int ExpPerOrb = 1;
+    private const float DropLifetime = 8f;
     private static Sprite orbSprite;
 
-    public static void Spawn(Vector3 position)
+    /// `persistent` orbs are the scattered pool — they wait to be found. Kill
+    /// drops expire, so a fight you walked away from doesn't litter the floor.
+    public static GameObject Spawn(Vector3 position, bool persistent = false)
     {
         GameObject go = new GameObject("ExpOrb");
         go.transform.position = position;
@@ -25,12 +30,16 @@ public class ExpOrb : MonoBehaviour
         col.radius = 0.5f;
 
         go.AddComponent<ExpOrb>();
-        Destroy(go, Lifetime);
+        go.AddComponent<OrbMagnet>();
+        if (!persistent) Destroy(go, DropLifetime);
+        return go;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
+
+        RunStats.RegisterExp(ExpPerOrb);
 
         if (other.TryGetComponent<PlayerHealth>(out var health))
             health.Heal(1);

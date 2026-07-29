@@ -13,11 +13,26 @@ public class GuardHealth : MonoBehaviour, IDamageable
     private static readonly Color FlashColor = Color.white;
     private const float FlashDuration = 0.08f;
 
+    /// Base chance a kill drops a coin, before the Salvage Rig meta upgrade.
+    private const float CoinDropChance = 0.25f;
+
     public int Health { get; private set; }
+
+    /// GuardBrain's attack windup tints the sprite and needs to know what to
+    /// tint back to — which isn't the prefab colour once SpawnDirector has
+    /// applied a tier tint (see SetBaseColor).
+    public Color BaseColor => sr != null ? baseColor : Color.white;
 
     private SpriteRenderer sr;
     private Color baseColor;
     private Coroutine flashRoutine;
+    private bool dropsSuppressed;
+
+    /// Called by NecromancerBrain on its summoned minions. They still register
+    /// a kill, so RunStats/exp/Juice all behave normally — but six spawns
+    /// every two seconds rolling the coin and orb tables would flood the
+    /// economy far past what the drop rates were tuned for.
+    public void SuppressDrops() => dropsSuppressed = true;
 
     private void Awake()
     {
@@ -86,7 +101,19 @@ public class GuardHealth : MonoBehaviour, IDamageable
         if (Health <= 0)
         {
             RunStats.RegisterKill(source);
-            if (Random.value < 0.15f) ExpOrb.Spawn(transform.position);
+            Juice.Kill();
+
+            // The Lich line raises allies on the corpse, so the killer needs to
+            // know where the corpse was before this object is destroyed.
+            var evolution = Object.FindFirstObjectByType<EvolutionSystem>();
+            if (evolution != null) evolution.NoteKillPosition(transform.position);
+
+            if (!dropsSuppressed)
+            {
+                if (Random.value < 0.15f) ExpOrb.Spawn(transform.position);
+                if (Random.value < CoinDropChance + MetaProgression.BonusCoinDropChance)
+                    Coin.Spawn(transform.position);
+            }
             Destroy(gameObject);
         }
     }

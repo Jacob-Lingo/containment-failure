@@ -27,12 +27,26 @@ public static class RunStats
     /// (FloorManager.KillQuota). Reset per-floor (ResetFloorKills) and per-run.
     public static int FloorKills { get; private set; }
 
-    /// Experience from the yellow ExpPickup orbs scattered around the map —
-    /// added to TotalKills by EvolutionSystem's level-up counter, so orbs are
-    /// a genuine second XP source independent of kills.
+    /// Coins collected during *this run*, purely for the end-of-run summary.
+    /// The spendable balance lives in MetaProgression (PlayerPrefs) and is
+    /// banked on pickup, so this being reset every run doesn't lose anything.
+    public static int CoinsThisRun { get; private set; }
+
+    /// Wall-clock length of the current run, for the end-of-run summary. Uses
+    /// scaled time on purpose: time spent paused or picking a level-up card
+    /// shouldn't count against the player's run.
+    public static float Elapsed => Mathf.Max(0f, Time.time - runStartTime);
+
+    private static float runStartTime;
+
+    public static void RegisterCoin(int amount) => CoinsThisRun += amount;
+
+    /// Experience from the green orbs — guard drops and the scattered pool
+    /// alike. Counts toward level-ups alongside kills, so exploring the floor
+    /// is a real second progression source rather than only fighting.
     public static int BonusExp { get; private set; }
 
-    public static void RegisterBonusExp(int amount) => BonusExp += amount;
+    public static void RegisterExp(int amount) => BonusExp += amount;
 
     public static void RegisterAttackUsed(AttackType type)
     {
@@ -71,6 +85,8 @@ public static class RunStats
         MeleeKills = RangedKills = ScreamKills = 0;
         MeleeAttacksUsed = RangedAttacksUsed = ScreamAttacksUsed = 0;
         FloorKills = 0;
+        CoinsThisRun = 0;
         BonusExp = 0;
+        runStartTime = Time.time;
     }
 }

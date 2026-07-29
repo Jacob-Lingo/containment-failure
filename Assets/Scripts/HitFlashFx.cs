@@ -1,8 +1,10 @@
 using UnityEngine;
 
-/// Procedural attack/impact flash — builds one shared soft-edged circle
-/// sprite at runtime (no art asset needed, same approach as DamageNumber)
-/// and reuses it, tinted and sized per call, for muzzle flashes and hits.
+/// Procedural attack/impact flash — builds one shared arcane spark sprite at
+/// runtime (no art asset needed, same approach as DamageNumber): a soft glow
+/// with a four-armed star burst through it, so hits and pickups read as
+/// magical rather than as a puff of smoke. Reused, tinted, randomly rolled and
+/// sized per call, for spell impacts, muzzle flashes and hits.
 public class HitFlashFx : MonoBehaviour
 {
     private const float Lifetime = 0.15f;
@@ -19,6 +21,7 @@ public class HitFlashFx : MonoBehaviour
         GameObject go = new GameObject("HitFlashFx");
         go.transform.position = worldPos;
         go.transform.localScale = Vector3.one * scale;
+        go.transform.rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)); // repeated hits shouldn't stamp an identical star
 
         var sr = go.AddComponent<SpriteRenderer>();
         sr.sprite = GetCircleSprite();
@@ -52,15 +55,20 @@ public class HitFlashFx : MonoBehaviour
 
         const int size = 64;
         var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
-        Vector2 center = new Vector2(size / 2f, size / 2f);
+        float center = size / 2f;
 
         for (int y = 0; y < size; y++)
         {
             for (int x = 0; x < size; x++)
             {
-                float dist = Vector2.Distance(new Vector2(x + 0.5f, y + 0.5f), center);
-                float alpha = Mathf.Clamp01(1f - dist / (size / 2f));
-                tex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha * alpha));
+                float dx = x + 0.5f - center;
+                float dy = y + 0.5f - center;
+                float radial = Mathf.Clamp01(1f - Mathf.Sqrt(dx * dx + dy * dy) / center);
+                // Thin cross arms reaching the edge, faded by the same radial
+                // falloff so they taper into points instead of stopping flat.
+                float arms = Mathf.Clamp01(1f - Mathf.Min(Mathf.Abs(dx), Mathf.Abs(dy)) / 2.5f) * radial;
+                float alpha = Mathf.Clamp01(radial * radial + arms * 0.9f);
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
             }
         }
         tex.Apply();
