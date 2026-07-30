@@ -7,13 +7,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [Header("Health")]
     [SerializeField] private int maxHealth = 10;
 
+    [Header("Knockback")]
+    [SerializeField] private float knockbackForce = 5f;
+    [SerializeField] private float knockbackDuration = 0.2f;
+
     [Header("Death")]
     [SerializeField] private string loseScene = "LoseScreen";
     [SerializeField] private float loseDelay = 1f;
 
     public int Health { get; private set; }
 
-    /// Set by PlayerDash during a Phase Dash's i-frame window.
     public bool Invulnerable { get; set; }
 
     [Header("Thorns retaliation")]
@@ -25,30 +28,22 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private bool isDead;
     private int startingMaxHealth;
     private SpriteRenderer sr;
+    private Rigidbody2D rb;
     private Color baseColor;
     private Coroutine flashRoutine;
 
-    /// Passive regen tick (evolution's "Regeneration" card) — heals without
-    /// touching the cap, unlike IncreaseMaxHealth below.
     public void Heal(int amount)
     {
         if (amount <= 0 || isDead) return;
-
         Health = Mathf.Min(maxHealth, Health + amount);
-
-        if (healthBar != null)
-            healthBar.SetHealth(Health);
+        if (healthBar != null) healthBar.SetHealth(Health);
     }
 
-    /// Additive hook for the evolution system's "Vitality" passive — raises the
-    /// cap and heals by the same amount so picking it always feels like a gain.
     public void IncreaseMaxHealth(int amount)
     {
         if (amount <= 0) return;
-
         maxHealth += amount;
         Health = Mathf.Min(maxHealth, Health + amount);
-
         if (healthBar != null)
         {
             healthBar.SetMaxHealth(maxHealth);
@@ -56,24 +51,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
-    /// Additive hook for an in-place "Restart Run" (PauseMenu) — undoes any
-    /// Vitality stacking and re-enables everything Die() turned off, without
-    /// requiring a scene reload.
     public void ResetToStartingHealth()
     {
         maxHealth = startingMaxHealth;
         Health = maxHealth;
         isDead = false;
-
-        if (TryGetComponent<PlayerController>(out var controller))
-            controller.enabled = true;
-
-        foreach (var col in GetComponentsInChildren<Collider2D>())
-            col.enabled = true;
-
-        foreach (var sprite in GetComponentsInChildren<SpriteRenderer>())
-            sprite.enabled = true;
-
+        if (TryGetComponent<PlayerController>(out var controller)) controller.enabled = true;
+        foreach (var col in GetComponentsInChildren<Collider2D>()) col.enabled = true;
+        foreach (var sprite in GetComponentsInChildren<SpriteRenderer>()) sprite.enabled = true;
         if (healthBar != null)
         {
             healthBar.SetMaxHealth(maxHealth);
@@ -85,39 +70,26 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         startingMaxHealth = maxHealth;
         Health = maxHealth;
-
         sr = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
         if (sr != null) baseColor = sr.color;
-
         evolution = GetComponent<EvolutionSystem>();
         healthBar = FindFirstObjectByType<HealthBar>();
-
-        if (healthBar != null)
-        {
-            healthBar.SetMaxHealth(maxHealth);
-        }
-        else
-        {
-            Debug.LogWarning("No HealthBar was found in the scene.");
-        }
+        if (healthBar != null) healthBar.SetMaxHealth(maxHealth);
+        else Debug.LogWarning("No HealthBar was found in the scene.");
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, Vector2? knockbackDirection = null)
     {
-        if (isDead || amount <= 0 || Invulnerable)
-            return;
+        if (isDead || amount <= 0 || Invulnerable) return;
 
-        // "Armor" card — flat reduction, never brings a hit below 1 damage.
         if (evolution != null && evolution.ArmorFlat > 0)
             amount = Mathf.Max(1, amount - evolution.ArmorFlat);
 
         Health -= amount;
         Health = Mathf.Clamp(Health, 0, maxHealth);
 
-        if (healthBar != null)
-        {
-            healthBar.SetHealth(Health);
-        }
+        if (healthBar != null) healthBar.SetHealth(Health);
 
         Debug.Log("Player Health: " + Health);
 
@@ -130,7 +102,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             flashRoutine = StartCoroutine(FlashHit());
         }
 
-        TriggerThorns();
+        if (knockbackDirection.HasValue && rb != null)
+        {
+            StartCoroutine(ApplyKnockback(knockbackDirection.Value));
+        }
 
         if (Health <= 0)
         {
@@ -149,8 +124,28 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
-    /// "Second Wind" card — brief invulnerability so the same swarm that
-    /// nearly killed the player doesn't just kill them again next frame.
+    public void TakeDamage(int amount, AttackType attackType)
+    {
+        TakeDamage(amount);
+        if (attackType == AttackType.Melee)
+        {
+            TriggerThorns();
+        }
+    }
+
+    private IEnumerator ApplyKnockback(Vector2 direction)
+    {
+        if (rb == null) yield break;
+        
+        float timer = 0;
+        while (timer < knockbackDuration)
+        {
+            rb.AddForce(direction.normalized * knockbackForce, ForceMode2D.Impulse);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+    }
+
     private IEnumerator SecondWindGrace()
     {
         Invulnerable = true;
@@ -158,13 +153,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         Invulnerable = false;
     }
 
-    /// "Thorns" card — simplified from reflecting damage back at the exact
-    /// attacker (which would need an attacker reference threaded through
-    /// IDamageable) into a retaliation shockwave around the player instead.
     private void TriggerThorns()
     {
         if (evolution == null || evolution.ThornsDamage <= 0) return;
-
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, thornsRadius, guardLayer);
         foreach (var hit in hits)
         {
@@ -175,37 +166,29 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private IEnumerator FlashHit()
     {
-        sr.color = Color.red;
-        yield return new WaitForSeconds(0.08f);
-        if (sr != null) sr.color = baseColor;
+        float endTime = Time.time + 1f;
+        while (Time.time < endTime)
+        {
+            sr.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+            if (sr == null) yield break;
+            sr.color = baseColor;
+            yield return new WaitForSeconds(0.1f);
+        }
+        if (sr != null)
+        {
+            sr.color = baseColor;
+        }
     }
 
     private IEnumerator Die()
     {
         PlayerController controller = GetComponent<PlayerController>();
-
-        if (controller != null)
-        {
-            controller.enabled = false;
-        }
-
-        foreach (Collider2D playerCollider in GetComponentsInChildren<Collider2D>())
-        {
-            playerCollider.enabled = false;
-        }
-
-        foreach (SpriteRenderer sprite in GetComponentsInChildren<SpriteRenderer>())
-        {
-            sprite.enabled = false;
-        }
-
-        // Save the level the player died on.
-        GameManager.LastLevelIndex =
-            SceneManager.GetActiveScene().buildIndex;
-
-        // Wait before opening the lose screen.
+        if (controller != null) controller.enabled = false;
+        foreach (Collider2D playerCollider in GetComponentsInChildren<Collider2D>()) playerCollider.enabled = false;
+        foreach (SpriteRenderer sprite in GetComponentsInChildren<SpriteRenderer>()) sprite.enabled = false;
+        GameManager.LastLevelIndex = SceneManager.GetActiveScene().buildIndex;
         yield return new WaitForSeconds(loseDelay);
-
         SceneTransition.LoadScene(loseScene);
     }
 }

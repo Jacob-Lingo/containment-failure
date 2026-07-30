@@ -9,15 +9,14 @@ public class GuardHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private EnemyHealthBar healthBar;
-
-    private static readonly Color FlashColor = Color.white;
-    private const float FlashDuration = 0.08f;
+    [SerializeField] private float fadeDuration = 0.4f;
 
     public int Health { get; private set; }
 
     private SpriteRenderer sr;
     private Color baseColor;
     private Coroutine flashRoutine;
+    private bool isDead;
 
     private void Awake()
     {
@@ -61,14 +60,18 @@ public class GuardHealth : MonoBehaviour, IDamageable
             healthBar.SetMaxHealth(maxHealth);
     }
 
-    public void TakeDamage(int amount)
+
+
+    public void TakeDamage(int amount, Vector2? knockbackDirection = null)
     {
+        // This implementation ignores knockback. The AttackType is defaulted
+        // to Melee for generic damage events.
         TakeDamage(amount, AttackType.Melee);
     }
 
     public void TakeDamage(int amount, AttackType source)
     {
-        if (amount <= 0 || Health <= 0) return;
+        if (amount <= 0 || Health <= 0 || isDead) return;
 
         Health = Mathf.Max(0, Health - amount);
 
@@ -85,16 +88,61 @@ public class GuardHealth : MonoBehaviour, IDamageable
 
         if (Health <= 0)
         {
+            isDead = true;
             RunStats.RegisterKill(source);
             if (Random.value < 0.15f) ExpOrb.Spawn(transform.position);
-            Destroy(gameObject);
+            
+            if (TryGetComponent<Collider2D>(out var col)) col.enabled = false;
+            if (TryGetComponent<GuardBrain>(out var brain)) brain.enabled = false;
+            if (TryGetComponent<GuardMotor>(out var motor)) motor.enabled = false;
+            
+            StartCoroutine(FadeAndDestroy());
         }
+    }
+    
+    private IEnumerator FadeAndDestroy()
+    {
+        float elapsed = 0f;
+        
+        // Cache components
+        Color startColor = sr.color;
+        CanvasGroup healthBarCanvasGroup = null;
+        if (healthBar != null)
+        {
+            healthBarCanvasGroup = healthBar.GetComponent<CanvasGroup>();
+        }
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startColor.a, 0f, elapsed / fadeDuration);
+            sr.color = new Color(startColor.r, startColor.g, startColor.b, newAlpha);
+
+            if (healthBarCanvasGroup != null)
+            {
+                healthBarCanvasGroup.alpha = 1 - (elapsed / fadeDuration);
+            }
+
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 
     private IEnumerator FlashHit()
     {
-        sr.color = FlashColor;
-        yield return new WaitForSeconds(FlashDuration);
-        sr.color = baseColor;
+        float endTime = Time.time + 1f;
+        while (Time.time < endTime)
+        {
+            sr.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+            if (sr == null) yield break;
+            sr.color = baseColor;
+            yield return new WaitForSeconds(0.1f);
+        }
+        if (sr != null)
+        {
+            sr.color = baseColor;
+        }
     }
 }

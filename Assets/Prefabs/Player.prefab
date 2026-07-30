@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 9100000000000004}
   - component: {fileID: 9100000000000005}
   - component: {fileID: 4100045609461279813}
+  - component: {fileID: -1787747943689256643}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -338,7 +339,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 6
-  spriteDown: {fileID: -2273262987894464175, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
-  spriteUp: {fileID: 1223113874, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
-  spriteRight: {fileID: 671777176, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
-  spriteLeft: {fileID: -717816096, guid: de3f70b4ddeeb424ca7ec954f35bd521, type: 3}
+--- !u!95 &-1787747943689256643
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9187406437945655738}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0e9a6f91fdad47640b58858bb9320587, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 /// face their target (GuardMotor.UpdateFacing), which would otherwise tip the
 /// bar sideways since it's a child of the rotating body — resetting world
 /// rotation every frame keeps it level regardless of parent orientation.
+[RequireComponent(typeof(CanvasGroup))]
 public class EnemyHealthBar : MonoBehaviour
 {
     [SerializeField] private Slider healthSlider;

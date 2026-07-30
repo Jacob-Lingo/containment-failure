@@ -5,14 +5,20 @@ public class GuardBrain : MonoBehaviour
 {
     private enum State { Idle, Chase, Attack }
 
+    [Header("Attack")]
     [SerializeField] private float attackEnterRange = 1.2f;
     [SerializeField] private float attackExitRange = 1.8f;   // hysteresis
     [SerializeField] private float attackCooldown = 1.0f;
     [SerializeField] private int attackDamage = 1;
+    [SerializeField] private GameObject slashPrefab;
+    [SerializeField] private float attackOffset = 1.0f;
+    [SerializeField] private float knockbackForce = 6f;
+    [SerializeField] private float knockbackDuration = 0.12f;
 
     private State state = State.Idle;
     private GuardPerception perception;
     private GuardMotor motor;
+    private Animator animator;
     private Transform target;
     private float nextAttackTime;
 
@@ -20,6 +26,7 @@ public class GuardBrain : MonoBehaviour
     {
         perception = GetComponent<GuardPerception>();
         motor = GetComponent<GuardMotor>();
+        animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -34,15 +41,11 @@ public class GuardBrain : MonoBehaviour
         perception.TargetLost -= HandleTargetLost;
     }
 
-    /// Called by SpawnDirector at instantiation; forwards to perception,
-    /// which drives all state transitions via TargetSpotted/TargetLost.
     public void SetTarget(Transform target)
     {
         perception.SetTarget(target);
     }
 
-    /// Called by SpawnDirector for the Heavy tier (harder-hitting, slower
-    /// melee guard) — same override shape as GuardRangedBrain's.
     public void SetAttackProfile(int damage, float cooldown)
     {
         attackDamage = damage;
@@ -68,15 +71,12 @@ public class GuardBrain : MonoBehaviour
         {
             case State.Chase:  TickChase();  break;
             case State.Attack: TickAttack(); break;
-            case State.Idle:   break;        // future: patrol lives here
+            case State.Idle:   break;
         }
     }
 
     private void TickChase()
     {
-        // Guard against the target being destroyed mid-chase. Perception's
-        // null early-return never fires TargetLost in that case, so the
-        // brain must detect it here or throw on target.position next line.
         if (target == null) { HandleTargetLost(); return; }
 
         motor.Seek(target.position);
@@ -100,23 +100,50 @@ public class GuardBrain : MonoBehaviour
         if (Time.time >= nextAttackTime)
         {
             nextAttackTime = Time.time + attackCooldown;
+            
+            animator.SetTrigger("Attack");
+            
+            Vector2 attackDir = (target.position - transform.position).normalized;
 
+            if (slashPrefab != null)
+            {
+                Vector3 spawnPos = transform.position + (Vector3)(attackDir * attackOffset);
+                float angle = Mathf.Atan2(attackDir.y, attackDir.x) * Mathf.Rad2Deg;
+                GameObject slashInstance = Instantiate(slashPrefab, spawnPos, Quaternion.Euler(0, 0, angle));
+
+                slashInstance.transform.localScale *= 0.8f;
+
+                var sr = slashInstance.GetComponent<SpriteRenderer>() ?? slashInstance.GetComponentInChildren<SpriteRenderer>();
+                if (sr != null)
+                {
+                    sr.color = Color.red;
+                    sr.sortingOrder = 20;
+                }
+            }
+ 
             Sfx.PlayRandom("guard_baton_hit", 3, target.position);
             HitFlashFx.Spawn(target.position, new Color(1f, 1f, 1f, 0.85f), 0.35f);
 
-            // No-op until a component implementing IDamageable exists on the
-            // player, so this commits safely ahead of Noah's health system.
-            if (target.TryGetComponent<IDamageable>(out var damageable))
-                damageable.TakeDamage(attackDamage);
+            if (target.TryGetComponent<PlayerHealth>(out var playerHealth))
+            {
+                playerHealth.TakeDamage(attackDamage, AttackType.Melee);
+
+                Vector2 pushDir = (target.position - transform.position).normalized;
+                if (target.TryGetComponent<PlayerController>(out var playerController))
+                {
+                    playerController.ApplyKnockback(pushDir * knockbackForce, knockbackDuration);
+                }
+                else if (target.TryGetComponent<Rigidbody2D>(out var rb))
+                {
+                    rb.AddForce(pushDir * knockbackForce, ForceMode2D.Impulse);
+                }
+            }
         }
     }
 
     private void TransitionTo(State next)
     {
         if (state == next) return;
-#if UNITY_EDITOR
-        Debug.Log($"{name}: {state} -> {next}");
-#endif
         state = next;
     }
 }

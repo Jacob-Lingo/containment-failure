@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: a98dae07702fb7341b58e23c641e7b1e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2563259699088701834
+    second: Guard_Death_Sheet_0
+  - first:
+      213: -4249199866756600922
+    second: Guard_Death_Sheet_1
+  - first:
+      213: 4973406972637430590
+    second: Guard_Death_Sheet_2
+  - first:
+      213: 8545556697156044784
+    second: Guard_Death_Sheet_3
+  - first:
+      213: -203713405252080134
+    second: Guard_Death_Sheet_4
+  - first:
+      213: 6870289945340507864
+    second: Guard_Death_Sheet_5
+  - first:
+      213: 4013286087182935062
+    second: Guard_Death_Sheet_6
+  - first:
+      213: 1046953982325050297
+    second: Guard_Death_Sheet_7
+  - first:
+      213: 3205676941173382161
+    second: Guard_Death_Sheet_8
+  - first:
+      213: 1378057065409895741
+    second: Guard_Death_Sheet_9
+  - first:
+      213: -2085060749733609049
+    second: Guard_Death_Sheet_10
+  - first:
+      213: 8669162130829929092
+    second: Guard_Death_Sheet_11
+  - first:
+      213: 4374722777713390634
+    second: Guard_Death_Sheet_12
+  - first:
+      213: 7432692976116423325
+    second: Guard_Death_Sheet_13
+  - first:
+      213: -4028420652037063928
+    second: Guard_Death_Sheet_14
+  - first:
+      213: 8876024272747627297
+    second: Guard_Death_Sheet_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 97
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6764eb862e87d6cd0800000000000000
+      internalID: -2563259699088701834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 80
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6abe5520c3fc705c0800000000000000
+      internalID: -4249199866756600922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 90
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3341879a47150540800000000000000
+      internalID: 4973406972637430590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 82
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f742fd2a8ae79670800000000000000
+      internalID: 8545556697156044784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 78
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afde6fbbcb34c2df0800000000000000
+      internalID: -203713405252080134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 80
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d675ff0e4c285f50800000000000000
+      internalID: 6870289945340507864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 70
+        width: 12
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6146e88de6e02b730800000000000000
+      internalID: 4013286087182935062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 19
+        width: 123
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bb4aa49917878e00800000000000000
+      internalID: 1046953982325050297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 19
+        width: 124
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11cdc4f813adc7c20800000000000000
+      internalID: 3205676941173382161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 18
+        width: 120
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3d59f78997df1310800000000000000
+      internalID: 1378057065409895741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 73
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a1c4059b406013e0800000000000000
+      internalID: -2085060749733609049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 66
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48ae26cd60d0f4870800000000000000
+      internalID: 8669162130829929092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 14
+        width: 129
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a24ba64203326bc30800000000000000
+      internalID: 4374722777713390634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 466
+        y: 69
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9ad5f5b1ea362760800000000000000
+      internalID: 7432692976116423325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 13
+        width: 139
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80bbb7da2cc2818c0800000000000000
+      internalID: -4028420652037063928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guard_Death_Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 622
+        y: 57
+        width: 10
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1230ed28c09fd2b70800000000000000
+      internalID: 8876024272747627297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Guard_Death_Sheet_0: -2563259699088701834
+      Guard_Death_Sheet_1: -4249199866756600922
+      Guard_Death_Sheet_10: -2085060749733609049
+      Guard_Death_Sheet_11: 8669162130829929092
+      Guard_Death_Sheet_12: 4374722777713390634
+      Guard_Death_Sheet_13: 7432692976116423325
+      Guard_Death_Sheet_14: -4028420652037063928
+      Guard_Death_Sheet_15: 8876024272747627297
+      Guard_Death_Sheet_2: 4973406972637430590
+      Guard_Death_Sheet_3: 8545556697156044784
+      Guard_Death_Sheet_4: -203713405252080134
+      Guard_Death_Sheet_5: 6870289945340507864
+      Guard_Death_Sheet_6: 4013286087182935062
+      Guard_Death_Sheet_7: 1046953982325050297
+      Guard_Death_Sheet_8: 3205676941173382161
+      Guard_Death_Sheet_9: 1378057065409895741
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

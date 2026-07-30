@@ -7,13 +7,21 @@ public class GuardMotor : MonoBehaviour
     [SerializeField] private float arriveRadius = 1.5f;
     
     private Rigidbody2D rb;
+    private Animator animator;
     private Vector2? seekTarget;  //null = no movement order
     private Vector2 knockbackVelocity;
     private float knockbackEndTime;
     private float slowMultiplier = 1f;
     private float slowEndTime;
+    private float lastMoveX;
+    private float lastMoveY;
 
-    private void Awake() => rb = GetComponent<Rigidbody2D>();
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        rb.freezeRotation = true;
+    }
 
     public void Seek(Vector2 worldPosition) => seekTarget = worldPosition;
 
@@ -41,48 +49,48 @@ public class GuardMotor : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Vector2 velocity;
         if (Time.time < knockbackEndTime)
         {
-            rb.linearVelocity = knockbackVelocity;
-            return;
+            velocity = knockbackVelocity;
         }
-
-        if (seekTarget == null)
+        else if (seekTarget == null)
         {
-            rb.linearVelocity = Vector2.zero;
-            return;
+            velocity = Vector2.zero;
+        }
+        else
+        {
+            Vector2 toTarget = seekTarget.Value - rb.position;
+            float distance = toTarget.magnitude;
+
+            // Arrive; ramp speed down inside the radius so the guard
+            // doesn't overshoot and orbit the player. Outside it, pure seek.
+            float speed = distance < arriveRadius
+                ? maxSpeed * (distance / arriveRadius)
+                : maxSpeed;
+
+            if (Time.time < slowEndTime) speed *= slowMultiplier;
+
+            velocity = toTarget.normalized * speed;
         }
 
-        Vector2 toTarget = seekTarget.Value - rb.position;
-        float distance = toTarget.magnitude;
-
-        // Arrive; ramp speed down inside the radius so the guard
-        // doesn't overshoot and orbit the player. Outside it, pure seek.
-        float speed = distance < arriveRadius
-            ? maxSpeed * (distance / arriveRadius)
-            : maxSpeed;
-
-        if (Time.time < slowEndTime) speed *= slowMultiplier;
-
-        rb.linearVelocity = toTarget.normalized * speed;
-        
-        UpdateFacing();
+        rb.linearVelocity = velocity;
+        UpdateAnimator(velocity);
     }
 
-    [Header("Facing")] 
-    [SerializeField] private float turnSpeed = 540f;
-    [SerializeField] private float faceVelocityThreshold = 0.05f;
-
-    private void UpdateFacing()
+    private void UpdateAnimator(Vector2 velocity)
     {
-        Vector2 v = rb.linearVelocity;
-        if (v.sqrMagnitude < faceVelocityThreshold * faceVelocityThreshold)
-            return;
+        animator.SetFloat("MoveX", velocity.x);
+        animator.SetFloat("MoveY", velocity.y);
+        animator.SetFloat("Speed", velocity.sqrMagnitude);
 
-        float targetAngle = Mathf.Atan2(v.y, v.x) *Mathf.Rad2Deg;
-        float newAngle = Mathf.MoveTowardsAngle(rb.rotation, targetAngle, turnSpeed * Time.fixedDeltaTime);
-        rb.MoveRotation(newAngle);
+        if (velocity.sqrMagnitude > 0.01f)
+        {
+            lastMoveX = velocity.x;
+            lastMoveY = velocity.y;
+        }
+        
+        animator.SetFloat("LastMoveX", lastMoveX);
+        animator.SetFloat("LastMoveY", lastMoveY);
     }
-    
 }
-

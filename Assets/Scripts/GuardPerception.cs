@@ -3,20 +3,50 @@ using UnityEngine;
 
 public class GuardPerception : MonoBehaviour
 {
-    [SerializeField] private Transform target;          // Player — assigned in Inspector for now
-    [SerializeField] private float detectRadius = 6f;
-    [SerializeField] private float loseRadius = 8f;     // hysteresis: lose > detect
-    [SerializeField, Range(1f, 360f)] private float viewAngle = 70f;  // full cone angle, centred on facing
-    [SerializeField] private LayerMask obstacleMask = ~0;             // what blocks line of sight
+    [Header("Target")]
+    [SerializeField] private Transform target; // Player
+
+    [Header("Detection Ranges")]
+    [SerializeField] private float closeDetectRadius = 3f;
+    [SerializeField] private float forwardDetectRadius = 8f;
+    [SerializeField] private float loseRadius = 10f; // Hysteresis: lose > detect
+
+    [Header("Detection Angle")]
+    [SerializeField, Range(1f, 360f)] private float viewAngle = 90f; // Full cone angle
+
+    [Header("Line of Sight")]
+    [SerializeField] private LayerMask obstacleMask = ~0;
 
     public event Action<Transform> TargetSpotted;
     public event Action TargetLost;
 
     public bool HasTarget { get; private set; }
 
-    // Nothing rotates the guard yet; sprite faces right, so transform.right
-    // is forward. Tracks rotation automatically if a facing system lands.
-    private Vector2 Forward => transform.right;
+    private Animator animator;
+
+    private Vector2 Forward
+    {
+        get
+        {
+            if (animator == null) return transform.right; // Fallback for editor
+            
+            float lastMoveX = animator.GetFloat("LastMoveX");
+            float lastMoveY = animator.GetFloat("LastMoveY");
+
+            // If the guard has never moved, default to down.
+            if (Mathf.Approximately(lastMoveX, 0f) && Mathf.Approximately(lastMoveY, 0f))
+            {
+                return Vector2.down;
+            }
+            
+            return new Vector2(lastMoveX, lastMoveY).normalized;
+        }
+    }
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
@@ -43,47 +73,86 @@ public class GuardPerception : MonoBehaviour
 
     private bool CanSeeTarget()
     {
+        if (target == null) return false;
+
         Vector2 origin = transform.position;
         Vector2 toTarget = (Vector2)target.position - origin;
+        float distance = toTarget.magnitude;
 
-        // hysteresis applies to range only: once spotted, sight extends to loseRadius
-        float radius = HasTarget ? loseRadius : detectRadius;
-        if (toTarget.sqrMagnitude > radius * radius) return false;
+        // Condition to lose target: must be already tracking and either out of lose radius OR line of sight is broken.
+        if (HasTarget)
+        {
+            if (distance > loseRadius || !HasLineOfSight(origin, toTarget))
+            {
+                return false;
+            }
+            return true; // Target is kept.
+        }
 
-        if (Vector2.Angle(Forward, toTarget) > viewAngle * 0.5f) return false;
+        // Conditions to acquire a new target (not currently tracking).
+        
+        // If outside the maximum possible detection range, no need to check further.
+        if (distance > forwardDetectRadius) return false;
 
-        return HasLineOfSight(origin, toTarget);
+        // Line of sight is mandatory for acquiring a new target.
+        if (!HasLineOfSight(origin, toTarget)) return false;
+
+        // 1. Close-range omni-directional check.
+        if (distance <= closeDetectRadius)
+        {
+            return true; // Acquired via close range.
+        }
+
+        // 2. Forward-range directional check.
+        // We already know distance is > closeDetectRadius and <= forwardDetectRadius.
+        if (Vector2.Angle(Forward, toTarget) <= viewAngle * 0.5f)
+        {
+            return true; // Acquired via forward cone.
+        }
+
+        return false; // Target not acquired.
     }
 
     private bool HasLineOfSight(Vector2 origin, Vector2 toTarget)
     {
-        // Guards, walls and player all share the Default layer, so the first
-        // hit is the guard's own collider. Walk all hits and ignore ourselves
-        // and the target; anything else in between blocks sight.
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, toTarget.normalized, toTarget.magnitude, obstacleMask);
         foreach (RaycastHit2D hit in hits)
         {
             Transform t = hit.transform;
             if (t == transform || t.IsChildOf(transform)) continue;
             if (t == target || t.IsChildOf(target)) continue;
-            return false;
+            return false; // An obstacle is in the way.
         }
-        return true;
+        return true; // Clear line of sight.
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = HasTarget ? Color.red : Color.white;
-
         Vector3 origin = transform.position;
-        Gizmos.DrawWireSphere(origin, detectRadius);
 
-        float half = viewAngle * 0.5f;
-        Vector3 edge = (Vector3)(Forward * detectRadius);
-        Gizmos.DrawLine(origin, origin + Quaternion.Euler(0f, 0f, half) * edge);
-        Gizmos.DrawLine(origin, origin + Quaternion.Euler(0f, 0f, -half) * edge);
+        // Draw detection radii
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(origin, closeDetectRadius);
+        Gizmos.DrawWireSphere(origin, forwardDetectRadius);
 
+        // Draw lose radius
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(origin, loseRadius);
+
+        // Draw view cone
+        Gizmos.color = HasTarget ? Color.red : Color.cyan;
+        float halfAngle = viewAngle * 0.5f;
+        Vector3 forward = Forward;
+        Vector3 rightEdge = Quaternion.Euler(0, 0, halfAngle) * forward * forwardDetectRadius;
+        Vector3 leftEdge = Quaternion.Euler(0, 0, -halfAngle) * forward * forwardDetectRadius;
+        Gizmos.DrawLine(origin, origin + rightEdge);
+        Gizmos.DrawLine(origin, origin + leftEdge);
+
+        // Draw line to target if seen
         if (HasTarget && target != null)
+        {
+            Gizmos.color = Color.red;
             Gizmos.DrawLine(origin, target.position);
+        }
     }
 }

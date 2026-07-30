@@ -1,0 +1,25 @@
+[33mfeaae7a9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/sprites-and-ai[m[33m, [m[1;31morigin/Noah-Win/Lose[m[33m)[m HEAD@{0}: reset: moving to HEAD@{22}
+[33me7018b02[m HEAD@{1}: commit: Save local progress before merging mattbranch
+[33m66769e89[m[33m ([m[1;31morigin/feature/sprites-and-ai[m[33m)[m HEAD@{2}: commit: Add wall-attached decor props and dynamic 5-tile exit gate layout
+[33m27d54771[m HEAD@{3}: commit (merge): Complete merge of main and track moved Astronaut Assets tilemaps
+[33m4318707a[m HEAD@{4}: commit: Fix wall collider scale, assign SpawnDirector references, and update procedural generator logic
+[33mf98c3a7f[m HEAD@{5}: checkout: moving from feature/sprites-and-ai to feature/sprites-and-ai
+[33mf98c3a7f[m HEAD@{6}: reset: moving to HEAD
+[33mf98c3a7f[m HEAD@{7}: checkout: moving from feature/sprites-and-ai to feature/sprites-and-ai
+[33mf98c3a7f[m HEAD@{8}: checkout: moving from feat/level-design-enablement to feature/sprites-and-ai
+[33m52f5cbcc[m[33m ([m[1;31morigin/feat/level-design-enablement[m[33m, [m[1;32mfeat/level-design-enablement[m[33m)[m HEAD@{9}: checkout: moving from feature/sprites-and-ai to feat/level-design-enablement
+[33mf98c3a7f[m HEAD@{10}: commit: Fix wall collider scale, assign SpawnDirector references, and update procedural generator logic
+[33md1e9bcb5[m HEAD@{11}: commit: Add new sprites and update AI settings
+[33m65bffb5f[m[33m ([m[1;32mmain[m[33m)[m HEAD@{12}: checkout: moving from main to feature/sprites-and-ai
+[33m65bffb5f[m[33m ([m[1;32mmain[m[33m)[m HEAD@{13}: commit: Copyright free sprites
+[33m32750db0[m HEAD@{14}: pull: Fast-forward
+[33m45f3d2b1[m HEAD@{15}: reset: moving to HEAD
+[33m45f3d2b1[m HEAD@{16}: pull: Fast-forward
+[33m02c33b45[m HEAD@{17}: reset: moving to HEAD
+[33m02c33b45[m HEAD@{18}: pull: Fast-forward
+[33m789f2eff[m HEAD@{19}: reset: moving to HEAD
+[33m789f2eff[m HEAD@{20}: pull: Fast-forward
+[33m251b63e0[m HEAD@{21}: pull: Fast-forward
+[33m18d8f1e9[m HEAD@{22}: commit: Ahmed: Implemented SpawnDirector prefab with player/guard distance constraints and game timer
+[33mfeaae7a9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/sprites-and-ai[m[33m, [m[1;31morigin/Noah-Win/Lose[m[33m)[m HEAD@{23}: pull: Fast-forward
+[33mc08fe31f[m HEAD@{24}: clone: from https://github.com/Jacob-Lingo/containment-failure.git

@@ -16,6 +16,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float meleeArc = 90f;
     [SerializeField] private int meleeDamage = 2;
     [SerializeField] private float meleeCooldown = 0.4f;
+    public GameObject slashPrefab;
+    public float attackOffset = 1.2f;
+
 
     [Header("Ranged (Bullet) — replaces melee on M1 once unlocked")]
     [SerializeField] private GameObject bulletPrefab;
@@ -54,8 +57,8 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float berserkSearchRadius = 40f;
 
     [Header("Knockback On Hit")]
-    [SerializeField] private float knockbackForce = 6f;
-    [SerializeField] private float knockbackDuration = 0.2f;
+    public float knockbackForce = 8f;
+    public float knockbackDuration = 0.15f;
 
     [Header("Scream Slow")]
     [SerializeField] private float screamSlowMultiplier = 0.5f;
@@ -63,6 +66,7 @@ public class PlayerCombat : MonoBehaviour
 
     private EvolutionSystem evolution;
     private SpriteRenderer sr;
+    private Animator animator;
     private Color baseColor;
     private float nextMeleeTime, nextRangedTime, nextScreamTime;
     private float nextBeamTime, nextCycloneTime, nextBerserkTime;
@@ -94,6 +98,7 @@ public class PlayerCombat : MonoBehaviour
     {
         evolution = GetComponent<EvolutionSystem>();
         sr = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         if (sr != null) baseColor = sr.color;
         AbilityBarUI.EnsureInstance(this, GetComponent<PlayerDash>());
     }
@@ -174,11 +179,10 @@ public class PlayerCombat : MonoBehaviour
         return result;
     }
 
-    private void ApplyKnockbackIfUnlocked(GuardHealth guard, Vector2 aim)
+    private void ApplyKnockback(GuardHealth guard, Vector2 knockbackDir)
     {
-        if (evolution == null || !evolution.KnockbackOnHit) return;
         if (guard.TryGetComponent<GuardMotor>(out var motor))
-            motor.ApplyKnockback(aim * knockbackForce, knockbackDuration);
+            motor.ApplyKnockback(knockbackDir * knockbackForce, knockbackDuration);
     }
 
     private void TryMelee()
@@ -195,37 +199,43 @@ public class PlayerCombat : MonoBehaviour
         if (titan) baseDamage = Mathf.RoundToInt(baseDamage * evolution.TitanDamageMultiplier);
         int damage = ApplyDamageModifiers(baseDamage);
 
-        Vector2 aim = AimDirection();
-        SpawnClawEffect(aim, range);
+        Vector2 attackDir = GetFacingDirection();
+        Vector2 attackCenter = (Vector2)transform.position + (attackDir.normalized * attackOffset);
+
+        SpawnSlashPrefab(attackCenter, attackDir);
         Sfx.PlayRandom("player_melee_swing", 3, transform.position);
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range, guardLayer);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(attackCenter, range, guardLayer);
         foreach (var hit in hits)
         {
             if (!hit.TryGetComponent<GuardHealth>(out var guard)) continue;
 
             Vector2 toTarget = (Vector2)hit.transform.position - (Vector2)transform.position;
-            if (Vector2.Angle(aim, toTarget) > meleeArc * 0.5f) continue;
+            if (Vector2.Angle(attackDir, toTarget) > meleeArc * 0.5f) continue;
 
             guard.TakeDamage(damage, AttackType.Melee);
             if (guard.Health <= 0) evolution?.NotifyKill();
-            else ApplyKnockbackIfUnlocked(guard, toTarget.normalized);
+            else ApplyKnockback(guard, toTarget.normalized);
         }
     }
 
-    private void SpawnClawEffect(Vector2 aim, float range)
+    private Vector2 GetFacingDirection()
     {
-        GameObject fx = new GameObject("ClawFX");
-        fx.transform.position = (Vector2)transform.position + aim * (range * 0.6f);
-        float angle = Mathf.Atan2(aim.y, aim.x) * Mathf.Rad2Deg;
-        fx.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        float lastMoveX = animator.GetFloat("LastMoveX");
+        float lastMoveY = animator.GetFloat("LastMoveY");
 
-        var sr = fx.AddComponent<SpriteRenderer>();
-        sr.sprite = Resources.Load<Sprite>("Combat/claw_slash");
-        sr.sortingOrder = 11;
-        fx.transform.localScale = Vector3.one * (range * 0.5f);
+        Vector2 attackDir = new Vector2(lastMoveX, lastMoveY);
+        if (attackDir.sqrMagnitude == 0)
+        {
+            attackDir = Vector2.down;
+        }
+        return attackDir;
+    }
 
-        Destroy(fx, 0.15f);
+    private void SpawnSlashPrefab(Vector2 position, Vector2 direction)
+    {
+        Quaternion rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+        Instantiate(slashPrefab, position, rotation);
     }
 
     private void TryRanged()
@@ -307,7 +317,7 @@ public class PlayerCombat : MonoBehaviour
                 continue;
             }
 
-            ApplyKnockbackIfUnlocked(guard, toTarget.normalized);
+            ApplyKnockback(guard, toTarget.normalized);
             if (evolution != null && evolution.ScreamSlow && guard.TryGetComponent<GuardMotor>(out var motor))
                 motor.ApplySlow(screamSlowMultiplier, screamSlowDuration);
         }
@@ -335,7 +345,15 @@ public class PlayerCombat : MonoBehaviour
         {
             if (!hit.TryGetComponent<GuardHealth>(out var guard)) continue;
             guard.TakeDamage(damage, AttackType.Ranged);
-            if (guard.Health <= 0) evolution.NotifyKill();
+            if (guard.Health <= 0)
+            {
+                evolution?.NotifyKill();
+            }
+            else
+            {
+                Vector2 knockbackDir = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
+                ApplyKnockback(guard, knockbackDir);
+            }
         }
     }
 
@@ -363,7 +381,7 @@ public class PlayerCombat : MonoBehaviour
             int damage = ApplyDamageModifiers(damagePerTick);
 
             Vector2 spinDir = Quaternion.Euler(0, 0, spinAngle) * Vector2.right;
-            SpawnClawEffect(spinDir, radius);
+            SpawnSlashPrefab(transform.position, spinDir);
             Sfx.PlayRandom("player_melee_swing", 3, transform.position);
 
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, guardLayer);
@@ -372,7 +390,7 @@ public class PlayerCombat : MonoBehaviour
                 if (!hit.TryGetComponent<GuardHealth>(out var guard)) continue;
                 guard.TakeDamage(damage, AttackType.Melee);
                 if (guard.Health <= 0) evolution?.NotifyKill();
-                else ApplyKnockbackIfUnlocked(guard, ((Vector2)hit.transform.position - (Vector2)transform.position).normalized);
+                else ApplyKnockback(guard, ((Vector2)hit.transform.position - (Vector2)transform.position).normalized);
             }
 
             spinAngle += 140f;
@@ -487,7 +505,7 @@ public class PlayerCombat : MonoBehaviour
     private void BerserkStrike(Vector2 aim)
     {
         int damage = ApplyDamageModifiers(meleeDamage);
-        SpawnClawEffect(aim, berserkAttackRange);
+        SpawnSlashPrefab(transform.position, aim);
         Sfx.PlayRandom("player_melee_swing", 3, transform.position);
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, berserkAttackRange, guardLayer);
@@ -496,7 +514,7 @@ public class PlayerCombat : MonoBehaviour
             if (!hit.TryGetComponent<GuardHealth>(out var guard)) continue;
             guard.TakeDamage(damage, AttackType.Melee);
             if (guard.Health <= 0) evolution?.NotifyKill();
-            else ApplyKnockbackIfUnlocked(guard, ((Vector2)hit.transform.position - (Vector2)transform.position).normalized);
+            else ApplyKnockback(guard, ((Vector2)hit.transform.position - (Vector2)transform.position).normalized);
         }
     }
 }

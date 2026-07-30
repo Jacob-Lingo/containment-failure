@@ -472,6 +472,7 @@ GameObject:
   - component: {fileID: 8056538982353741138}
   - component: {fileID: 3956058371053498092}
   - component: {fileID: 9000000000000001}
+  - component: {fileID: -8205422623532466248}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -489,7 +490,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 11.480384, y: -4.9308295, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9000000000000011}
@@ -596,7 +597,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GuardPerception
   target: {fileID: 0}
-  detectRadius: 6
+  closeDetectRadius: 3
+  forwardDetectRadius: 8
   loseRadius: 8
   viewAngle: 70
   obstacleMask:
@@ -616,8 +618,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuardMotor
   maxSpeed: 3
   arriveRadius: 1.5
-  turnSpeed: 540
-  faceVelocityThreshold: 0.05
 --- !u!114 &8056538982353741138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,10 +630,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157a2c4a4f8179940918dc539b880a8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GuardBrain
-  attackEnterRange: 1.2
-  attackExitRange: 1.8
+  attackEnterRange: 1.8
+  attackExitRange: 2.4
   attackCooldown: 1
   attackDamage: 1
+  slashPrefab: {fileID: 7087455759110012107, guid: f0762313631a13047a30e41d407ec0b3, type: 3}
+  attackOffset: 0.8
 --- !u!58 &3956058371053498092
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -684,3 +686,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuardHealth
   maxHealth: 3
   healthBar: {fileID: 9000000000000023}
+--- !u!95 &-8205422623532466248
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6242325129514317973}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: eb2c1cc583fd1b743b32a748f522750b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
